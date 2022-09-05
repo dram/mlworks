@@ -62,7 +62,7 @@ struct print_options
   int tags;			/* show tagging information */
 };
 
-struct print_options print_defaults;
+extern struct print_options print_defaults;
 
 void print(struct print_options *options, FILE *stream, mlval value);
 
