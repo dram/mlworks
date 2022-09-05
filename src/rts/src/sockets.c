@@ -83,7 +83,6 @@
 #define SOCKET int
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
-extern int gethostname(char *name, int namelen);
 #endif
 
 #define ioctl_type unsigned long *

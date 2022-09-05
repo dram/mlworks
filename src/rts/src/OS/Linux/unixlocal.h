@@ -49,9 +49,3 @@ extern mlval unix_exn_ref_unix;
 
 extern mlval unix_set_block_mode(mlval);
 extern mlval unix_can_input(mlval);
-
-/* This is declared in <unistd.h> but is surrounded by #ifdef __USE_BSD.
- * Since defining that has wider effects that just including readlink
- * it seems safest just to add a prototype here.
- */
-extern int readlink(const char *, char *, int);
