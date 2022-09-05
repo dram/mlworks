@@ -419,20 +419,6 @@ $(DEPENDDIR)/%.d: %.c
 	@$(MKDIR) $(DEPENDDIR) $(MKDIREND)
 	@$(DEPENDGEN) $(DEPENDGENFLAGS) $< | sed $(QUOTE)/:/s!$*.$(OBJ)!$(OBJECTDIR)/$*.$(OBJ) $(OBJECTDIR)/$*-g.$(OBJ) $@!$(QUOTE) > $@
 
-
-# gen/$(ARCH)/$(OS)/os_errors.c is automatically generated (see 
-# rts/src/OS/{Win32,Unix}/GNUmake) and so does not exist when the dependency
-# maker runs.  This confuses it no end and it fails to generate a dependency
-# file.  The following rule makes the dependency maker build the C file before
-# continuing, so all is well.  There may be a better way of doing this, but I 
-# don't know it.
-
-$(DEPENDDIR)/os_errors.d: gen/$(ARCH)/$(OS)/os_errors.c
-	@echo 'MAKE: $< -> $@'
-	@$(MKDIR) $(DEPENDDIR) $(MKDIREND)
-	@$(DEPENDGEN) $(DEPENDGENFLAGS) $< | sed $(QUOTE)/:/s!os_errors.$(OBJ)!$(OBJECTDIR)/os_errors.$(OBJ) $(OBJECTDIR)/os_errors-g.$(OBJ) $@!$(QUOTE) > $@
-
-
 $(DEPENDDIR)/%.d: %.S
 	@echo 'MAKE: $< -> $@'
 	@$(MKDIR) $(DEPENDDIR) $(MKDIREND)

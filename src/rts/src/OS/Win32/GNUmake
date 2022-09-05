@@ -171,7 +171,7 @@ ASMFLAGS       = $(GCCFLAGS) -c -o
 ASMFLAGSDEBUG  = $(GCCFLAGSDEBUG) -c -o 
 
 DEPENDGEN          = $(GCC)
-DEPENDGENFLAGS     = $(GCCFLAGS) -MM -D_M_IX86 -D_WIN32
+DEPENDGENFLAGS     = $(GCCFLAGS) -MM -MG -D_M_IX86 -D_WIN32
 
 # The extra flags are pre-defined constant macros in Visual C++, and
 # are required for some internal Windows header files.
