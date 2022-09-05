@@ -52,16 +52,6 @@
 #include "main_stub.h"
 #include "mlw_dll.h"
 
-mlval image_continuation = MLUNIT;
-
-int module_argc = 0;
-const char *const *module_argv = NULL;
-
-int mono = 0;
-const char *runtime;
-
-
-
 int main(int argc, const char *const *argv)
 {
   return mlw_main(argc,argv);

@@ -58,14 +58,6 @@
 #endif
 #include "window.h"
 
-mlval image_continuation = MLUNIT;
-
-int module_argc = 0;
-const char *const *module_argv = NULL;
-
-int mono = 0;
-const char *runtime;
-
 /* I guess if we do want to pass the instance information to the functions */
 /* above, we could put it in appropriate global variables */
 
