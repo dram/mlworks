@@ -49,12 +49,12 @@
 /* The "arena" is memory between 0 and 1 << ARENA_WIDTH. All the
    managed memory lies in this range. */
 
-#define ARENA_WIDTH	31
+#define ARENA_WIDTH	32
 
 /* We divide the whole address space into spaces, each of size 1 <<
  * SPACE_WIDTH. We manage the arena a space at a time. */
 
-#define SPACE_WIDTH	24	/* 128 * 16Mb spaces */
+#define SPACE_WIDTH	24	/* 256 * 16Mb spaces */
 
 /* some spaces are further subdivided into blocks, each of size 1 <<
    BLOCK_WIDTH */
