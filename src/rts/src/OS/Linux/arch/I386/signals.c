@@ -263,7 +263,7 @@ static struct signal_name {int number;
  {SIGWINCH,	"SIGWINCH"},
  {SIGIO,	"SIGIO"},
  {SIGPWR,	"SIGPWR"},
- {SIGUNUSED,	"SIGUNUSED"},
+ {SIGSYS,	"SIGSYS"},
  {0,		NULL}};
 
 static const char *name_that_signal (int sig)
