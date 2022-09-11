@@ -394,6 +394,17 @@ structure MLWorks : MLWORKS =
 
     exception Interrupt
 
+    structure Deliver =
+      struct
+        datatype app_style = CONSOLE | WINDOWS
+        type deliverer = string * (unit -> unit) * app_style -> unit
+        type delivery_hook = deliverer -> deliverer
+        fun deliver _ = unimplemented "MLWorks.Deliver.deliver"
+        fun with_delivery_hook _ f = f
+        val add_delivery_hook = fn _ => ()
+        val exitFn = ref (fn () => ())
+      end
+
     structure Option = 
       struct
         datatype 'a option = SOME of 'a | NONE 
@@ -1457,8 +1468,6 @@ structure MLWorks : MLWORKS =
     fun save (filename, function) =
       (NewJersey.exportFn (filename, fn _ => (function (); ()));
        function)
-
-    fun deliver _ = unimplemented "MLWorks.deliver"
 
     fun exec_save _ = unimplemented "MLWorks.exec_save"
 
