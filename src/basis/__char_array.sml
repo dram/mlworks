@@ -85,6 +85,7 @@
  *)
 
 require "mono_array";
+require "__char";
 require "__char_vector";
 
 structure CharArray : MONO_ARRAY =
@@ -117,9 +118,9 @@ structure CharArray : MONO_ARRAY =
       (ignore(check_size (length l));
        A (MLWorks.Internal.ByteArray.arrayoflist (cast l)))
 
-    val length   : array -> int                     = cast(MLWorks.Internal.ByteArray.length)
-    val sub      : (array * int) -> elem            = cast(MLWorks.Internal.ByteArray.sub)
-    val update   : (array * int * elem) -> unit     = cast(MLWorks.Internal.ByteArray.update)
+    fun length (A a) = MLWorks.Internal.ByteArray.length a
+    fun sub (A a, i) = Char.chr (MLWorks.Internal.ByteArray.sub (a, i))
+    fun update (A a, i, c) = MLWorks.Internal.ByteArray.update (a, i, Char.ord c)
 
     val extract  : (array * int * int option ) -> vector =
       fn (A a,i,len) =>
