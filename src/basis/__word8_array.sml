@@ -112,9 +112,9 @@ structure Word8Array : MONO_ARRAY =
       (ignore(check_size (length l));
        A (MLWorks.Internal.ByteArray.arrayoflist (MLWorks.Internal.Value.cast l)))
 
-    val length   : array -> int                     = MLWorks.Internal.Value.cast(MLWorks.Internal.ByteArray.length) 
-    val sub      : (array * int) -> elem            = MLWorks.Internal.Value.cast(MLWorks.Internal.ByteArray.sub)
-    val update   : (array * int * elem) -> unit     = MLWorks.Internal.Value.cast(MLWorks.Internal.ByteArray.update)
+    fun length (A a) = MLWorks.Internal.ByteArray.length a
+    fun sub (A a, i) = Word8.fromInt (MLWorks.Internal.ByteArray.sub (a, i))
+    fun update (A a, i, w) = MLWorks.Internal.ByteArray.update (a, i, Word8.toInt w)
 
     val extract  : (array * int * int option ) -> vector =
       fn (A a,i,len) =>
