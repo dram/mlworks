@@ -441,6 +441,17 @@ structure MLWorks : MLWORKS =
 
     exception Interrupt
 
+    structure Deliver =
+      struct
+        datatype app_style = CONSOLE | WINDOWS
+        type deliverer = string * (unit -> unit) * app_style -> unit
+        type delivery_hook = deliverer -> deliverer
+        fun deliver _ = unimplemented "MLWorks.Deliver.deliver"
+        fun with_delivery_hook _ f = f
+        val add_delivery_hook = fn _ => ()
+        val exitFn = ref (fn () => ())
+      end
+
     structure Option = SMLBasisOption
 
     structure Char =
@@ -471,21 +482,6 @@ structure MLWorks : MLWORKS =
       struct
 	val makestring : real -> string = SMLBasisReal.toString
 	val print : real -> unit = fn r => TextIO.print (makestring r)
-      end
-
-    structure Deliver = struct
-	datatype app_style = CONSOLE | WINDOWS
-	type deliverer = string * (unit -> unit) * app_style -> unit
-	type delivery_hook = deliverer -> deliverer
-	fun deliver (x,y,z) = (unimplemented "MLWorks.Deliver.deliver";
-			       ())
-	fun with_delivery_hook _ =
-	    unimplemented "MLWorks.Deliver.with_delivery_hook"
-	fun add_delivery_hook x =
-	    (TextIO.print ("add_delivery_hook called");
-	     ())
-	val exitFn = ref (fn () =>
-			     (unimplemented "MLWorks.Deliver.exitFn"; ()))
       end
 
     val arguments = CommandLine.arguments
