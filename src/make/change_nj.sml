@@ -392,6 +392,8 @@ fun unimplemented name =
 structure MLWorks : MLWORKS =
   struct
 
+    exception Interrupt
+
     structure Option = 
       struct
         datatype 'a option = SOME of 'a | NONE 
