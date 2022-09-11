@@ -415,69 +415,28 @@ structure MLWorks : MLWORKS =
 
     structure String =
       struct
-	local
-	    structure S = SMLBasisString
-	in
-	exception Substring = General.Subscript
-	exception Chr = General.Chr
-	exception Ord
-	val maxLen = S.maxSize
-	fun explode (s:string) = List.map S.str (S.explode s)
-	fun implode (l:string list) = S.concat l
-	val str = S.str
-	fun chr (i:int) = S.str (Char.chr i)
-	val sub = S.sub
-	val substring = S.substring
-	val op < = S.<
-	val op > = S.>
-	val op >= = S.>=
-	val op <= = S.<=
-	fun ordof (s, i) = SMLBasisChar.ord (sub (s, i))
-	fun ord (s:string) =
-	    case size s of
-		1 => Char.ord (sub (s, 0))
-	     |  _ => raise Ord
-	fun ml_string (s,max_size) =
-	    let
-		fun to_digit n = Char.chr (n + Char.ord #"0")
-		fun aux ([],result:char list,_) =
-		    S.implode (rev result)
-		  | aux (_,result,0) =
-		    S.implode (rev (#"\\" :: #"." :: #"." :: result))
-		  | aux (char::rest,result,n) =
-		    let val newres =
-			    case char of
-				#"\n" => #"\\"::char::result
-			      | #"\t" => #"\\"::char::result
-			      | #"\"" => #"\\"::char::result
-			      | #"\\" => #"\\"::char::result
-			      | c =>
-				let val n = Char.ord c
-				in
-				    if Int.< (n, 32) orelse Int.>= (n, 127)
-				    then
-					let
-					    val n1 = n div 10
-					in
-					    (to_digit (n mod 10))::
-					    (to_digit (n1 mod 10))::
-					    (to_digit (n1 div 10))::
-					    (#"\\")::result
-					end
-				    else
-					c::result
-				end
-		    in
-			aux (rest, newres, n-1)
-		    end
-	    in
-		aux (S.explode s,[],
-		     if Int.<(max_size, 0) then ~1 else max_size)
-	    end
-	fun implode_char ints =
-	    S.implode (map SMLBasisChar.chr ints)
+        exception Substring = General.Subscript
+        exception Chr = General.Chr
+        exception Ord
 
-	end
+        val maxLen = String.maxSize
+        val chr = SML90.chr
+        val ord = SML90.ord
+
+        fun ordof (s, i) = Char.ord (String.sub (s, i))
+
+        fun ml_string (s, max_size) =
+          if max_size = ~1 then
+            String.toString s
+          else
+            String.substring (String.toString s, 0, max_size)
+
+        fun implode_char l = String.implode (List.map Char.chr l)
+
+        open String
+
+        val explode = SML90.explode
+        val implode = SML90.implode
       end
 
     exception Interrupt
