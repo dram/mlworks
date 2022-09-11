@@ -405,6 +405,9 @@ structure MLWorks : MLWORKS =
         val exitFn = ref (fn () => ())
       end
 
+    val arguments = CommandLine.arguments
+    val name = CommandLine.name
+
     structure Option = 
       struct
         datatype 'a option = SOME of 'a | NONE 
