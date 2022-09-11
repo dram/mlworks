@@ -752,46 +752,30 @@ structure MLWorks : MLWORKS =
 
     structure String =
       struct
-	fun ml_string (s,max_size) =
-	  let
-	    fun to_digit n = chr (n +ord "0")
-	      
-	    fun aux ([],result,_) = implode (rev result)
-	      | aux (_,result,0) = implode (rev ("\\..." :: result))
-	      | aux (char::rest,result,n) =
-		let val newres =
-		  case char of 
-		    "\n" => "\\n"::result
-		  | "\t" => "\\t"::result
-		  | "\"" => "\\\""::result
-		  | "\\" => "\\\\"::result
-		  | c =>
-		      let val n = ord c
-		      in
-			if n < 32 orelse n >= 127 then
-			  let
-			    val n1 = n div 10
-			  in
-			    (to_digit (n mod 10))::
-			    (to_digit (n1 mod 10))::
-			    (to_digit (n1 div 10))::
-			    ("\\")::result
-			  end
-			else
-			  c::result
-		      end
-		in
-		  aux (rest, newres, n-1)
-		end
-	  in
-	    aux (explode s,[],if max_size<0 then ~1 else max_size)
-	  end
-	open NewJersey.String
+        exception Substring = General.Subscript
+        exception Chr = General.Chr
+        exception Ord
 
-        fun implode_char l = implode (map chr l)
+        val maxLen = String.maxSize
+        val chr = SML90.chr
+        val ord = SML90.ord
 
+        fun ordof (s, i) = Char.ord (String.sub (s, i))
+
+        fun ml_string (s, max_size) =
+          if max_size = ~1 then
+            String.toString s
+          else
+            String.substring (String.toString s, 0, Int.min (String.size s, max_size))
+
+        fun implode_char l = String.implode (List.map Char.chr l)
+
+        open String
+
+        val explode = SML90.explode
+        val implode = SML90.implode
       end
-    
+
     structure Char =
       struct
 	type char = int
