@@ -54,9 +54,6 @@
 
 mlval image_continuation = MLUNIT;
 
-int module_argc = 0;
-const char *const *module_argv = NULL;
-
 int mono = 0;
 const char *runtime;
 

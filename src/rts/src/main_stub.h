@@ -45,9 +45,6 @@
 
 extern mlval image_continuation;
 
-extern int module_argc;        /* arguments to be passed to ML */
-extern const char *const *module_argv;
-
 extern int mono;		 /* running on a mono screen? */
 
 extern int main(int argc, const char *const *argv);
