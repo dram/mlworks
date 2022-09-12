@@ -1021,6 +1021,15 @@ structure MLWorks : MLWORKS =
             fun to_string a = substring (a, 0, length a)
           end
 
+        structure FloatArray =
+          struct
+            exception Range of int
+
+            type floatarray = real array
+
+            open ExtendedArray
+          end
+
         structure Value =
           struct
             type T = unit
