@@ -457,74 +457,52 @@ structure MLWorks : MLWORKS =
 
     structure Threads =
       struct
-	datatype 'a thread = Thread of { r : 'a }
+	type 'a thread = unit
         exception Threads of string
 
-	fun fork f =
-	    (unimplemented "MLWorks.Threads.fork";
-	     fn (a) => Thread {r=f(a)})
-	fun yield () = (unimplemented "MLWorks.Threads.yield"; ())
+	fun fork _ = unimplemented "MLWorks.Threads.fork"
+	fun yield _ = unimplemented "MLWorks.Threads.yield"
 
 	datatype 'a result =
-		 Running		(* still running *)
-		 | Waiting		(* waiting *)
-		 | Sleeping		(* sleeping *)
-		 | Result of 'a		(* completed, with this result *)
-		 | Exception of exn	(* exited with this uncaught exn *)
-		 | Died			(* died (e.g. bus error) *)
-		 | Killed		(* killed *)
-		 | Expired		(* no longer exists (from a previous image) *)
+	  Running		(* still running *)
+	| Waiting		(* waiting *)
+	| Sleeping		(* sleeping *)
+	| Result of 'a		(* completed, with this result *)
+	| Exception of exn	(* exited with this uncaught exn *)
+	| Died			(* died (e.g. bus error) *)
+	| Killed		(* killed *)
+	| Expired		(* no longer exists (from a previous image) *)
 
-	fun result (Thread{r}) = (unimplemented "MLWorks.Threads.result";
-				  Result r)
-	fun sleep _ =  (unimplemented "MLWorks.Threads.sleep"; ())
-	fun wake _ =  (unimplemented "MLWorks.Threads.wake"; ())
+	fun result _ = unimplemented "MLWorks.Threads.result"
+	fun sleep _ =  unimplemented "MLWorks.Threads.sleep"
+	fun wake _ =  unimplemented "MLWorks.Threads.wake"
 
-	structure Internal = struct
+	structure Internal =
+	  struct
 	    type thread_id = unit
-	    fun id _ = (unimplemented "MLWorks.Threads.Internal.id"; ())
-	    fun get_id _ = (unimplemented "MLWorks.Threads.Internal.get_id";())
-	    fun children _ =
-		(unimplemented "MLWorks.Threads.Internal.children";[])
-	    fun parent _ = (unimplemented "MLWorks.Threads.Internal.parent";())
-	    fun all _ = (unimplemented "MLWorks.Threads.Internal.all";[])
-	    fun kill _ = (unimplemented "MLWorks.Threads.Internal.kill";())
-	    fun raise_in _ =
-		(unimplemented "MLWorks.Threads.Internal.raise_in";())
-	    fun yield_to _ =
-		(unimplemented "MLWorks.Threads.Internal.yield_to";())
-	    fun state _ = (unimplemented "MLWorks.Threads.Internal.state";
-			   Result ())
-	    fun get_num _ = (unimplemented "MLWorks.Threads.Internal.get_num";
-			     0)
+	    fun id _ = unimplemented "MLWorks.Threads.Internal.id"
+	    fun get_id _ = unimplemented "MLWorks.Threads.Internal.get_id"
+	    fun children _ = unimplemented "MLWorks.Threads.Internal.children"
+	    fun parent _ = unimplemented "MLWorks.Threads.Internal.parent"
+	    fun all _ = unimplemented "MLWorks.Threads.Internal.all"
+	    fun kill _ = unimplemented "MLWorks.Threads.Internal.kill"
+	    fun raise_in _ = unimplemented "MLWorks.Threads.Internal.raise_in"
+	    fun yield_to _ = unimplemented "MLWorks.Threads.Internal.yield_to"
+	    fun state _ = unimplemented "MLWorks.Threads.Internal.state"
+	    fun get_num _ = unimplemented "MLWorks.Threads.Internal.get_num"
 	    fun set_handler _ =
-		(unimplemented "MLWorks.Threads.Internal.set_handler"; ())
-	    fun reset_fatal_status _ =
-		(unimplemented "MLWorks.Threads.Internal.reset_fatal_status";
-		 ())
+	      unimplemented "MLWorks.Threads.Internal.set_handler"
+	    fun reset_fatal_status _ = unimplemented "MLWorks.Threads.Internal.reset_fatal_status"
 	    structure Preemption =
 	      struct
-		fun start _ =
-		    (unimplemented "MLWorks.Threads.Internal.Preemption.start";
-		     ())
-		fun stop _ =
-		    (unimplemented "MLWorks.Threads.Internal.Preemption.stop";())
-		fun on _ =
-		    (unimplemented "MLWorks.Threads.Internal.Preemption.on";
-		     false)
-		fun get_interval _ =
-		    (unimplemented "MLWorks.Threads.Internal.Preemption.get_interval"; 0)
-		fun set_interval _ =
-		    (unimplemented "MLWorks.Threads.Internal.Preemption.set_interval"; ())
-		fun enter_critical_section () =
-		    (unimplemented "MLWorks.Threads.Internal.Preemption.enter_critical_section";
-		     ())
-		fun exit_critical_section () =
-		    (unimplemented "MLWorks.Threads.Internal.Preemption.exit_critical_section";
-		     ())
-		fun in_critical_section () =
-		    (unimplemented "MLWorks.Threads.Internal.Preemption.exit_critical_section";
-		     false)
+		fun start _ = unimplemented "MLWorks.Threads.Internal.Preemption.start"
+		fun stop _ = unimplemented "MLWorks.Threads.Internal.Preemption.stop"
+		fun on _ = unimplemented "MLWorks.Threads.Internal.Preemption.on"
+		fun get_interval _ = unimplemented "MLWorks.Threads.Internal.Preemption.get_interval"
+		fun set_interval _ = unimplemented "MLWorks.Threads.Internal.Preemption.set_interval"
+                fun enter_critical_section _ = unimplemented "MLWorks.Threads.Internal.Preemption.enter_critical_section"
+                fun exit_critical_section _ = unimplemented "MLWorks.Threads.Internal.Preemption.exit_critical_section"
+                fun in_critical_section _ = unimplemented "MLWorks.Threads.Internal.Preemption.in_critical_section"
 	      end
 	  end
       end
