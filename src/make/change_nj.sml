@@ -741,13 +741,13 @@ structure MLWorks : MLWORKS =
 	    end
           end
 
-	structure Array : ARRAY =
-	  struct
-	    open SMLBasisArray
-	    exception Size
-	    exception Subscript
-	    val arrayoflist = SMLBasisArray.fromList
-	  end
+        structure Array =
+          struct
+            exception Size = General.Size
+            exception Subscript = General.Subscript
+            val arrayoflist = Array.fromList
+            open Array
+          end
 
 	structure ByteArray : BYTEARRAY =
 	  struct
