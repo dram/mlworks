@@ -446,320 +446,6 @@ structure MLWorks : MLWORKS =
         |   length (Vector (a::r)) = 1 + length (Vector r)
       end
 
-    structure ExtendedArray =
-      struct
-        open NewJersey.Array
-
-        nonfix sub
-        type 'a T = 'a array
-
-        fun tabulate (l, f) =
-          if l = 0 then
-            arrayoflist []
-          else
-            let
-              val first = f 0
-              val a = array (l, first)
-
-              fun init 0 = a
-                | init n =
-                  (update (a, n-l, f (n-l));
-                   init (n-1))
-            in
-              init (l-1)
-            end
-
-        val from_list = arrayoflist
-
-        fun fill (a, x) =
-          let
-            fun fill' 0 = ()
-              | fill' n =
-                (update (a, n-1, x);
-                 fill' (n-1))
-          in
-            fill' (length a)
-          end
-
-        fun map f a =
-          let
-            val l = length a
-          in
-            if l = 0 then
-              from_list []
-            else
-              let
-                val first = f (sub (a, 0))
-                val new = array (l, first)
-
-                fun map' 0 = new
-                  | map' n =
-                    (update (new, l-n, f (sub (a, l-n)));
-                     map' (n-1))
-              in
-                map' (l-1)
-              end
-          end
-
-        fun map_index f a =
-          let
-            val l = length a
-          in
-            if l = 0 then
-              from_list []
-            else
-              let
-                val first = f (0, sub (a, 0))
-                val new = array (l, first)
-
-                fun map' 0 = new
-                  | map' n =
-                    (update (new, l-n, f (l-n, sub (a, l-n)));
-                     map' (n-1))
-              in
-                map' (l-1)
-              end
-          end
-
-        fun to_list a =
-          let
-            fun to_list' (0, list) = list
-              | to_list' (n, list) =
-                to_list' (n-1, sub (a, n-1) :: list)
-          in
-            to_list' (length a, nil)
-          end
-
-        fun iterate f a =
-          let
-            val l = length a
-
-            fun iterate' 0 = ()
-              | iterate' n =
-                (f (sub (a, l-n));
-                 iterate' (n-1))
-          in
-            iterate' l
-          end
-
-        fun iterate_index f a =
-          let
-            val l = length a
-
-            fun iterate' 0 = ()
-              | iterate' n =
-                (f (l-n, sub (a, l-n));
-                 iterate' (n-1))
-          in
-            iterate' l
-          end
-
-        fun rev a =
-          let
-            val l = length a
-          in
-            if l = 0 then
-              from_list []
-            else
-              let
-                val first = sub (a, 0)
-                val new = array (l, first)
-
-                fun rev' 0 = new
-                  | rev' n =
-                    (update (new, n-1, sub (a, l-n));
-                     rev' (n-1))
-              in
-                rev' (l-1)
-              end
-          end
-
-        fun duplicate a =
-          let
-            val l = length a
-          in
-            if l = 0 then
-              from_list []
-            else
-              let
-                val first = sub (a, 0)
-                val new = array (l, first)
-
-                fun duplicate' 0 = new
-                  | duplicate' n =
-                    (update (new, l-n, sub (a, l-n));
-                     duplicate' (n-1))
-              in
-                duplicate' (l-1)
-              end
-          end
-
-        exception Subarray of int * int
-        fun subarray (a, start, finish) =
-          let
-            val l = length a
-          in
-            if start < 0 orelse start > l orelse finish > l orelse
-               start > finish then
-              raise Subarray (start, finish)
-            else
-              let
-                val l' = finish - start
-              in
-                if l' = 0 then
-                  from_list []
-                else
-                  let
-                    val first = sub (a, start)
-                    val new = array (l', first)
-
-                    fun copy 0 = new
-                      | copy n =
-                        (update (new, l'-n, sub (a, start+l'-n));
-                         copy (n-1))
-                  in
-                    copy (l'-1)
-                  end
-              end
-          end
-
-        fun append (array1, array2) =
-          let
-            val l1 = length array1
-            val l2 = length array2
-            val l = l1 + l2
-          in
-            if l = 0 then
-              from_list []
-            else
-              let
-                val first =
-                  if l1 = 0 then
-                    sub (array2, 0)
-                  else
-                    sub (array1, 0)
-
-                val new = array (l, first)
-
-                fun copy1 0 = new
-                  | copy1 n =
-                    (update (new, l1-n, sub (array1, l1-n));
-                     copy1 (n-1))
-
-                fun copy2 0 = copy1 (l1-1)
-                  | copy2 n =
-                    (update (new, l-n, sub (array2, l2-n));
-                     copy2 (n-1))
-              in
-                copy2 l2
-              end
-          end
-
-        fun reducel f (i, a) =
-          let
-            val l = length a
-
-            fun reducel' (i, 0) = i
-              | reducel' (i, n) =
-                reducel' (f (i, sub (a, l-n)), n-1)
-          in
-            reducel' (i, l)
-          end
-
-        fun reducel_index f (i, a) =
-          let
-            val l = length a
-
-            fun reducel' (i, 0) = i
-              | reducel' (i, n) =
-                reducel' (f (l-n, i, sub (a, l-n)), n-1)
-          in
-            reducel' (i, l)
-          end
-
-        fun reducer f (a, i) =
-          let
-            val l = length a
-
-            fun reducer' (0, i) = i
-              | reducer' (n, i) =
-                reducer' (n-1, f (sub (a, n-1), i))
-          in
-            reducer' (l, i)
-          end
-
-        fun reducer_index f (a, i) =
-          let
-            val l = length a
-
-            fun reducer' (0, i) = i
-              | reducer' (n, i) =
-                reducer' (n-1, f (n-1, sub (a, n-1), i))
-          in
-            reducer' (l, i)
-          end
-
-        exception Copy of int * int * int
-        fun copy (from, start, finish, to, start') =
-          let
-            val l1 = length from
-            val l2 = length to
-          in
-            if start < 0 orelse start > l1 orelse finish > l1 orelse
-               start > finish orelse
-               start' < 0 orelse start' + finish - start > l2 then
-              raise Copy (start, finish, start')
-            else
-              let
-                fun copy' 0 = ()
-                  | copy' n =
-                    (update (to, start'+n-1, sub (from, start+n-1));
-                     copy' (n-1))
-              in
-                copy' (finish - start)
-              end
-          end
-
-        exception Fill of int * int
-        fun fill_range (a, start, finish, x) =
-          let
-            val l = length a
-          in
-            if start < 0 orelse start > l orelse finish > l orelse
-               start > finish then
-              raise Fill (start, finish)
-            else
-              let
-                fun fill' 0 = ()
-                  | fill' n =
-                    (update (a, start+n-1, x);
-                     fill' (n-1))
-              in
-                fill' (finish - start)
-              end
-          end
-
-        exception Find
-        fun find predicate a =
-          let
-            val l = length a
-            fun find' 0 = raise Find
-              | find' n = if predicate (sub (a, l-n)) then l-n else find' (n-1)
-          in
-            find' l
-          end
-
-        fun find_default (predicate, default) a =
-          let
-            val l = length a
-            fun find' 0 = default
-              | find' n = if predicate (sub (a, l-n)) then l-n else find' (n-1)
-          in
-            find' l
-          end
-
-      end
-
     structure String =
       struct
         exception Substring = General.Subscript
@@ -1638,6 +1324,43 @@ structure MLWorks : MLWORKS =
             exception Subscript = General.Subscript
             val arrayoflist = Array.fromList
             open Array
+          end
+
+        structure ExtendedArray =
+          struct
+            exception Find
+
+            open Array
+
+            val from_list = fromList
+            fun to_list a = List.tabulate (length a, fn i => sub (a, i))
+            fun fill (a, x) = modify (fn _ => x) a
+            fun map f a = tabulate (length a, fn i => f (sub (a, i)))
+            fun map_index f a = tabulate (length a, fn i => f (i, sub (a, i)))
+            val iterate = app
+            val iterate_index = appi
+            fun rev a = let val l = length a in tabulate (l, fn i => sub (a, l - i - 1)) end
+            fun duplicate a = tabulate (length a, fn i => sub (a, i))
+            fun subarray (a, start, finish) = tabulate (finish - start, fn i => sub (a, start + i))
+            fun append (a1, a2) =
+              let
+                val l1 = length a1
+                val l2 = length a2
+              in
+                tabulate (l1 + l2, fn i => if i < l1 then sub (a1, i) else sub (a2, i - l1))
+              end
+            fun reducel f (init, a) = foldl (fn (elem, b) => f (b, elem)) init a
+            fun reducer f (a, init) = foldr f init a
+            fun reducel_index f (init, a) = foldli (fn (i, elem, b) => f (i, b, elem)) init a
+            fun reducer_index f (a, init) = foldri f init a
+            fun copy (from, start, finish, to, start') =
+              ArraySlice.copy {src=ArraySlice.slice (from, start, SOME (finish - start)), dst=to, di=start'}
+            fun fill_range (a, start, finish, x) =
+              ArraySlice.modify (fn _ => x) (ArraySlice.slice (a, start, SOME (finish - start)))
+            fun find predicate a =
+              case Array.findi (fn (_, elem) => predicate elem) a of NONE => raise Find | SOME (i, _) => i
+            fun find_default (predicate, default) a =
+              case Array.findi (fn (_, elem) => predicate elem) a of NONE => default | SOME (i, _) => i
           end
 
         structure Value =
