@@ -749,111 +749,50 @@ structure MLWorks : MLWORKS =
             open Array
           end
 
-	structure ByteArray : BYTEARRAY =
-	  struct
-            local
-		structure W8A = SMLBasisWord8Array
-		structure W8S = SMLBasisWord8ArraySlice
-		structure W8 = SMLBasisWord8
-		structure S = SMLBasisString
-		structure C = SMLBasisChar
-	    in
-	    type bytearray = W8A.array
+        structure ByteArray =
+          struct
+            exception Range of int
+            exception Substring
+            exception Find
 
-	    exception Range of int
-	    exception Size
-	    exception Subscript
-	    exception Substring
-	    exception Find
+            type bytearray = int array
 
-	    fun array (len, init) = W8A.array (len, (W8.fromInt init))
-	    val length = W8A.length
-	    fun update (arr, i, x) = W8A.update (arr, i, (W8.fromInt x))
-	    fun sub (arr, i) = W8.toInt (W8A.sub (arr, i))
-	    fun arrayoflist ilist = W8A.fromList (map W8.fromInt ilist)
-	    fun tabulate (n, f) = W8A.tabulate (n, fn (i) => W8.fromInt (f i))
-	    val from_list = arrayoflist
-	    fun to_list arr = List.tabulate (length arr, fn i => sub (arr, i))
-	    fun from_string s =
-		tabulate (S.size s, fn i => C.ord (S.sub (s, i)))
-	    fun substring (arr, start, len) =
-		let fun f i = C.chr (sub (arr, start + i))
-		in CharVector.tabulate (len, f)
-		end
-	    fun to_string arr = substring (arr, 0, length arr)
-	    fun fill (arr, x) =
-		let val b = W8.fromInt x
-		in W8A.modify (fn _ => b) arr
-		end
-	    fun map_index f arr =
-		tabulate (length arr, fn i => f (i, sub (arr, i)))
-	    fun map f arr = map_index (f o #2) arr
-	    fun iterate_index f arr =
-		W8A.appi (fn (i, w) => f (i, W8.toInt w)) arr
-	    fun iterate f arr = iterate_index (f o #2) arr
-	    fun rev arr =
-		let val len = length arr
-		in W8A.tabulate (len, fn i => W8A.sub (arr, (len - 1) - i))
-		end
-	    fun duplicate arr =
-		let val result = W8A.array (length arr, 0w0)
-		in
-		    W8A.copy { src = arr, dst = result, di = 0 };
-		    result
-		end
-	    fun subarray (arr, start, end_) =
-		let val result = W8A.array (end_ - start, 0w0)
-		in
-		    W8S.copy { src = W8S.slice (arr, start, SOME end_),
-			       dst = result,
-			       di = 0 };
-		    result
-		end
-	    fun append (arr1, arr2) =
-		let val len1 = length arr1
-		    val len2 = length arr2
-		    val result = W8A.array (len1 + len2, 0w0)
-		in
-		    W8A.copy {src = arr1, dst = result, di = 0};
-		    W8A.copy {src = arr2, dst = result, di = len1};
-		    result
-		end
-	    fun reducel_index f (init, arr) =
-		let fun g (i, w, state) = f (i, state, W8.toInt w)
-		in W8A.foldli g init arr
-		end
-	    fun reducer_index f (arr, init) =
-		let fun g (i, w, state) = f (i, W8.toInt w, state)
-		in W8A.foldri g init arr
-		end
-	    fun reducel f (init, arr) =
-		reducel_index (fn (_, state, x) => f (state, x)) (init, arr)
-	    fun reducer f (arr, init) =
-		reducer_index (fn (_, x, state) => f (x, state)) (arr, init)
-	    fun copy (src, start, end_, dst, start') =
-		W8S.copy { src = W8S.slice (src, start, SOME end_),
-			   dst = dst,
-			   di = start'}
-	    fun fill_range (arr, start, end_, x) =
-		let val w = W8.fromInt x
-		in W8S.modify (fn _ => w) (W8S.slice (arr, start, SOME end_))
-		end
-	    local
-		fun find' f arr = W8A.findi (fn (_, w) => f (W8.toInt w)) arr
-	    in
-	    fun find f arr =
-		case find' f arr of
-		    NONE => raise Find
-		  | SOME (i, _) => i
-	    fun find_default (f, default) arr =
-		case find' f arr of
-		    NONE => default
-		  | SOME (i, _) => i
-	    end
-	    val maxLen = W8A.maxLen
+            open Array
 
-	    end
-	  end
+            val from_list = fromList
+            fun to_list a = List.tabulate (length a, fn i => sub (a, i))
+            fun from_string s = tabulate (String.size s, fn i => String.ordof (s, i))
+            fun substring (a, start, size) =
+              CharVector.tabulate (size, fn i => Byte.byteToChar (Word8.fromInt (sub (a, start + i))))
+            fun to_string a = substring (a, 0, length a)
+            fun fill (a, x) = modify (fn _ => x) a
+            fun map f a = tabulate (length a, fn i => f (sub (a, i)))
+            fun map_index f a = tabulate (length a, fn i => f (i, sub (a, i)))
+            val iterate = app
+            val iterate_index = appi
+            fun rev a = let val l = length a in tabulate (l, fn i => sub (a, l - i - 1)) end
+            fun duplicate a = tabulate (length a, fn i => sub (a, i))
+            fun subarray (a, start, finish) = tabulate (finish - start, fn i => sub (a, start + i))
+            fun append (a1, a2) =
+              let
+                val l1 = length a1
+                val l2 = length a2
+              in
+                tabulate (l1 + l2, fn i => if i < l1 then sub (a1, i) else sub (a2, i - l1))
+              end
+            fun reducel f (init, a) = foldl (fn (elem, b) => f (b, elem)) init a
+            fun reducer f (a, init) = foldr f init a
+            fun reducel_index f (init, a) = foldli (fn (i, elem, b) => f (i, b, elem)) init a
+            fun reducer_index f (a, init) = foldri f init a
+            fun copy (from, start, finish, to, start') =
+              ArraySlice.copy {src=ArraySlice.slice (from, start, SOME (finish - start)), dst=to, di=start'}
+            fun fill_range (a, start, finish, x) =
+              ArraySlice.modify (fn _ => x) (ArraySlice.slice (a, start, SOME (finish - start)))
+            fun find predicate a =
+              case Array.findi (fn (_, elem) => predicate elem) a of NONE => raise Find | SOME (i, _) => i
+            fun find_default (predicate, default) a =
+              case Array.findi (fn (_, elem) => predicate elem) a of NONE => default | SOME (i, _) => i
+          end
 
         structure FloatArray : FLOATARRAY =
 	  struct
