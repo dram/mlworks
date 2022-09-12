@@ -446,12 +446,6 @@ structure MLWorks : MLWORKS =
         |   length (Vector (a::r)) = 1 + length (Vector r)
       end
 
-    structure Array = 
-      struct
-        open NewJersey.Array
-          type 'a T = 'a array
-      end
-
     structure ExtendedArray =
       struct
         open NewJersey.Array
@@ -1636,6 +1630,14 @@ structure MLWorks : MLWORKS =
 	      val word32_andb : word * word -> word = andb
 	      val word32_notb : word -> word = notb
 	    end
+          end
+
+        structure Array =
+          struct
+            exception Size = General.Size
+            exception Subscript = General.Subscript
+            val arrayoflist = Array.fromList
+            open Array
           end
 
         structure Value =
