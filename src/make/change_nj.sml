@@ -507,24 +507,6 @@ structure MLWorks : MLWORKS =
 	  end
       end
 
-    exception Save of string
-    fun save (filename, function) =
-	(SMLofNJ.exportFn (filename,
-			   fn _ => (function(); OS.Process.success));
-	 function)
-
-    fun deliver _ = unimplemented "MLWorks.deliver"
-
-    fun exec_save _ = unimplemented "MLWorks.exec_save"
-
-    structure OS =
-      struct
-        fun arguments () =
-            case CommandLine.arguments ()
-             of [] => []
-              | program_name::rest => rest
-      end
-
     structure Debugger =
       struct
         fun default_break s = TextIO.print("Break at " ^ s ^ "\n")
