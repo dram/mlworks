@@ -452,38 +452,6 @@ structure MLWorks : MLWORKS =
         val exitFn = ref (fn () => ())
       end
 
-    structure Option = SMLBasisOption
-
-    structure Char =
-      struct
-	type char = SMLBasisChar.char
-	fun ml_char c = String.ml_string(c, ~1)
-	val chr = SMLBasisChar.chr
-	val ord = SMLBasisChar.ord
-	val maxCharOrd = 255
-	exception Chr = Chr
-
-	(* Finally define these *)
-	val op <  : char * char -> bool = op <
-	val op >  : char * char -> bool = op >
-	val op <= : char * char -> bool = op <=
-	val op >= : char * char -> bool = op >=
-      end
-
-    structure Integer =
-      struct
-	val makestring : int -> string = SMLBasisInt.toString
-	val print : int -> unit = fn i => TextIO.print (makestring i)
-	fun hexmakestring _ = unimplemented"hexmakestring"
-	fun hexprint _ = unimplemented"hexprint"
-      end
-
-    structure Real =
-      struct
-	val makestring : real -> string = SMLBasisReal.toString
-	val print : real -> unit = fn r => TextIO.print (makestring r)
-      end
-
     val arguments = CommandLine.arguments
     val name = CommandLine.name
 
