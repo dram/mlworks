@@ -801,88 +801,13 @@ structure MLWorks : MLWORKS =
             fun to_string a = substring (a, 0, length a)
           end
 
-        structure FloatArray : FLOATARRAY =
-	  struct
-	    local
-		structure A = SMLBasisRealArray
-		structure S = SMLBasisRealArraySlice
-	    in
-	    type floatarray = A.array
-	    exception Range of int
-	    exception Size
-	    exception Subscript
-	    exception Find
-	    val array = A.array
-	    val length = A.length
-	    val sub = A.sub
-	    val update = A.update
-	    val tabulate = A.tabulate
-	    val arrayoflist = A.fromList
-	    val from_list = A.fromList
-	    fun to_list arr = List.tabulate (length arr, fn i => sub (arr, i))
-	    fun fill (arr, x) = A.modify (fn _ => x) arr
-	    fun map_index f arr =
-		tabulate (length arr, fn i => f (i, (sub (arr, i))))
-	    fun map f arr = map_index (f o #2) arr
-	    val iterate = A.app
-	    val iterate_index = A.appi
-	    fun rev arr =
-		let val len = length arr
-		in tabulate (len, fn i => sub (arr, (len - 1) - i))
-		end
-	    fun duplicate arr =
-		let val result = array (length arr, 0.0)
-		in
-		    A.copy { src = arr, dst = result, di = 0 };
-		    result
-		end
-	    fun subarray (arr, start, end_) =
-		let val result = array (end_ - start, 0.0)
-		in
-		    S.copy { src = S.slice (arr, start, SOME end_),
-			     dst = result,
-			     di = 0 };
-		    result
-		end
-	    fun append (arr1, arr2) =
-		let val len1 = length arr1
-		    val len2 = length arr2
-		    val result = array (len1 + len2, 0.0)
-		in
-		    A.copy {src = arr1, dst = result, di = 0};
-		    A.copy {src = arr2, dst = result, di = len1};
-		    result
-		end
-	    fun reducel_index f (init, arr) =
-		let fun g (i, x, state) = f (i, state, x)
-		in A.foldli g init arr
-		end
-	    fun reducer_index f (arr, init) = A.foldri f init arr
-	    fun reducel f (init, arr) =
-		reducel_index (fn (_, state, x) => f (state, x)) (init, arr)
-	    fun reducer f (arr, init) = A.foldr f init arr
-	    fun copy (src, start, end_, dst, start') =
-		S.copy { src = S.slice (src, start, SOME end_),
-			 dst = dst,
-			 di = start'}
-	    fun fill_range (arr, start, end_, x) =
-		S.modify (fn _ => x) (S.slice (arr, start, SOME end_))
-	    local
-		fun find' f arr = A.findi (fn (_, x) => f x) arr
-	    in
-	    fun find f arr =
-		case find' f arr of
-		    NONE => raise Find
-		  | SOME (i, _) => i
-	    fun find_default (f, default) arr =
-		case find' f arr of
-		    NONE => default
-		  | SOME (i, _) => i
-	    end
-	    val maxLen = A.maxLen
+        structure FloatArray =
+          struct
+            exception Range of int
+            type floatarray = real array
 
-	    end
-	  end
+            open ExtendedArray
+          end
 
 	structure Vector : VECTOR =
 	  struct
