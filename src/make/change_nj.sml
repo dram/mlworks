@@ -1269,6 +1269,7 @@ structure MLWorks : MLWORKS =
     structure Threads =
       struct
 	type 'a thread = unit
+	exception Threads of string
 
 	fun fork _ = unimplemented "MLWorks.Threads.fork"
 	fun yield _ = unimplemented "MLWorks.Threads.yield"
@@ -1303,13 +1304,16 @@ structure MLWorks : MLWORKS =
 	    fun set_handler _ =
 	      unimplemented "MLWorks.Threads.Internal.set_handler"
 	    fun reset_fatal_status _ = unimplemented "MLWorks.Threads.Internal.reset_fatal_status"
-	    structure Preemption = 
+	    structure Preemption =
 	      struct
 		fun start _ = unimplemented "MLWorks.Threads.Internal.Preemption.start"
 		fun stop _ = unimplemented "MLWorks.Threads.Internal.Preemption.stop"
 		fun on _ = unimplemented "MLWorks.Threads.Internal.Preemption.on"
 		fun get_interval _ = unimplemented "MLWorks.Threads.Internal.Preemption.get_interval"
 		fun set_interval _ = unimplemented "MLWorks.Threads.Internal.Preemption.set_interval"
+		fun enter_critical_section _ = unimplemented "MLWorks.Threads.Internal.Preemption.enter_critical_section"
+		fun exit_critical_section _ = unimplemented "MLWorks.Threads.Internal.Preemption.exit_critical_section"
+		fun in_critical_section _ = unimplemented "MLWorks.Threads.Internal.Preemption.in_critical_section"
 	      end
 	  end
       end
