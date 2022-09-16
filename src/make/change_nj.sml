@@ -783,13 +783,6 @@ structure MLWorks : MLWORKS =
              | program_name::rest => rest
       end
 
-    structure Debugger =
-      struct
-        fun default_break s = IO.output(IO.std_out,"Break at " ^ s ^ "\n")
-        val break_hook = ref default_break
-        fun break s = (!break_hook) s
-      end
-
     structure Internal =
       struct
         val text_preprocess = ref (fn (f : int -> string ) => f)
@@ -1210,6 +1203,14 @@ structure MLWorks : MLWORKS =
               end
 
           end
+
+        structure Debugger =
+          struct
+            fun default_break s = SML90.output (SML90.std_out, "Break at " ^ s ^ "\n")
+            val break_hook = ref default_break
+            fun break s = (!break_hook) s
+          end
+
       end
 
   end;
