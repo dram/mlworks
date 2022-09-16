@@ -809,21 +809,15 @@ structure MLWorks : MLWORKS =
             open ExtendedArray
           end
 
-	structure Vector : VECTOR =
-	  struct
-	    local
-		structure V = SMLBasisVector
-	    in
-	    type 'a vector = 'a V.vector
-	    exception Size
-	    exception Subscript
-	    val vector = V.fromList
-	    val tabulate = V.tabulate
-	    val sub = V.sub
-	    val length = V.length
-	    val maxLen = V.maxLen
-	    end
-	  end
+        structure Vector =
+          struct
+            exception Size = General.Size
+            exception Subscript = General.Subscript
+
+            open Vector
+
+            val vector = fromList
+          end
 
         structure Value =
           struct
