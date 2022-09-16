@@ -420,32 +420,6 @@ structure MLWorks : MLWORKS =
 	fun arshift _ = unimplemented "MLWorks.Bits.arshift"
       end
 
-    structure Vector =
-      struct
-        datatype 'a vector = Vector of 'a list
-
-        exception Size
-        exception Subscript
-
-	nonfix sub
-
-        val vector = Vector
-
-        fun tabulate (i, f) =
-          let fun tab j = if j < i then f j :: tab (j+1) else nil
-          in if i < 0 then raise Size else Vector (tab 0)
-          end
-
-        fun sub (Vector nil, i) = raise Subscript
-        |   sub (Vector (a::r), i) =
-          if i > 0 then sub (Vector r, i-1)
-          else if i < 0 then raise Subscript
-          else a
-
-        fun length (Vector nil) = 0
-        |   length (Vector (a::r)) = 1 + length (Vector r)
-      end
-
     structure String =
       struct
         exception Substring = General.Subscript
@@ -1028,6 +1002,16 @@ structure MLWorks : MLWORKS =
             type floatarray = real array
 
             open ExtendedArray
+          end
+
+        structure Vector =
+          struct
+            exception Size = General.Size
+            exception Subscript = General.Subscript
+
+            open Vector
+
+            val vector = fromList
           end
 
         structure Value =
