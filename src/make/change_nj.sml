@@ -408,12 +408,6 @@ structure MLWorks : MLWORKS =
     val arguments = CommandLine.arguments
     val name = CommandLine.name
 
-    structure Option = 
-      struct
-        datatype 'a option = SOME of 'a | NONE 
-        datatype ('a,'b) union = INL of 'a | INR of 'b 
-      end
-
     structure Bits =
       struct
 	open NewJersey.Bits
