@@ -645,13 +645,10 @@ structure MLWorks : MLWORKS =
 	  
       end
 
-    exception Save of string
-    fun save (filename, function) =
-      (NewJersey.exportFn (filename, fn _ => (function (); ()));
-       function)
-
     structure Internal =
       struct
+        exception Save of string
+        fun save _ = unimplemented "MLWorks.Internal.save"
         fun execSave _ = unimplemented "MLWorks.Internal.execSave"
         val text_preprocess = ref (fn (f : int -> string ) => f)
         val real_to_string = NewJersey.makestring
