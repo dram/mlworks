@@ -771,6 +771,15 @@ structure MLWorks : MLWORKS =
 	    datatype time = TIME of int * int * int
 	  end
 
+        structure Error =
+          struct
+            type syserror = OS.syserror
+            exception SysErr = OS.SysErr
+            val errorMsg = OS.errorMsg
+            val errorName = OS.errorName
+            val syserror = OS.syserror
+          end
+
         structure Word =
           struct
 	    type word = int
