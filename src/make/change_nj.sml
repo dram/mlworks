@@ -446,12 +446,6 @@ structure MLWorks : MLWORKS =
         val implode = SML90.implode
       end
 
-    structure Real =
-      struct
-	val makestring : real -> string = makestring
-	val print : real -> unit = fn r => output(std_out, makestring r)
-      end
-
     structure Threads =
       struct
 	type 'a thread = unit
