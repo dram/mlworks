@@ -994,65 +994,6 @@ structure MLWorks : MLWORKS =
 	    end
           end
 
-        structure FileIO =
-          struct
-            type fd = NewJersey.System.Unsafe.SysIO.fd * NewJersey.ByteArray.bytearray * int ref
-            datatype offset = BEG | CUR | END
-
-            fun flush (fd, buffer, bp) =
-              (NewJersey.System.Unsafe.SysIO.write(fd, buffer, !bp); bp := 0)
-
-            fun openf s =
-              (NewJersey.System.Unsafe.SysIO.openf(s, NewJersey.System.Unsafe.SysIO.O_WRITE),
-               NewJersey.ByteArray.array (4096, 0), ref 0)
-
-	      (* to close:
-	       - flush our buffer,
-	       - do an fsync,
-	       - close the file.
-	       The fsync is required to avoid MLWorks bug 561, q.v.
-	       The fsync is very ugly. Nick Haines 14-Mar-94 *)
-	      
-            fun closef (f as (fd, _, _)) =
-              (flush f;
-	       NewJersey.System.Unsafe.CInterface.wrap_sysfn
-	       "fsync"
-	       NewJersey.System.Unsafe.CInterface.syscall
-	       (95,[NewJersey.System.Unsafe.cast fd]);
-	       NewJersey.System.Unsafe.SysIO.closef fd)
-
-            fun seekf (f as (fd, _, _), i, p) =
-              let
-                val pos = case p of
-                  BEG => NewJersey.System.Unsafe.SysIO.L_SET
-                | CUR => NewJersey.System.Unsafe.SysIO.L_INCR
-                | END => NewJersey.System.Unsafe.SysIO.L_XTND
-              in
-                flush f; NewJersey.System.Unsafe.SysIO.lseek (fd, i, pos); ()
-              end
-
-            fun writebf (f as (fd, _, _), bytearray, start, length) =
-              (flush f; NewJersey.System.Unsafe.SysIO.writei (fd, bytearray, start, length))
-
-            fun writef ((fd, buffer, bp), s) =
-              let
-                val sz = size s
-
-                fun copy (x, ptr) =
-                  if x > 4095 then
-                    (NewJersey.System.Unsafe.SysIO.write(fd, buffer, 4096); copy(0, ptr))
-                  else
-                    if ptr < sz then
-                      (NewJersey.ByteArray.update(buffer, x, NewJersey.String.ordof(s,ptr)); copy(x+1, ptr+1))
-                    else
-                      (bp := x)
-              in
-                copy(!bp, 0)
-              end
-
-	    fun write_byte(fd, byte) = writef(fd, chr byte)
-          end
-
         structure Runtime =
 	  struct
             exception Unbound of string
