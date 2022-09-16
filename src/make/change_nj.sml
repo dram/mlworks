@@ -886,12 +886,14 @@ structure MLWorks : MLWORKS =
 	structure Types =
 	  struct
 	    (* These are all somewhat bogus. *)
-	    type word8 = int
+	    type word8 = Word8.word
 	    type int8 = int
 	    type word16 = int
 	    type int16 = int
-	    type word32 = int
-	    type int32 = int
+	    type word32 = Word32.word
+	    type int32 = Int32.int
+	    datatype option = datatype option
+	    datatype time = TIME of int * int * int
 	  end
 
         structure Word =
