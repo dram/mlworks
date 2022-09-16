@@ -446,22 +446,6 @@ structure MLWorks : MLWORKS =
         val implode = SML90.implode
       end
 
-    structure Char =
-      struct
-	type char = int
-	fun ml_char c = String.ml_string(chr c, ~1)
-	val chr = fn x => x
-	val ord = fn x => x
-	val maxCharOrd = 255
-	exception Chr = Chr
-
-	(* Finally define these *)
-	val op <  : char * char -> bool = op <
-	val op >  : char * char -> bool = op >
-	val op <= : char * char -> bool = op <=
-	val op >= : char * char -> bool = op >=
-      end
-
     structure Integer =
       struct
 	val makestring : int -> string = makestring
