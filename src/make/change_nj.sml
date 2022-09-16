@@ -658,14 +658,6 @@ structure MLWorks : MLWORKS =
 
     fun exec_save _ = unimplemented "MLWorks.exec_save"
 
-    structure OS =
-      struct
-        fun arguments () =
-          case NewJersey.System.argv ()
-            of [] => []
-             | program_name::rest => rest
-      end
-
     structure Internal =
       struct
         val text_preprocess = ref (fn (f : int -> string ) => f)
