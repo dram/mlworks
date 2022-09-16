@@ -446,14 +446,6 @@ structure MLWorks : MLWORKS =
         val implode = SML90.implode
       end
 
-    structure Integer =
-      struct
-	val makestring : int -> string = makestring
-	val print : int -> unit = fn i => output(std_out, makestring i)
-	fun hexmakestring _ = unimplemented"hexmakestring"
-	fun hexprint _ = unimplemented"hexprint"
-      end
-
     structure Real =
       struct
 	val makestring : real -> string = makestring
