@@ -492,27 +492,6 @@ structure MLWorks : MLWORKS =
 	  end
       end
 
-    structure IO =
-      struct
-        val terminal_in = std_in
-        fun with_standard_input _ = unimplemented "MLWorks.IO.with_standard_input"
-        val terminal_out = std_out
-	val messages = std_err
-        fun instream _ = std_in
-        fun outstream _ = std_out
-        fun with_standard_output _ = unimplemented "MLWorks.IO.with_standard_output"
-        fun with_standard_error _ = unimplemented "MLWorks.IO.with_standard_error"
-	datatype modtime = NOW | TIME of Time.time
-
-        fun file_modified filename =
-          NewJersey.System.Unsafe.SysIO.mtime
-          (NewJersey.System.Unsafe.SysIO.PATH filename)
-          handle _ => raise Io (implode ["Cannot mtime ", filename, ": doesn't exist"])
-
-	fun set_file_modified _ = unimplemented "MLWorks.IO.set_file_modified";
-
-      end
-
     structure Profile =
       struct
 	type manner = int
@@ -672,6 +651,35 @@ structure MLWorks : MLWORKS =
             val errorMsg = OS.errorMsg
             val errorName = OS.errorName
             val syserror = OS.syserror
+          end
+
+        structure IO =
+          struct
+            exception Io of {cause : exn, name : string, function : string}
+
+            datatype file_desc = FILE_DESC of int
+
+            fun posixFD (FILE_DESC fd) = Posix.FileSys.wordToFD (SysWord.fromInt fd)
+
+            fun write (fd, s, start, size) =
+              Posix.IO.writeVec
+                ( posixFD fd
+                , Word8VectorSlice.full
+                    (Word8Vector.tabulate (size, fn i => Byte.charToByte (String.sub (s, start + i))))
+                )
+            fun read (fd, size) = Byte.bytesToString (Posix.IO.readVec (posixFD fd, size))
+            fun seek (fd, offset, whence) =
+              Position.toInt
+                (Posix.IO.lseek
+                   ( posixFD fd
+                   , Position.fromInt offset
+                   , case whence of
+                       0 => Posix.IO.SEEK_SET
+                     | 1 => Posix.IO.SEEK_CUR
+                     | _ => Posix.IO.SEEK_END
+                   ))
+            fun close fd = Posix.IO.close (posixFD fd)
+            fun can_input _ = unimplemented "MLWorks.Internal.IO.can_input"
           end
 
         structure Word =
