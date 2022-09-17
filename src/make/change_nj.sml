@@ -384,7 +384,7 @@ require "mlworks";
 
 exception Unimplemented of string
 fun unimplemented name =
-  (output (std_out, "unimplemented MLWorks pervasive: " ^ name ^ "\n");
+  (SML90.output (SML90.std_out, "unimplemented MLWorks pervasive: " ^ name ^ "\n");
    raise Unimplemented name)
 
 structure MLWorks : MLWORKS =
