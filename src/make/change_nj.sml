@@ -981,9 +981,9 @@ structure MLWorks : MLWORKS =
         structure Runtime =
 	  struct
             exception Unbound of string
-            val environment = Value.cast o nj_environment (* Defined in nj_env.sml *)
+            fun environment name = Value.cast (nj_environment name) (* Defined in nj_env.sml *)
 
-            val modules = ref ([] : (string * Value.T * Time.time) list)
+            val modules = ref ([] : (string * Value.T * Value.T) list)
 
             structure Loader =
               struct
