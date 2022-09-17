@@ -593,70 +593,71 @@ structure MLWorks : MLWORKS =
             fun can_input _ = unimplemented "MLWorks.Internal.IO.can_input"
           end
 
-	structure StandardIO =
-	  struct
-	    type IOData = {input: {descriptor: IO.file_desc Types.option,
-                                   get: int -> string,
-                                   get_pos: (unit -> int) Types.option,
-                                   set_pos: (int -> unit) Types.option,
-                                   can_input: (unit-> bool) Types.option,
-                                   close: unit->unit},
-			   output: {descriptor: IO.file_desc Types.option,
-				    put: {buf:string,i:int,sz:int Types.option} -> int,
-				    get_pos: (unit -> int) Types.option,
-				    set_pos: (int -> unit) Types.option,
-				    can_output: (unit-> bool) Types.option,
-				    close: unit->unit},
-			   error: {descriptor: IO.file_desc Types.option,
-				   put: {buf:string,i:int,sz:int Types.option} -> int,
-				   get_pos: (unit -> int) Types.option,
-				   set_pos: (int -> unit) Types.option,
-				   can_output: (unit->bool) Types.option,
-				   close: unit-> unit},
-			   access: (unit->unit)->unit}
+        structure StandardIO =
+          struct
+            type IOData = {
+              input: {
+                descriptor: IO.file_desc Types.option,
+                get: int -> string,
+                get_pos: (unit -> int) Types.option,
+                set_pos: (int -> unit) Types.option,
+                can_input: (unit -> bool) Types.option,
+                close: unit -> unit
+              },
+              output: {
+                descriptor: IO.file_desc Types.option,
+                put: {buf: string, i: int, sz: int Types.option} -> int,
+                get_pos: (unit -> int) Types.option,
+                set_pos: (int -> unit) Types.option,
+                can_output: (unit-> bool) Types.option,
+                close: unit -> unit
+              },
+              error: {
+                descriptor: IO.file_desc Types.option,
+                put: {buf: string, i: int, sz: int Types.option} -> int,
+                get_pos: (unit -> int) Types.option,
+                set_pos: (int -> unit) Types.option,
+                can_output: (unit -> bool) Types.option,
+                close: unit -> unit
+              },
+              access: (unit -> unit) -> unit
+            }
 
-	    local
-		fun put_ {buf:string,i:int,sz:int Types.option} : int =
-		    let val j = case sz of
-				    SOME s => i + s
-				  | NONE => SMLBasisString.size buf
-			val s = SMLBasisString.substring (buf, i, j)
-		    in
-			TextIO.print (s);
-			SMLBasisString.size s
-		    end
-		fun close_ () =
-		    (TextIO.print ("D: change_nj.sml close_ called\n");
-		     ())
-		val dummyIO:IOData = {
-		      output = { descriptor = NONE,
-				 put = put_,
-				 get_pos = NONE,
-				 set_pos = NONE,
-				 can_output = NONE,
-				 close = close_ },
-		      error = { descriptor= NONE,
-				put = put_,
-				get_pos = NONE,
-				set_pos = NONE,
-				can_output = NONE,
-				close = close_ },
-		      input = { descriptor = NONE,
-				get = fn _ => (unimplemented "IOData.get";
-					       ""),
-				get_pos = NONE,
-				set_pos = NONE,
-				close = close_,
-				can_input = NONE },
-		      access = fn f =>f() }
-	    in
-	    fun currentIO () = (dummyIO)
-	    fun redirectIO x = (TextIO.print "D: redirectIO called\n"; ())
-	    fun resetIO () = (TextIO.print "D: resetIO called\n"; ())
-	    fun print _ = unimplemented "print"
-	    fun printError _ = unimplemented "printError"
-	    end
-	  end
+            fun put {buf: string, i: int, sz: int Types.option} =
+                let val s = String.extract (buf, i, sz) in TextIO.print s; String.size s end
+
+            fun currentIO () = {
+              input = {
+                descriptor = NONE,
+                get = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.input.get",
+                get_pos = NONE,
+                set_pos = NONE,
+                can_input = NONE,
+                close = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.input.close"
+              },
+              output = {
+                descriptor = NONE,
+                put = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.output.put",
+                get_pos = NONE,
+                set_pos = NONE,
+                can_output = NONE,
+                close = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.output.close"
+              },
+              error = {
+                descriptor = NONE,
+                put = put,
+                get_pos = NONE,
+                set_pos = NONE,
+                can_output = NONE,
+                close = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.error.close"
+              },
+              access = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.access"
+            }
+            fun redirectIO _ = ()
+            fun resetIO _ = ()
+            fun print _ = unimplemented "MLWorks.Internal.StandardIO.print"
+            fun printError _ = unimplemented "MLWorks.Internal.StandardIO.printError"
+          end
 
 	structure Bits : BITS =
 	  struct
