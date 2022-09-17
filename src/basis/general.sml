@@ -80,8 +80,6 @@ signature GENERAL =
 
     datatype order = LESS | EQUAL | GREATER
 
-    val <> : (''a * ''a) -> bool
-
     val ! : 'a ref -> 'a
 
     val := : ('a ref * 'a) -> unit
