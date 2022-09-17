@@ -484,6 +484,8 @@ structure MLWorks : MLWORKS =
 	  end
       end
 
+    datatype time = TIME of int * int * int
+
     structure Profile =
       struct
 	type manner = int
@@ -547,8 +549,8 @@ structure MLWorks : MLWORKS =
 	datatype general_header = 
 	  General of
 	  {data_allocated: int,
-	   period: Time.Interval.T,
-	   suspended: Time.Interval.T}
+	   period: time,
+	   suspended: time}
 	  
 	datatype call_header = 
 	  Call of {functions : int}
@@ -633,7 +635,7 @@ structure MLWorks : MLWORKS =
 	    type word32 = Word32.word
 	    type int32 = Int32.int
 	    datatype option = datatype option
-	    datatype time = TIME of int * int * int
+	    datatype time = datatype time
 	  end
 
         structure Error =
