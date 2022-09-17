@@ -492,22 +492,8 @@ structure MLWorks : MLWORKS =
 	  end
       end
 
-    structure RawIO =
-      struct
-        open NewJersey (* types instream, outstream,
-			  values std_in, std_out, std_err, open_in, open_out, end_of_stream, input,
-			         lookahead, output, close_in, close_out *)
-
-	fun output_byte(fd, byte) = output(fd, chr byte)
-
-	fun closed_in _ = unimplemented "MLWorks.IO.closed_in"
-	fun closed_out _ = unimplemented "MLWorks.IO.closed_out"
-	fun clear_eof _ = unimplemented "MLWorks.IO.clear_eof"
-      end
-
     structure IO =
       struct
-        open RawIO
         val terminal_in = std_in
         fun with_standard_input _ = unimplemented "MLWorks.IO.with_standard_input"
         val terminal_out = std_out
