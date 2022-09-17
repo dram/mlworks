@@ -736,6 +736,23 @@ structure MLWorks : MLWORKS =
             fun printError _ = unimplemented "MLWorks.Internal.StandardIO.printError"
           end
 
+        structure Exit =
+          struct
+            type key = int
+            type status = Types.word32
+            val success = Word32.fromInt 0
+            val failure = Word32.fromInt 1
+            val uncaughtIOException = Word32.fromInt 2
+            val badUsage = Word32.fromInt 3
+            val stop = Word32.fromInt 4
+            val save = Word32.fromInt 5
+            val badInput = Word32.fromInt 6
+            fun atExit f = 0 before OS.Process.atExit f
+            fun removeAtExit _ = unimplemented "MLWorks.Internal.Exit.removeAtExit"
+            val exit = Unsafe.cast
+            val terminate = Unsafe.cast
+          end
+
         structure Bits =
           struct
             fun lshift (a, n) = Word32.toIntX (Word32.<< (Word32.fromInt a, Word.fromInt n))
