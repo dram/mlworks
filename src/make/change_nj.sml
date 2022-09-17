@@ -1026,7 +1026,3 @@ structure MLWorks : MLWORKS =
       end
 
   end;
-
-structure Bits = NewJersey.Bits;
-structure OldNewJersey = NewJersey;
-structure NewJersey = struct end;
