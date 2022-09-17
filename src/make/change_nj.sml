@@ -406,12 +406,6 @@ structure MLWorks : MLWORKS =
     val arguments = CommandLine.arguments
     val name = CommandLine.name
 
-    structure Bits =
-      struct
-	open NewJersey.Bits
-	fun arshift _ = unimplemented "MLWorks.Bits.arshift"
-      end
-
     structure String =
       struct
         exception Substring = General.Subscript
@@ -740,6 +734,17 @@ structure MLWorks : MLWORKS =
             fun resetIO _ = ()
             fun print _ = unimplemented "MLWorks.Internal.StandardIO.print"
             fun printError _ = unimplemented "MLWorks.Internal.StandardIO.printError"
+          end
+
+        structure Bits =
+          struct
+            fun lshift (a, n) = Word32.toIntX (Word32.<< (Word32.fromInt a, Word.fromInt n))
+            fun rshift (a, n) = Word32.toIntX (Word32.>> (Word32.fromInt a, Word.fromInt n))
+            fun arshift (a, n) = Word32.toIntX (Word32.~>> (Word32.fromInt a, Word.fromInt n))
+            fun orb (a, b) = Word32.toIntX (Word32.orb (Word32.fromInt a, Word32.fromInt b))
+            fun xorb (a, b) = Word32.toIntX (Word32.xorb (Word32.fromInt a, Word32.fromInt b))
+            fun andb (a, b) = Word32.toIntX (Word32.andb (Word32.fromInt a, Word32.fromInt b))
+            fun notb a = Word.toIntX (Word.notb (Word.fromInt a))
           end
 
         structure Word =
