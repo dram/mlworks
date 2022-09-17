@@ -951,7 +951,7 @@ structure MLWorks : MLWORKS =
             fun replace _ = unimplemented "MLWorks.Internal.Trace.replace"
             fun restore _ = unimplemented "MLWorks.Internal.Trace.restore" 
 	    fun restore_all _ = unimplemented "MLWorks.Internal.Trace.restore_all" 
-            datatype status = INTERCEPT | NONE | REPLACE
+            datatype status = INTERCEPT | NONE | REPLACE | UNTRACEABLE
             fun status _ = unimplemented "MLWorks.Internal.Trace.status"
           end
 
