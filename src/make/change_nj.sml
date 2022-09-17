@@ -571,53 +571,27 @@ structure MLWorks : MLWORKS =
 	  end
 
         structure IO =
-	  struct
+          struct
             exception Io of {cause: exn, name: string, function: string}
-	    datatype file_desc = FILE_DESC of int
-	    datatype access_mode = datatype Posix.FileSys.access_mode
 
-	    structure W8 = Word8
-	    structure W32 = SMLBasisWord32
-	    structure W8A = Word8Array
-	    structure W8S = Word8ArraySlice
+            datatype file_desc = FILE_DESC of int
 
-	    fun stringToW8S (s, start, len) =
-		let fun c2b i = W8.fromInt (Char.ord (String.sub (s, start+i)))
-		in
-		    W8S.full (W8A.tabulate (len, c2b))
-		end
+            fun posixFD (FILE_DESC fd) = Posix.FileSys.wordToFD (SysWord.fromInt fd)
 
-	    fun posixFD (FILE_DESC fd) =
-		Posix.FileSys.wordToFD (W32.fromInt fd)
-
-            fun write (fd, s, start, len) =
-		Posix.IO.writeArr (posixFD fd, stringToW8S (s, start, len))
-
-	    fun read (fd, n:int) =
-		w8vectorToString (Posix.IO.readVec (posixFD fd, n))
-
-	    fun seek (fd, offset, whence) =
-		let val w = (case whence of
-				 0 => Posix.IO.SEEK_SET
-			       | 1 => Posix.IO.SEEK_CUR
-			       | 2 => Posix.IO.SEEK_END
-			       | _ => (unimplemented "seek whence";
-				       Posix.IO.SEEK_END))
-		in
-		    Posix.IO.lseek (posixFD fd, offset, w)
-		end
-
-	    fun close fd = Posix.IO.close (posixFD fd)
-
-	    fun can_input fd =
-		let val (_, mode) = Posix.IO.getfl (posixFD fd)
-		in
-		    (case mode of
-			 Posix.IO.O_RDONLY => 0
-		      |  Posix.IO.O_RDWR => 0
-		      |  Posix.IO.O_WRONLY => 1)
-		end
-	  end
+            fun write (fd, s, start, size) =
+                Posix.IO.writeVec
+                    (posixFD fd,
+                     Word8VectorSlice.full (Word8Vector.tabulate
+                                                (size, fn i => Byte.charToByte (String.sub (s, start + i)))))
+            fun read (fd, size) = Byte.bytesToString (Posix.IO.readVec (posixFD fd, size))
+            fun seek (fd, offset, whence) =
+              Posix.IO.lseek (posixFD fd, offset, case whence of
+                                                      0 => Posix.IO.SEEK_SET
+                                                    | 1 => Posix.IO.SEEK_CUR
+                                                    | _ => Posix.IO.SEEK_END)
+            fun close fd = Posix.IO.close (posixFD fd)
+            fun can_input _ = unimplemented "MLWorks.Internal.IO.can_input"
+          end
 
 	structure StandardIO =
 	  struct
