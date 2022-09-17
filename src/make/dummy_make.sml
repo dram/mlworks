@@ -54,8 +54,6 @@
  *
 *)
 
-Shell.Options.set (Shell.Options.Language.requireReservedWord,false);
-
 local
   datatype Path = ABS of string list| REL of string list
   fun strip (#"\t" :: rest) = strip rest
@@ -88,7 +86,7 @@ local
      val s = TextIO.openIn f
      fun doline acc =
                  let
-                   val line = TextIO.inputLine s
+                   val line = Option.getOpt (TextIO.inputLine s, "")
                  in
                    if line = "" then rev acc
                    else case getrequire line of
