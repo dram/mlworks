@@ -870,8 +870,8 @@ structure MLWorks : MLWORKS =
             type T = unit
             type ml_value = T
             exception Value of string
-            val cast = NewJersey.System.Unsafe.cast
-            val ccast = NewJersey.System.Unsafe.cast
+            val cast = Unsafe.cast
+            val ccast = Unsafe.cast
             datatype print_options =
               DEFAULT |
               OPTIONS of {depth_max	  	: int,
@@ -888,10 +888,13 @@ structure MLWorks : MLWORKS =
             val unsafe_bytearray_sub = ByteArray.sub
             val unsafe_bytearray_update = ByteArray.update
 
+            val unsafe_floatarray_sub = FloatArray.sub
+            val unsafe_floatarray_update = FloatArray.update
+
             fun unsafe_record_sub _ = unimplemented "MLWorks.Internal.Value.unsafe_record_sub"
             fun unsafe_record_update _ = unimplemented "MLWorks.Internal.Value.unsafe_record_update"
 
-            fun unsafe_string_sub _ = unimplemented "MLWorks.Internal.Value.unsafe_string_sub"
+            val unsafe_string_sub = Char.ord o String.sub
             fun unsafe_string_update _ = unimplemented "MLWorks.Internal.Value.unsafe_string_update"
 
             fun alloc_pair _ = unimplemented "MLWorks.Internal.Value.alloc_pair"
@@ -900,8 +903,14 @@ structure MLWorks : MLWORKS =
 
             fun list_to_tuple _ = unimplemented "MLWorks.Internal.Value.list_to_tuple"
             fun tuple_to_list _ = unimplemented "MLWorks.Internal.Value.tuple_to_list"
-            fun string_to_real _ = unimplemented "MLWorks.Internal.Value.string_to_real"
-            fun real_to_string _ = unimplemented "MLWorks.Internal.Value.real_to_string"
+            fun string_to_real s = PackReal64Big.fromBytes (Byte.stringToBytes s)
+            fun real_to_string r = Byte.bytesToString (PackReal64Big.toBytes r)
+            val real_equal = Real.==
+            val arctan = Math.atan
+            val cos = Math.cos
+            val exp = Math.exp
+            val sin = Math.sin
+            val sqrt = Math.sqrt
             fun print _ = unimplemented "MLWorks.Internal.Value.print"
             fun primary _ = unimplemented "MLWorks.Internal.Value.primary"
             fun header _ = unimplemented "MLWorks.Internal.Value.secondary"
@@ -916,6 +925,8 @@ structure MLWorks : MLWORKS =
             fun code_name _ = unimplemented "MLWorks.Internal.Value.code_name"
             fun exn_argument _ = unimplemented "MLWorks.Internal.Value.exn_argument"
             fun exn_name_string _ = unimplemented "MLWorks.Internal.Value.exn_name_string"
+            fun update_exn _ = unimplemented "MLWorks.Internal.Value.update_exn"
+            fun update_exn_cons _ = unimplemented "MLWorks.Internal.Value.update_exn_cons"
 
             structure Frame = 
               struct
