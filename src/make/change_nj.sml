@@ -608,7 +608,7 @@ structure MLWorks : MLWORKS =
         fun save _ = unimplemented "MLWorks.Internal.save"
         fun execSave _ = unimplemented "MLWorks.Internal.execSave"
         val text_preprocess = ref (fn (f : int -> string ) => f)
-        val real_to_string = NewJersey.makestring
+        fun real_to_string (r, _) = Real.toString r
 
         exception StringToReal
 
