@@ -682,6 +682,68 @@ structure MLWorks : MLWORKS =
             fun can_input _ = unimplemented "MLWorks.Internal.IO.can_input"
           end
 
+        structure StandardIO =
+          struct
+            type IOData =
+              { input : { descriptor : IO.file_desc Types.option
+                        , get : int -> string
+                        , get_pos : (unit -> int) Types.option
+                        , set_pos : (int -> unit) Types.option
+                        , can_input : (unit -> bool) Types.option
+                        , close : unit -> unit
+                        }
+              , output : { descriptor : IO.file_desc Types.option
+                         , put : {buf : string, i : int, sz : int Types.option} -> int
+                         , get_pos : (unit -> int) Types.option
+                         , set_pos : (int -> unit) Types.option
+                         , can_output : (unit -> bool) Types.option
+                         , close : unit -> unit
+                         }
+              , error : { descriptor : IO.file_desc Types.option
+                        , put : {buf : string, i : int, sz : int Types.option} -> int
+                        , get_pos : (unit -> int) Types.option
+                        , set_pos : (int -> unit) Types.option
+                        , can_output : (unit -> bool) Types.option
+                        , close : unit -> unit
+                        }
+              , access : (unit -> unit) -> unit
+              }
+
+            fun currentIO () =
+              { input =
+                  { descriptor = NONE
+                  , get = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.input.get"
+                  , get_pos = NONE
+                  , set_pos = NONE
+                  , can_input = NONE
+                  , close = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.input.close"
+                  }
+              , output =
+                  { descriptor = NONE
+                  , put = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.output.put"
+                  , get_pos = NONE
+                  , set_pos = NONE
+                  , can_output = NONE
+                  , close = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.output.close"
+                  }
+              , error =
+                  { descriptor = NONE
+                  , put =
+                      fn {buf : string, i : int, sz : int Types.option} =>
+                        let val s = String.extract (buf, i, sz) in TextIO.print s; String.size s end
+                  , get_pos = NONE
+                  , set_pos = NONE
+                  , can_output = NONE
+                  , close = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.error.close"
+                  }
+              , access = fn _ => unimplemented "MLWorks.Internal.StandardIO.currentIO.access"
+              }
+            fun redirectIO _ = ()
+            fun resetIO _ = ()
+            fun print _ = unimplemented "MLWorks.Internal.StandardIO.print"
+            fun printError _ = unimplemented "MLWorks.Internal.StandardIO.printError"
+          end
+
         structure Word =
           struct
 	    type word = int
