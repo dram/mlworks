@@ -378,8 +378,6 @@ fun require s =
   (fn SOME #" " => use ("../pervasive/" ^ String.substring (s, 1, size s - 1) ^ ".sml")
     | _ => use ("../pervasive/" ^ s ^ ".sml")) (Char.fromString s);
 
-type word = int;
-
 nonfix quot rem;
 
 require "mlworks";
@@ -746,19 +744,13 @@ structure MLWorks : MLWORKS =
 
         structure Word =
           struct
-	    type word = int
-	    local
-	      open NewJersey.Bits
-	    in
-	      val word_lshift  : word * word -> word = lshift
-	      val word_rshift  : word * word -> word = rshift
-	      val word_arshift : word * word -> word =
-	        fn _ => unimplemented "MLWorks.Word.arshift"
-	      val word_orb  : word * word -> word = orb
-	      val word_xorb : word * word -> word = xorb
-	      val word_andb : word * word -> word = andb
-	      val word_notb : word -> word = notb
-	    end
+            val word_lshift = Word.<<
+            val word_rshift = Word.>>
+            val word_arshift = Word.~>>
+            val word_orb = Word.orb
+            val word_xorb = Word.xorb
+            val word_andb = Word.andb
+            val word_notb = Word.notb
           end
 
         structure Word32 =
