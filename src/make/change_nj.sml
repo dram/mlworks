@@ -755,19 +755,13 @@ structure MLWorks : MLWORKS =
 
         structure Word32 =
           struct
-	    type word = int
-	    local
-	      open NewJersey.Bits
-	    in
-	      val word32_lshift  : word * word -> word = lshift
-	      val word32_rshift  : word * word -> word = rshift
-	      val word32_arshift : word * word -> word =
-	        fn _ => unimplemented "MLWorks.Word.arshift"
-	      val word32_orb  : word * word -> word = orb
-	      val word32_xorb : word * word -> word = xorb
-	      val word32_andb : word * word -> word = andb
-	      val word32_notb : word -> word = notb
-	    end
+            val word32_lshift = Word32.<<
+            val word32_rshift = Word32.>>
+            val word32_arshift = Word32.~>>
+            val word32_orb = Word32.orb
+            val word32_xorb = Word32.xorb
+            val word32_andb = Word32.andb
+            val word32_notb = Word32.notb
           end
 
         structure Array =
