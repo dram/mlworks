@@ -700,20 +700,15 @@ structure MLWorks : MLWORKS =
 	    end
           end
 
-	structure Word =
+        structure Word =
           struct
-	    local
-		type word = SMLBasisWord.word
-		type w = Word31.word
-	    in
-	    val word_lshift = SMLBasisWord.<<
-	    val word_rshift  : word * w -> word = SMLBasisWord.>>
-	    val word_arshift : word * w -> word = SMLBasisWord.~>>
-	    val word_orb  : word * word -> word = SMLBasisWord.orb
-	    val word_xorb : word * word -> word = SMLBasisWord.xorb
-	    val word_andb : word * word -> word = SMLBasisWord.andb
-	    val word_notb : word -> word = SMLBasisWord.notb
-	    end
+            val word_lshift = Word.<<
+            val word_rshift = Word.>>
+            val word_arshift = Word.~>>
+            val word_orb = Word.orb
+            val word_xorb = Word.xorb
+            val word_andb = Word.andb
+            val word_notb = Word.notb
           end
 
         structure Array =
