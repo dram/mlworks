@@ -47,7 +47,7 @@ local
   fun wrapStat (s: Posix.FileSys.ST.stat) : stat =
     {dev     = 0,
      ino     = 0,
-     mode    = 0,
+     mode    = if Posix.FileSys.ST.isDir s then 0 else 1,
      nlink   = 0,
      uid     = 0,
      gid     = 0,
@@ -73,6 +73,7 @@ local
      add_env_function ("OS.FileSys.fullPath", OS.FileSys.fullPath);
      add_env_function ("POSIX.FileSys.O.append", SysWord.toInt (Posix.FileSys.O.toWord Posix.FileSys.O.append));
      add_env_function ("POSIX.FileSys.O.trunc", SysWord.toInt (Posix.FileSys.O.toWord Posix.FileSys.O.trunc));
+     add_env_function ("POSIX.FileSys.ST.isdir", fn (s: stat) => #mode s = 0);
      add_env_function ("POSIX.FileSys.access", Posix.FileSys.access);
      add_env_function ("POSIX.FileSys.createf", fn (s: string, om: int, f: int, m: int) =>
                                                   Posix.FileSys.createf (s,
