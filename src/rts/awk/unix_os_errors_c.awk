@@ -48,6 +48,7 @@ BEGIN {
   printf("** in the near future and this file can go away.\n");
 
   printf("*/\n\n");
+  printf("#include <string.h>\n");
   printf("#include \"allocator.h\" /* ml_string */\n");
   printf("#include \"values.h\" /* mlw_option_make_some */\n");
   printf("#include \"os_errors.h\"\n");

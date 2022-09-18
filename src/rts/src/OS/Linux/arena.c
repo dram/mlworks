@@ -140,6 +140,7 @@
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 /* Red Hat seems confused about what caddr_t should be */
 /* and what should be able to see it */

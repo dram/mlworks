@@ -110,6 +110,7 @@
 
 #include "syscalls.h"
 #include <assert.h>
+#include <string.h>
 #include <sys/time.h>		/* struct timeval, mktime, ... */
 #include <limits.h>		/* LONG_MAX ... */
 #include "alloc.h"		/* free */
