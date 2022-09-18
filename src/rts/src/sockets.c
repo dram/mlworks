@@ -622,7 +622,7 @@ static mlval sock_controlflg (mlval arg, int option)
   int	flg, sts;
 
   if (mlw_option_is_none(ctl)) {
-    int optSz = sizeof(int);
+    socklen_t optSz = sizeof(int);
     sts = getsockopt (sock, SOL_SOCKET, option, (char *)&flg, &optSz);
     assert((sts == SOCKET_ERROR) || (optSz == sizeof(int)));
     if (sts == SOCKET_ERROR)
@@ -680,7 +680,7 @@ static mlval ml_ctllinger(mlval arg)
   int	        sts;
 
   if (mlw_option_is_none(ctl)) {
-    int optSz = sizeof(struct linger);
+    socklen_t optSz = sizeof(struct linger);
     sts = getsockopt (sock, SOL_SOCKET, SO_LINGER, (char *)&optVal, &optSz);
     assert((sts == SOCKET_ERROR) || (optSz == sizeof(struct linger)));
   } else {
@@ -726,7 +726,7 @@ static mlval ml_ctlsndbuf(mlval arg)
   int   sz, sts;
 
   if (mlw_option_is_none(ctl)) {
-    int optSz = sizeof(int);
+    socklen_t optSz = sizeof(int);
     sts = getsockopt (sock, SOL_SOCKET, SO_SNDBUF, (char *)&sz, &optSz);
     assert((sts == SOCKET_ERROR) || (optSz == sizeof(int)));
   } else {
@@ -803,7 +803,7 @@ static mlval ml_ctlnodelay(mlval arg)
   int sts;
 
   if (mlw_option_is_none(ctl)) {
-    int optSz = sizeof(int);
+    socklen_t optSz = sizeof(int);
     sts = getsockopt (sock, IPPROTO_TCP, TCP_NODELAY, (char *)&flg, &optSz);
     assert((sts == SOCKET_ERROR) || (optSz == sizeof(int)));
   } else {
@@ -821,7 +821,8 @@ static mlval ml_geterror(mlval arg)
 /* : sockFD -> bool */
 { 
   SOCKET sock = CINT(arg);
-  int flg, sts, optSz = sizeof(int);
+  int flg, sts;
+  socklen_t optSz = sizeof(int);
 
   sts = getsockopt (sock, SOL_SOCKET, SO_ERROR, (char *)&flg, &optSz);
 
@@ -838,7 +839,8 @@ static mlval ml_gettype(mlval arg)
 /* : sockFD -> CI.system_const */
 { 
   SOCKET sock = CINT(arg);
-  int flg, sts, optSz = sizeof(int);
+  int flg, sts;
+  socklen_t optSz = sizeof(int);
 
   sts = getsockopt (sock, SOL_SOCKET, SO_TYPE, (char *)&flg, &optSz);
 
@@ -853,7 +855,7 @@ static mlval ml_getpeername(mlval arg)
 { 
   SOCKET  sock = CINT(arg);
   char addrBuf[MAX_SOCK_ADDR_SZB];
-  int  addrLen = MAX_SOCK_ADDR_SZB;
+  socklen_t addrLen = MAX_SOCK_ADDR_SZB;
   int  sts;
 
   sts = getpeername (sock, (struct sockaddr *)addrBuf, &addrLen);
@@ -873,7 +875,7 @@ static mlval ml_getsockname(mlval arg)
 { 
   SOCKET  sock = CINT(arg);
   char addrBuf[MAX_SOCK_ADDR_SZB];
-  int  addrLen = MAX_SOCK_ADDR_SZB;
+  socklen_t addrLen = MAX_SOCK_ADDR_SZB;
   int  sts;
 
   sts = getsockname (sock, (struct sockaddr *)addrBuf, &addrLen);
@@ -904,7 +906,7 @@ static mlval ml_accept(mlval arg)
 { 
   SOCKET  sock = CINT(arg);
   char addrBuf[MAX_SOCK_ADDR_SZB];
-  int  addrLen = MAX_SOCK_ADDR_SZB;
+  socklen_t addrLen = MAX_SOCK_ADDR_SZB;
   SOCKET newSock;
 
   newSock = accept (sock, (struct sockaddr *)addrBuf, &addrLen); 
@@ -1133,7 +1135,7 @@ static mlval ml_recvfrom(mlval arg)
  */
 { 
   char	addrBuf[MAX_SOCK_ADDR_SZB];
-  int	addrLen = MAX_SOCK_ADDR_SZB;
+  socklen_t addrLen = MAX_SOCK_ADDR_SZB;
   SOCKET sock = CINT(FIELD(arg, 0));
   int	nbytes = CINT(FIELD(arg, 1));
   int	flag = 0;
@@ -1186,7 +1188,7 @@ static mlval ml_recvbuffrom(mlval arg)
  */
 { 
   char addrBuf[MAX_SOCK_ADDR_SZB];
-  int  addrLen = MAX_SOCK_ADDR_SZB;
+  socklen_t addrLen = MAX_SOCK_ADDR_SZB;
   SOCKET sock = CINT(FIELD(arg, 0));
   char *start = CBYTEARRAY(FIELD(arg, 1)) + CINT(FIELD(arg, 2));
   int  nbytes = CINT(FIELD(arg, 3));
