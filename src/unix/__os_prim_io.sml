@@ -246,7 +246,7 @@ struct
 
   fun openRd filename =
     mkUnixReader
-      {fd = UnixOS_.open_ (filename, UnixOS_.o_rdonly, 0),
+      {fd = UnixOS_.FileSys.openf (filename, UnixOS_.FileSys.O_RDONLY, 0),
        name = filename,
        initialPos = (* Position.fromDefault *) 0,
        initialBlockMode = true}
@@ -317,10 +317,10 @@ struct
    
   fun openWr filename =
     let 
-      val fd = UnixOS_.open_ (filename, UnixOS_.o_wronly
-                                       +UnixOS_.o_creat
-                                       +UnixOS_.o_trunc, 438)
-			                           (* 438 = 0666 *)
+      val fd = UnixOS_.FileSys.createf (filename,
+                                        UnixOS_.FileSys.O_WRONLY,
+                                        UnixOS_.FileSys.O.trunc,
+                                        438) (* 438 = 0666 *)
       val {size, blksize, ...} = UnixOS_.FileSys.fstat fd
     in
       mkUnixWriter
@@ -336,10 +336,10 @@ struct
 
   fun openApp filename =
     let 
-      val fd = UnixOS_.open_ (filename, UnixOS_.o_wronly
-                                       +UnixOS_.o_append
-                                       +UnixOS_.o_creat, 438)
-		                                   (* 438 = 0666 *)
+      val fd = UnixOS_.FileSys.createf (filename,
+                                        UnixOS_.FileSys.O_WRONLY,
+                                        UnixOS_.FileSys.O.append,
+                                        438) (* 438 = 0666 *)
       val {size, blksize, ...} = UnixOS_.FileSys.fstat fd
     in
       mkUnixWriter

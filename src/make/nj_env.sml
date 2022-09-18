@@ -73,7 +73,20 @@ local
      add_env_function ("system os unix setwd",setwd);
      add_env_function ("system os unix getwd",getwd);
      add_env_function ("system os unix realpath",realpath);
-     add_env_function ("POSIX.FileSys.fstat", wrapStat o Posix.FileSys.fstat))
+     add_env_function ("POSIX.FileSys.O.append", SysWord.toInt (Posix.FileSys.O.toWord Posix.FileSys.O.append));
+     add_env_function ("POSIX.FileSys.O.trunc", SysWord.toInt (Posix.FileSys.O.toWord Posix.FileSys.O.trunc));
+     add_env_function ("POSIX.FileSys.createf", fn (s: string, om: int, f: int, m: int) =>
+                                                  Posix.FileSys.createf (s,
+                                                                         case om of 0 => Posix.FileSys.O_RDONLY
+                                                                                  | _ => Posix.FileSys.O_WRONLY,
+                                                                         Posix.FileSys.O.fromWord (SysWord.fromInt f),
+                                                                         Posix.FileSys.S.fromWord (SysWord.fromInt m)));
+     add_env_function ("POSIX.FileSys.fstat", wrapStat o Posix.FileSys.fstat);
+     add_env_function ("POSIX.FileSys.openf", fn (s: string, om: int, f: int) =>
+                                                Posix.FileSys.openf (s,
+                                                                     case om of 0 => Posix.FileSys.O_RDONLY
+                                                                              | _ => Posix.FileSys.O_WRONLY,
+                                                                     Posix.FileSys.O.fromWord (SysWord.fromInt f))))
 
   exception UnimplementedEnv of string
   fun unimplemented name =
