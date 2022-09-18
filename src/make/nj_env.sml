@@ -88,7 +88,10 @@ local
                                                                               | _ => Posix.FileSys.O_WRONLY,
                                                                      Posix.FileSys.O.fromWord (SysWord.fromInt f)));
      add_env_function ("POSIX.FileSys.stat", wrapStat o Posix.FileSys.stat);
-     add_env_function ("POSIX.FileSys.unlink", Posix.FileSys.unlink))
+     add_env_function ("POSIX.FileSys.unlink", Posix.FileSys.unlink);
+     add_env_function ("Time.-", fn _ => TIME (0, 0, 0));
+     add_env_function ("Time.fromReal", fn _ => TIME (0, 0, 0));
+     add_env_function ("Time.toReal", fn _ => 0.0))
 
   exception UnimplementedEnv of string
   fun unimplemented name =
