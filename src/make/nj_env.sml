@@ -31,6 +31,37 @@ local
   type T = int ref
   val tcast : 'a -> T = Unsafe.cast
 
+  (* based on `ST.stat` in src/unix/_unixos.sml *)
+  type stat =
+    {dev     : int,
+     ino     : int,
+     mode    : int,
+     nlink   : int,
+     uid     : int,
+     gid     : int,
+     rdev    : int,
+     size    : Position.int,
+     atime   : time,
+     mtime   : time,
+     ctime   : time,
+     blksize : int,
+     blocks  : int}
+
+  fun wrapStat (s: Posix.FileSys.ST.stat) : stat =
+    {dev     = 0,
+     ino     = 0,
+     mode    = 0,
+     nlink   = 0,
+     uid     = 0,
+     gid     = 0,
+     rdev    = 0,
+     size    = Posix.FileSys.ST.size s,
+     atime   = TIME (0, 0, 0),
+     mtime   = TIME (0, 0, 0),
+     ctime   = TIME (0, 0, 0),
+     blksize = 4096,
+     blocks  = 0}
+
   val env_refs = ref [] : (string * T) list ref
 
   fun add_env_function (name,f) =
@@ -41,7 +72,8 @@ local
     (add_env_function ("system os unix environment",environment);
      add_env_function ("system os unix setwd",setwd);
      add_env_function ("system os unix getwd",getwd);
-     add_env_function ("system os unix realpath",realpath))
+     add_env_function ("system os unix realpath",realpath);
+     add_env_function ("POSIX.FileSys.fstat", wrapStat o Posix.FileSys.fstat))
 
   exception UnimplementedEnv of string
   fun unimplemented name =
