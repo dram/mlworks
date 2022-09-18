@@ -70,6 +70,7 @@ local
      add_env_function ("system os unix setwd",setwd);
      add_env_function ("system os unix getwd",getwd);
      add_env_function ("system os unix realpath",realpath);
+     add_env_function ("OS.FileSys.fullPath", OS.FileSys.fullPath);
      add_env_function ("POSIX.FileSys.O.append", SysWord.toInt (Posix.FileSys.O.toWord Posix.FileSys.O.append));
      add_env_function ("POSIX.FileSys.O.trunc", SysWord.toInt (Posix.FileSys.O.toWord Posix.FileSys.O.trunc));
      add_env_function ("POSIX.FileSys.createf", fn (s: string, om: int, f: int, m: int) =>
