@@ -66,7 +66,8 @@ local
 
   (* These may be all we need *)
   val _ =
-    (add_env_function ("system os unix environment", Posix.ProcEnv.environ);
+    (add_env_function ("real split", Real.split);
+     add_env_function ("system os unix environment", Posix.ProcEnv.environ);
      add_env_function ("system os unix setwd",setwd);
      add_env_function ("system os unix getwd",getwd);
      add_env_function ("system os unix realpath",realpath);
