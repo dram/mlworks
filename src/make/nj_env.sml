@@ -14,35 +14,6 @@
 structure MLWTime =
   struct
     datatype time = TIME of int * int * int
-    local val lobits = 20
-	  structure W = LargeWord
-	  fun split secs =
-	      let val w = W.fromLargeInt secs
-		  val hi = W.toInt (W.>> (w, Word.fromInt lobits))
-		  val one = W.fromInt 1
-		  val mask = W.- (W.<< (one, Word.fromInt lobits), one)
-		  val lo = W.toInt (W.andb (w, mask))
-	      in (hi, lo)
-	      end
-	  fun unsplit (hi, lo) =
-	      W.toLargeInt (W.+ (W.<< (W.fromInt hi, Word.fromInt lobits),
-				 W.fromInt lo))
-    in
-    fun fromTime t : time =
-	let val secs = Time.toSeconds t
-	    val (hi, lo) = split secs
-	    val rem = Time.- (t, Time.fromSeconds secs)
-	    val micro = LargeInt.toInt (Time.toMicroseconds rem)
-	in TIME (hi, lo, micro)
-	end
-    fun toTime (TIME (hi, lo, micro)) : Time.time =
-	Time.+ (Time.fromSeconds (unsplit (hi, lo)),
-		Time.fromMicroseconds (LargeInt.fromInt micro))
-    fun fromReal r = fromTime (Time.fromReal r)
-    fun toReal mt = Time.toReal (toTime mt)
-    fun op + (x, y) = fromTime (Time.+ (toTime x, toTime y))
-    fun op - (x, y) = fromTime (Time.- (toTime x, toTime y))
-    end
   end
 
 local
@@ -104,9 +75,9 @@ local
 	     gid       = SysWord.toInt (PE.gidToWord (P.ST.gid s)),
 	     rdev      = 0,
 	     size      = P.ST.size s,
-	     atime     = MLWTime.fromTime (P.ST.atime s),
-	     mtime     = MLWTime.fromTime (P.ST.mtime s),
-	     ctime     = MLWTime.fromTime (P.ST.ctime s),
+	     atime     = MLWTime.TIME (0, 0, 0),
+	     mtime     = MLWTime.TIME (0, 0, 0),
+	     ctime     = MLWTime.TIME (0, 0, 0),
 	     blksize   = 4096,  (* used as buffer size for mkUnixWriter *)
 	     blocks    = ((P.ST.size s) div 512) + 1,
 	     zzwrapped = s
@@ -176,10 +147,10 @@ local
 	 add_env_function ("POSIX.FileSys.getcwd", Posix.FileSys.getcwd);
 	 add_env_function ("POSIX.FileSys.access", Posix.FileSys.access);
 	 add_env_function ("POSIX.FileSys.unlink", Posix.FileSys.unlink);
-	 add_env_function ("Time.toReal", MLWTime.toReal);
-	 add_env_function ("Time.fromReal", MLWTime.fromReal);
-	 add_env_function ("Time.-", MLWTime.-);
-	 add_env_function ("Time.+", MLWTime.+);
+	 add_env_function ("Time.toReal", fn _ => 0.0);
+	 add_env_function ("Time.fromReal", fn _ => MLWTime.TIME (0, 0, 0));
+	 add_env_function ("Time.-", fn _ => MLWTime.TIME (0, 0, 0));
+	 add_env_function ("Time.+", fn _ => MLWTime.TIME (0, 0, 0));
 	 add_env_function ("real split", Real.split)
 	)
 
