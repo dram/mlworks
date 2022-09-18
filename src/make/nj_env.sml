@@ -38,57 +38,41 @@ local
     (* stat is a pain to emulate *)
     local
 	(* layouts must match definitions in unix/_unixos.sml *)
-	structure S = struct
-	    type mode = int
-	  end
-	datatype dev = DEV of int
-	datatype ino = I_NODE of int
-	structure ST =
-	  struct
-	    type stat = {dev	: dev,
-			 ino	: ino,
-			 mode	: S.mode,
-			 nlink	: int,
-			 uid	: int,
-			 gid	: int,
-			 rdev	: int,
-			 size	: Position.int,
-			 atime	: MLWTime.time,
-			 mtime	: MLWTime.time,
-			 ctime	: MLWTime.time,
-			 blksize: int,
-			 blocks : int,
-			 (* append the original object at the end *)
-			 (* hoping that the layout will actually be *)
-			 (* at the end *)
-			 zzwrapped : Posix.FileSys.ST.stat
-			}
-	  end
-	structure P = Posix.FileSys
-	structure PE = Posix.ProcEnv
-	fun wrap (s:P.ST.stat) : ST.stat =
-	    {dev       = DEV (SysWord.toInt (P.devToWord (P.ST.dev s))),
-	     ino       = I_NODE (SysWord.toInt (P.inoToWord (P.ST.ino s))),
-	     mode      = SysWord.toInt (P.S.toWord (P.ST.mode s)),
-	     nlink     = P.ST.nlink s,
-	     uid       = SysWord.toInt (PE.uidToWord (P.ST.uid s)),
-	     gid       = SysWord.toInt (PE.gidToWord (P.ST.gid s)),
+	type stat = {dev	: int,
+		     ino	: int,
+		     mode	: int,
+		     nlink	: int,
+		     uid	: int,
+		     gid	: int,
+		     rdev	: int,
+		     size	: Position.int,
+		     atime	: MLWTime.time,
+		     mtime	: MLWTime.time,
+		     ctime	: MLWTime.time,
+		     blksize	: int,
+		     blocks	: int}
+	fun wrap (s: Posix.FileSys.ST.stat) : stat =
+	    {dev       = 0,
+	     ino       = 0,
+	     mode      = 0,
+	     nlink     = if Posix.FileSys.ST.isDir s then 0 else 1,
+	     uid       = 0,
+	     gid       = 0,
 	     rdev      = 0,
-	     size      = P.ST.size s,
+	     size      = Posix.FileSys.ST.size s,
 	     atime     = MLWTime.TIME (0, 0, 0),
 	     mtime     = MLWTime.TIME (0, 0, 0),
 	     ctime     = MLWTime.TIME (0, 0, 0),
-	     blksize   = 4096,  (* used as buffer size for mkUnixWriter *)
-	     blocks    = ((P.ST.size s) div 512) + 1,
-	     zzwrapped = s
+	     blksize   = 4096,
+	     blocks    = 0
 	    }
 
     in
-    fun stat (pathname:string) : ST.stat = wrap (P.stat pathname)
-    fun fstat (fd) : ST.stat = wrap (P.fstat fd)
-    fun isdir (s:ST.stat) = P.ST.isDir (#zzwrapped s)
-    fun mkdir (pathname:string, mode:S.mode):unit =
-	P.mkdir (pathname, P.S.fromWord (SysWord.fromInt mode))
+    fun stat (pathname: string): stat = wrap (Posix.FileSys.stat pathname)
+    fun fstat (fd): stat = wrap (Posix.FileSys.fstat fd)
+    fun isdir (s: stat) = let val {nlink, ...} = s in nlink = 0 end
+    fun mkdir (pathname: string, mode: int): unit =
+	Posix.FileSys.mkdir (pathname, Posix.FileSys.S.fromWord (SysWord.fromInt mode))
     end
 
     local
