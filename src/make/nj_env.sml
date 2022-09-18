@@ -15,9 +15,6 @@ local
   (* A handful of environment functions that we need *)
   (* We only need the functions that actually get called by the compiler here *)
 
-  (* http://www.standardml.org/Basis/os-process.html#SIG:OS_PROCESS.getEnv:VAL *)
-  val environment = OS.Process.getEnv
-  
   (* http://www.standardml.org/Basis/os-file-sys.html#SIG:OS_FILE_SYS.chDir:VAL *)
   val setwd = OS.FileSys.chDir
 
@@ -69,7 +66,7 @@ local
 
   (* These may be all we need *)
   val _ =
-    (add_env_function ("system os unix environment",environment);
+    (add_env_function ("system os unix environment", Posix.ProcEnv.environ);
      add_env_function ("system os unix setwd",setwd);
      add_env_function ("system os unix getwd",getwd);
      add_env_function ("system os unix realpath",realpath);
