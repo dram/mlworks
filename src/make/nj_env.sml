@@ -75,32 +75,23 @@ local
 	Posix.FileSys.mkdir (pathname, Posix.FileSys.S.fromWord (SysWord.fromInt mode))
     end
 
-    local
-	exception Openf
-	structure P = Posix.FileSys
-	structure W = Word
-	fun bit (pos) = W.toInt (W.<< (0w1, W.fromInt pos))
-	fun anyp (i, mask) = not (W.andb (W.fromInt i, W.fromInt mask) = 0w0)
-	fun flag (i, mask, f) = if anyp (i, mask) then f else P.O.flags []
-    in
-    val o_rdonly = bit 0
-    val o_wronly = bit 1
-    val o_append = bit 2
-    val o_creat  = bit 3
-    val o_trunc  = bit 4
-    fun open_ (pathname:string, flags:int, perms:int) : P.file_desc =
-	let val omode = (if anyp (flags, o_rdonly) then P.O_RDONLY
-			 else if anyp (flags, o_wronly) then P.O_WRONLY
-			 else raise Openf)
-	    val oflags = P.O.flags [flag (flags, o_append, P.O.append),
-				    flag (flags, o_trunc, P.O.trunc)]
-	    val operms = P.S.fromWord (Word32.fromInt perms)
+    val o_rdonly = 0w1
+    val o_wronly = 0w2
+    val o_append = 0w4
+    val o_creat  = 0w8
+    val o_trunc  = 0w16
+    fun open' (pathname: string, flags: word, mode: int) =
+	let val om = if Word.andb (flags, o_rdonly) <> 0w0 then Posix.FileSys.O_RDONLY
+		     else if Word.andb (flags, o_wronly) <> 0w0 then Posix.FileSys.O_WRONLY
+		     else raise (Fail "open'")
+	    val f = if Word.andb (flags, o_append) <> 0w0 then Posix.FileSys.O.append
+                    else if Word.andb (flags, o_trunc) <> 0w0 then Posix.FileSys.O.trunc
+                    else Posix.FileSys.O.fromWord 0w0
+            val m = Posix.FileSys.S.fromWord (Word32.fromInt mode)
 	in
-	    if anyp (flags, o_creat)
-	    then P.createf (pathname, omode, oflags, operms)
-	    else P.openf (pathname, omode, oflags)
+	    if Word.andb (flags, o_creat) <> 0w0 then Posix.FileSys.createf (pathname, om, f, m)
+	    else Posix.FileSys.openf (pathname, om, f)
 	end
-    end
 
     (* http://www.smlnj.org/doc/SMLofNJ/pages/unsafe.html#SIG:UNSAFE.cast:VAL *)
     type T = int ref
@@ -121,7 +112,7 @@ local
 	 add_env_function ("POSIX.FileSys.stat", stat);
 	 add_env_function ("POSIX.FileSys.ST.isdir", isdir);
 	 add_env_function ("POSIX.FileSys.mkdir", mkdir);
-	 add_env_function ("system os unix open", open_);
+	 add_env_function ("system os unix open", open');
 	 add_env_function ("system os unix o_rdonly", o_rdonly);
 	 add_env_function ("system os unix o_wronly", o_wronly);
 	 add_env_function ("system os unix o_append", o_append);
