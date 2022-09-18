@@ -484,8 +484,6 @@ structure MLWorks : MLWORKS =
 	  end
       end
 
-    datatype time = TIME of int * int * int
-
     structure Profile =
       struct
 	type manner = int

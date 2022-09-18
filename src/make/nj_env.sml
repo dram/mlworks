@@ -9,6 +9,7 @@
  *
 *)
 
+datatype time = TIME of int * int * int
 
 local
   (* A handful of environment functions that we need *)
