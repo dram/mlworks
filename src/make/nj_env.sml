@@ -83,6 +83,8 @@ local
                                                                          Posix.FileSys.S.fromWord (SysWord.fromInt m)));
      add_env_function ("POSIX.FileSys.fstat", wrapStat o Posix.FileSys.fstat);
      add_env_function ("POSIX.FileSys.getcwd", Posix.FileSys.getcwd);
+     add_env_function ("POSIX.FileSys.mkdir", fn (s: string, m: int) =>
+                                                Posix.FileSys.mkdir (s, Posix.FileSys.S.fromWord (SysWord.fromInt m)));
      add_env_function ("POSIX.FileSys.openf", fn (s: string, om: int, f: int) =>
                                                 Posix.FileSys.openf (s,
                                                                      case om of 0 => Posix.FileSys.O_RDONLY
