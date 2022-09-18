@@ -45,14 +45,9 @@
 #include <stdio.h>
 #include "localreals.h"
 #include <math.h>
+#include <stdlib.h>
 
 static double posinf = 1.0/0.0;
-
-/* It appears that abs doesn't work properly under Linux either */
-static double abs(double a)
-{
-  return ((a >= 0.0) ? a : -a);
-}
 
 extern int localpower(double a, double b, double *result)
 {
