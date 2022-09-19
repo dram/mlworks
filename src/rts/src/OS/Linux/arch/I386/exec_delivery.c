@@ -294,7 +294,6 @@ int load_heap_from_executable(mlval *heap, const char *runtime, int just_check)
 {
   int fd;
   Elf *elf;
-  Elf32_Ehdr *ehdr;
   Elf_Scn *scn;
   Elf32_Shdr *shdr;
   Elf_Data *data = NULL;
@@ -317,8 +316,6 @@ int load_heap_from_executable(mlval *heap, const char *runtime, int just_check)
    *  This also initially allocates internal memory used for ELF
    */
   elf = elf_begin(fd, ELF_C_READ, (Elf *)NULL);
-  /* Get ELF header ... */
-  ehdr = elf32_getehdr(elf);
   scn = (Elf_Scn *)NULL;
   /* Find ml heap section. It has type SHT_ML_HEAP */ 
   while((scn = elf_nextscn(elf,scn)) != NULL) {

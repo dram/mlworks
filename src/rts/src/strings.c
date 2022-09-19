@@ -173,11 +173,9 @@ static mlval unsafe_substring(mlval argument)
 {
   int start = CINT(FIELD(argument,1));
   int length = CINT(FIELD(argument,2));
-  int bound;
   mlval result;
 
   string1 = FIELD(argument, 0);
-  bound = LENGTH(GETHEADER(string1)) - 1;
 
   result = allocate_string((size_t) (length+1));
   memcpy(CSTRING(result), CSTRING(string1) + start, (size_t) length);

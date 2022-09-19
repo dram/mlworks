@@ -216,11 +216,11 @@ void message_string (const char *string)
 void vmessage_content(const char *format, va_list arg)
 {
   char message_buffer[MAXIMUM_RUNTIME_MESSAGE_SIZE+1];
+
+#ifdef DEBUG
   int length;
 
   length = vsprintf(message_buffer, format, arg);
-
-#ifdef DEBUG
 
 #ifdef SPRINTF_IS_BROKEN
   length = strlen(message_buffer);
@@ -228,7 +228,8 @@ void vmessage_content(const char *format, va_list arg)
 
   if (length > MAXIMUM_RUNTIME_MESSAGE_SIZE)
     error ("Runtime message too long : %u %s\n",length, message_buffer);
-
+#else
+    vsprintf(message_buffer, format, arg);
 #endif
 
   message_string(message_buffer);

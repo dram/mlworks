@@ -697,11 +697,8 @@ static mlval unix_execve(mlval arg)
 {
   char **argv = list_to_arg_array(CSTRING(FIELD(arg, 0)), FIELD(arg, 1));
   char **envp = list_to_array(FIELD(arg, 2));
-  int e;
 
   execve(CSTRING(FIELD(arg, 0)), argv, envp);
-
-  e= errno;
 
   free(argv);
   free(envp);
@@ -713,11 +710,8 @@ static mlval unix_execve(mlval arg)
 static mlval unix_execv(mlval arg)
 {
   char **argv = list_to_arg_array(CSTRING(FIELD(arg, 0)), FIELD(arg, 1));
-  int e;
 
   execv(CSTRING(FIELD(arg, 0)), argv);
-
-  e= errno;
 
   free(argv);
 
@@ -728,11 +722,8 @@ static mlval unix_execv(mlval arg)
 static mlval unix_execvp(mlval arg)
 {
   char **argv = list_to_arg_array(CSTRING(FIELD(arg, 0)), FIELD(arg, 1));
-  int e;
 
   execvp(CSTRING(FIELD(arg, 0)), argv);
-
-  e= errno;
 
   free(argv);
 
@@ -754,10 +745,9 @@ static mlval unix_execvp(mlval arg)
 static mlval unix_pipe (mlval arg)
 {
   int filedes[2];
-  int result;
   mlval ml_result;
 
-  result = pipe(filedes);
+  pipe(filedes);
 
   /*   printf("ML pipe called.  Returned values are %d and %d.\n", filedes[0], filedes[1]); */
 
