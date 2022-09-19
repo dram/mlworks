@@ -1250,7 +1250,7 @@ static mlval initialize(mlval argument)
   }
 
   if (display == NULL) {
-    Cardinal argc = 3;
+    int argc = 3;
     const char *argv[argc + 1];
 
     applicationContext = XtCreateApplicationContext();
@@ -3744,7 +3744,7 @@ static mlval set_selection (mlval arg)
   XmString clip_label = XmStringCreateLocalized((char*) "Data");
   Window window = XtWindowOfObject(widget);
   Display *dpy = XtDisplayOfObject(widget);
-  unsigned long item_id = 0;
+  long item_id = 0;
 
   strcpy(buff, text);
   do status = XmClipboardStartCopy(dpy, window, clip_label, CurrentTime,

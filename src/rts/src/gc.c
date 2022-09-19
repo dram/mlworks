@@ -923,7 +923,7 @@ static void heap_analysis_count(mlval *start, mlval *end)
 	  heap_analysis_count_pointers(start+3, start+length+3);
 	  break;
 	}
-	start = (int*)(((int)start) + size);
+	start = (mlval*)(((int)start) + size);
 	break;
       }
 

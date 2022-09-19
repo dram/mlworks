@@ -1012,11 +1012,11 @@ static mlval ml_sendbuf(mlval arg)
   SOCKET sock = CINT(FIELD(arg, 0));
   mlval buffer = FIELD(arg, 1);
   int	nbytes = CINT(FIELD(arg, 3));
-  char	*data; 
+  byte *data;
   int	flgs, n;
 
   if (SECONDARY(GETHEADER(buffer)) == STRING)
-    data = CSTRING(buffer) + CINT(FIELD(arg, 2));
+    data = (byte *) CSTRING(buffer) + CINT(FIELD(arg, 2));
   else
     data = CBYTEARRAY(buffer) + CINT(FIELD(arg, 2));
 
@@ -1045,11 +1045,11 @@ static mlval ml_sendbufto(mlval arg)
   mlval buffer = FIELD(arg, 1);
   int   nbytes = CINT(FIELD(arg, 3));
   mlval	addr = FIELD(arg, 6);
-  char	*data;
+  byte *data;
   int	flgs, n;
 
   if (SECONDARY(GETHEADER(buffer)) == STRING)
-    data = CSTRING(buffer) + CINT(FIELD(arg, 2));
+    data = (byte *) CSTRING(buffer) + CINT(FIELD(arg, 2));
   else
     data = CBYTEARRAY(buffer) + CINT(FIELD(arg, 2));
 
@@ -1112,7 +1112,7 @@ static mlval ml_recvbuf(mlval arg)
  */
 { 
   SOCKET sock = CINT(FIELD(arg, 0));
-  char *start = CBYTEARRAY(FIELD(arg, 1)) + CINT(FIELD(arg, 2));
+  byte *start = CBYTEARRAY(FIELD(arg, 1)) + CINT(FIELD(arg, 2));
   int  nbytes = CINT(FIELD(arg, 3));
   int  flag = 0;
   int  n;
@@ -1190,7 +1190,7 @@ static mlval ml_recvbuffrom(mlval arg)
   char addrBuf[MAX_SOCK_ADDR_SZB];
   socklen_t addrLen = MAX_SOCK_ADDR_SZB;
   SOCKET sock = CINT(FIELD(arg, 0));
-  char *start = CBYTEARRAY(FIELD(arg, 1)) + CINT(FIELD(arg, 2));
+  byte *start = CBYTEARRAY(FIELD(arg, 1)) + CINT(FIELD(arg, 2));
   int  nbytes = CINT(FIELD(arg, 3));
   int  flag = 0;
   int  n;

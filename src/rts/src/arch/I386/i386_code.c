@@ -1054,7 +1054,7 @@ static word sign_extend(uint8 disp)
    where the closures reside. */
 
 static word fixup_sp_epilogue(word eip, word esp, word edi, word ebp, word ecx,
-			       uint8* ip, uint32 type, uint32 amount,
+			       uint8* ip, uint32 type, int32 amount,
 			       int *psure, word *clos1, word *clos2)
 {
   uint32 offset = 0, old_type = type;
