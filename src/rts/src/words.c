@@ -325,7 +325,7 @@ static mlval word_to_real (mlval argument)
 {
   double x = (double)(CWORD (argument));
   mlval result = allocate_real ();
-  SETREAL (result,x);
+  (void) SETREAL (result,x);
   return (result);
 }
 
@@ -333,7 +333,7 @@ static mlval word32_to_real (mlval argument)
 {
   double x = (double)*CWORD32 (argument);
   mlval result = allocate_real ();
-  SETREAL (result,x);
+  (void) SETREAL (result,x);
   return (result);
 }
 

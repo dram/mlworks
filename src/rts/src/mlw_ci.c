@@ -110,7 +110,7 @@ mlw_ci_export void retract_gc_root (mlw_val v)
 mlw_ci_export mlw_val mlw_ci_real_make(double d)
 {
   mlw_val r= allocate_real();
-  SETREAL(r, d);
+  (void) SETREAL(r, d);
   return r;
 }
 
