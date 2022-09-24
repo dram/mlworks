@@ -1200,6 +1200,7 @@ static void args_to_pairs(Arg args[], mlval list)
 
 /* These could and should produce more informative error messages */
 /* and then we could do with some restarts! */
+__attribute__((noreturn))
 static void Xt_error_handler (String s)
 {
   printf ("Xt Error: %s\n",s);
