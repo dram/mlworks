@@ -1216,10 +1216,11 @@ static mlval mlw_os_file_sys_full_path(mlval arg)
  */
 static mlval mlw_os_file_sys_tmp_name(mlval arg)
 {
-  char * name= tmpnam(NULL);
-  if (name == NULL)
+  char name[] = P_tmpdir "/mlworks-XXXXXX";
+  int fd = mkstemp(name);
+  if (fd == -1)
     mlw_raise_syserr(errno);
-
+  close(fd);
   return ml_string(name);
 }
 
