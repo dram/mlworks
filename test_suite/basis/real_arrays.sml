@@ -104,7 +104,7 @@ val _ = (copy{src=d, si=0, dst=e, di=0,        len=NONE};
 	 copy{src=d, si=0, dst=e, di=length d + length b, len=NONE});
 	 
 fun a2v a = extract(a, 0, NONE);
-val ev = Vector.concat [a2v d, a2v b, a2v d]; (* length e = 203 *)
+val ev = RealVector.concat [a2v d, a2v b, a2v d]; (* length e = 203 *)
 
 val test7 = check'(fn () => length e = 203);
 
@@ -121,7 +121,7 @@ val test9a =
     check'(fn () => ev == extract(e, 0, SOME (length e))
 	   andalso ev == extract(e, 0, NONE));
 val test9b = 
-    check'(fn () => Vector.fromList [] == extract(e, 100, SOME 0));
+    check' (fn () => RealVector.fromList [] == extract (e, 100, SOME 0));
 val test9c = (extract(e, ~1, SOME (length e))  seq "WRONG") 
              handle Subscript => "OK" | _ => "WRONG"
 val test9d = (extract(e, length e+1, SOME 0) seq "WRONG") 
