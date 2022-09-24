@@ -9,7 +9,7 @@
 # to ~sml
 #
 
-GCCOPTS         = -O -ansi \
+GCCOPTS         = -O \
                   -Wall \
 		  -Wpointer-arith \
 		  -Wwrite-strings \
