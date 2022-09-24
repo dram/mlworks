@@ -285,7 +285,7 @@ static int is_infinity (double x)
 
 static mlval to_string(mlval arg)
 {
-  char buffer[40];
+  char buffer[320];
   size_t length;
   mlval string;
 
@@ -374,7 +374,7 @@ static mlval decimal_rep (mlval arg)
 
 static mlval fmt (mlval arg)
 {
-  char buffer[40];
+  char buffer[320];
   size_t length;
   mlval string;
   mlval format = FIELD (arg, 0);
