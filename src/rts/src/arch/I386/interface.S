@@ -240,7 +240,7 @@ C_NAME(callml):
 	mov	$STACK_START, %edi	/* Set up old closure value */
 	mov	-1(%ebp), %ecx		/* Get code pointer */
 	add	$CODE_OFFSET, %ecx
-	call	%ecx
+	call	*%ecx
 
 /* we enter ML with eax = global_state, edx = old ml_sp, esi = thread */
 /* all these values are preserved in ML */
@@ -278,7 +278,7 @@ C_NAME(text_internal_stub_c):
 	shr	$2, %ecx
 	call	%ecx
 #else
-	call	3(%ebp)			/* Call C function */
+	call	*3(%ebp)		/* Call C function */
 #endif
 
 	mov	%eax, fnarg		/* Get the answer */
@@ -300,7 +300,7 @@ C_NAME(text_internal_stub_asm):
 	shr	$2, %ecx
 	jmp	%ecx
 #else
-	jmp	3(%ebp)			/* Tail to it */
+	jmp	*3(%ebp)		/* Tail to it */
 #endif
 
 C_NAME(text_internal_stub_asm_end):
@@ -825,7 +825,7 @@ C_NAME(ml_raise):
 	mov	%ecx, IMPLICIT_handler(thread)	/* Set new handler */
 	mov	-1(%ebp), %ecx		/* Code pointer of handling function */
 	add	$CODE_OFFSET, %ecx	/* Plus offset */
-	call	%ecx			/* Call the handler function */
+	call	*%ecx			/* Call the handler function */
 /*
  * Remove dummy frame from stack
  */
@@ -845,7 +845,7 @@ C_NAME(ml_raise):
 	shr	$2, %ecx		/* Untag it */
 	add	-1(%edi), %ecx		/* Add in start of creator function */
 	add	$CODE_OFFSET, %ecx	/* Plus tag */
-	jmp	%ecx			/* Back we go */
+	jmp	*%ecx			/* Back we go */
 
 C_NAME(ml_raise_leaf):
 #ifdef COLLECT_STATS
@@ -987,16 +987,16 @@ C_NAME(ml_intercept_leaf):
 	.global C_NAME(ml_nop)
 
 C_NAME(ml_replace_on):
-	call	IMPLICIT_replace(thread)
+	call	*IMPLICIT_replace(thread)
 
 C_NAME(ml_replace_on_leaf):
-	call	IMPLICIT_replace_leaf(thread)
+	call	*IMPLICIT_replace_leaf(thread)
 
 C_NAME(ml_intercept_on):
-	call	IMPLICIT_intercept(thread)
+	call	*IMPLICIT_intercept(thread)
 
 C_NAME(ml_intercept_on_leaf):
-	call	IMPLICIT_intercept_leaf(thread)
+	call	*IMPLICIT_intercept_leaf(thread)
 
 C_NAME(ml_nop):
 	cmc
@@ -1183,7 +1183,7 @@ C_NAME(asm_trampoline):
 	mov	$STACK_START, %edi	/* Set up old closure value */
 	mov	-1(%ebp), %ecx		/* Get code pointer */
 	add	$CODE_OFFSET, %ecx
-	call	%ecx
+	call	*%ecx
 /* we enter ML with edx = old ml_sp, esi = thread */
 /* all these values are preserved in ML */
 	lea	(C_NAME(global_state)), %eax
