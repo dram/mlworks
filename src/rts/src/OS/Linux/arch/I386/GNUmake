@@ -100,4 +100,4 @@ LIBRARIESSTATIC = -Xlinker -Bstatic -lXm -Xlinker -Bdynamic -lm -lSM -lICE -lXt 
 STRIP		= /usr/bin/strip
 
 
-ERRNO_HEADER = /usr/include/linux/errno.h
+ERRNO_HEADER = /usr/include/asm-generic/errno-base.h
