@@ -477,7 +477,7 @@ shared_closure:
 /* loop back to the start of the closure */
 /* Note edx = 0 here */
 	sub	$8, %edx		/* edx accumulates -offset */
-	cmp	$0, 0(%ecx,%edx)	/* Use ecx in the search */
+	cmpl	$0, 0(%ecx,%edx)	/* Use ecx in the search */
 	je	shared_closure		/* Loop until we find a non-zero header */
 
 /* note that for shared closures we must _not_ mark or evacuate the
