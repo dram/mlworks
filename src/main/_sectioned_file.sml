@@ -110,10 +110,9 @@ struct
   fun readSectionedFile filename =
         let val instream = TextIO.openIn filename
             fun get_line() = 
-                  let val line = TextIO.inputLine instream
-                   in if line = ""
-                      then raise (InvalidSectionedFile "Premature EOF")
-                      else line end 
+                  case TextIO.inputLine instream of
+                      NONE => raise (InvalidSectionedFile "Premature EOF")
+                    | SOME line => line
 
             fun read_section () =
                   let val header = get_line()
@@ -140,7 +139,7 @@ struct
                       val item = 
                             getOpt(String.fromString(Substring.string line),"")
                    in item :: (read_items (n - 1)) end
-            val stamp = getOpt(String.fromString(TextIO.inputLine instream),"")
+            val stamp = getOpt (String.fromString (Option.getOpt (TextIO.inputLine instream, "")), "")
             val (section, _) = read_section()
          in (TextIO.closeIn instream; (stamp, section))
             handle exn => (TextIO.closeIn instream; raise exn)

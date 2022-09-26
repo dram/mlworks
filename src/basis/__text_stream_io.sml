@@ -97,10 +97,9 @@ struct
 
          val (l,lastCharNewline,f') = loop(0,f)
        in
-         (if l<>[] andalso (not lastCharNewline)
-            then implode (l@[#"\n"])
-          else implode l,
-          f')
+         if l = []
+         then NONE
+         else SOME (if not lastCharNewline then implode (l @ [#"\n"]) else implode l, f')
        end
          
 

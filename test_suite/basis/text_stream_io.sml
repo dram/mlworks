@@ -66,11 +66,11 @@ in
 
   val inp = TextIO.getInstream(TextIO.openIn "123")
              
-  val (data,inp') = TextIO.StreamIO.inputLine inp
+  val (data, inp') = Option.valOf (TextIO.StreamIO.inputLine inp)
   val test1 = reportOK(data="123\n")
-  val (data,inp'') = TextIO.StreamIO.inputLine inp'
+  val (data, inp'') = Option.valOf (TextIO.StreamIO.inputLine inp')
   val test2 = reportOK(data = "456\n")  
-  val (data,inp''') = TextIO.StreamIO.inputLine inp''
+  val (data, inp''') = Option.getOpt (TextIO.StreamIO.inputLine inp'', ("", inp''))
   val test3 = reportOK(data = "")
    
   val _ = TextIO.StreamIO.closeIn inp

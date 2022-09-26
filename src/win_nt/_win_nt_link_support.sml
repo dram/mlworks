@@ -254,7 +254,7 @@ functor WinNtLinkSupport (
 	| NONE => raise OS.SysErr("Can't find uuidgen", NONE)
 	val proc = Windows.execute(uuidgen, [])
 	val ins = Windows.textInstreamOf proc
-	val line = TextIO.inputLine ins
+	val line = Option.getOpt (TextIO.inputLine ins, "")
 	val (num1, num2, num3, num4) = munge_stamp line
 	val _ = Windows.reap proc
       in

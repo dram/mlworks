@@ -246,7 +246,7 @@ val test14 = check' "check Windows.execute: uses its stdin and stdout"
 	   val procout = Windows.textOutstreamOf proc
 	   val _ = TextIO.output(procout, "dir c:\\");
 	   val _ = TextIO.flushOut procout;
-	   val _ = TextIO.output(TextIO.stdOut, TextIO.inputLine procin);
+	   val _ = TextIO.output (TextIO.stdOut, Option.getOpt (TextIO.inputLine procin, ""));
 	   val _ = TextIO.output(TextIO.stdOut, "Finishing output\n");
 	 in
 	   true

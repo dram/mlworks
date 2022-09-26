@@ -157,10 +157,10 @@ functor TextIO(include sig
      fun inputLine (f: TextIO'.instream) =
        let
          val g0 = TextIO'.getInstream f
-         val (s,gn) = TextStreamIO.inputLine g0
-         val _ = TextIO'.setInstream(f,gn)
        in
-         s
+         case TextStreamIO.inputLine g0 of
+             NONE => NONE
+           | SOME (s, gn) => let val _ = TextIO'.setInstream (f, gn) in SOME s end
        end
          
 

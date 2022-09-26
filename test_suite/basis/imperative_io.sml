@@ -188,7 +188,7 @@ in
     val _ = closeOut x;
 
     val y = openIn "123";
-    val s'_1 = inputLine y;
+    val s'_1 = Option.getOpt (inputLine y, "");
     val s'_2 = inputAll y;
     val _ = closeIn y;
 

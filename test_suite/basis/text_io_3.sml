@@ -69,9 +69,9 @@ in
 
   val inp = openIn "123"
              
-  val test1 = reportOK(inputLine inp = "123\n")
-  val test2 = reportOK(inputLine inp = "456\n")
-  val test3 = reportOK(inputLine inp = "")
+  val test1 = reportOK(inputLine inp = SOME "123\n")
+  val test2 = reportOK(inputLine inp = SOME "456\n")
+  val test3 = reportOK(inputLine inp = NONE)
    
   val _ = closeIn inp
 

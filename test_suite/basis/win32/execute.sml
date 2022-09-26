@@ -46,9 +46,9 @@ let
   val outs = Windows.textOutstreamOf p;
 in
   print "testing stdOut\n";
-  print (TextIO.inputLine ins);
+  print (Option.getOpt (TextIO.inputLine ins, ""));
   print "testing stdIn\n";
   TextIO.output (outs, "Test input\n");
-  print (TextIO.inputLine ins);
+  print (Option.getOpt (TextIO.inputLine ins, ""));
   Windows.fromStatus (Windows.reap p) = 0w78
 end
