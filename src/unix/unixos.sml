@@ -288,7 +288,6 @@ signature UNIXOS =
 
     val can_input       : FileSys.file_desc -> int
     val set_block_mode  : FileSys.file_desc * bool -> unit
-    val open_   : string * int * int -> FileSys.file_desc
     val read    : FileSys.file_desc * int -> Word8Vector.vector
     val write   : FileSys.file_desc * Word8Vector.vector * int * int -> int
     val seek    : FileSys.file_desc * int * int -> int
@@ -313,10 +312,4 @@ signature UNIXOS =
     val af_inet         : int
     val sock_stream     : int
     val sock_dgram      : int
-    
-    val o_rdonly        : int
-    val o_wronly        : int
-    val o_append        : int
-    val o_creat         : int
-    val o_trunc         : int
   end

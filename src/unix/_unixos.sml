@@ -349,9 +349,6 @@ struct
   val set_block_mode : FileSys.file_desc * bool -> unit = 
     env "system os unix set block mode"
 
-  val open_ : string * int * int -> FileSys.file_desc = 
-    env "system os unix open"
-
   val read : FileSys.file_desc * int -> Word8Vector.vector = 
     MLWorks.Internal.Value.cast MLWorks.Internal.IO.read
 
@@ -391,11 +388,6 @@ struct
   val af_inet : int     = env "system os unix af_inet"
   val sock_stream : int = env "system os unix sock_stream"
   val sock_dgram  : int = env "system os unix sock_dgram"
-  val o_rdonly    : int = env "system os unix o_rdonly"
-  val o_wronly    : int = env "system os unix o_wronly"
-  val o_append    : int = env "system os unix o_append"
-  val o_creat     : int = env "system os unix o_creat"
-  val o_trunc     : int = env "system os unix o_trunc"
 
 end
 

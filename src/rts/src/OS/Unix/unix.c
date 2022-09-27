@@ -273,18 +273,6 @@ static mlval unix_sock_stream;
 static mlval unix_sock_dgram;
 
 /*
- * The following are deprecated.  They are here to support the old style
- * unix_open call which has now been superceded by various POSIX.FileSys
- * routines.
- */
-
-static mlval unix_o_rdonly;
-static mlval unix_o_wronly;
-static mlval unix_o_creat;
-static mlval unix_o_append;
-static mlval unix_o_trunc;
-
-/*
  * These are not initialised here so that they will end up in the BSS
  * rather than the data section and so save a small amount of space
  * at the expense of a miniscule amount of initialisation time.
@@ -414,21 +402,6 @@ static mlval unix_rusage(mlval unit)
   return(result);
 }
 #endif
-
-/*
- * Deprecated.  Use on of POSIX.FileSys.{openf,creatf,creat} instead.
- */
-static mlval unix_open(mlval arg)
-{
-  int fd = open(CSTRING(FIELD(arg, 0)),
-		CINT(FIELD(arg, 1)),
-		CINT(FIELD(arg, 2)));
-
-  if (fd == -1)
-    mlw_raise_syserr(errno);
-
-  return MLINT(fd);
-}
 
 static mlval unix_socket(mlval arg)
 {
@@ -1598,7 +1571,6 @@ extern void unix_init(void)
 
   env_function("system os unix environment", unix_environment);
   env_function("system os unix rusage", unix_rusage);
-  env_function("system os unix open", unix_open);
   env_function("POSIX.FileSys.opendir", mlw_posix_file_sys_opendir);
   env_function("POSIX.FileSys.readdir", mlw_posix_file_sys_readdir);
   env_function("POSIX.FileSys.rewinddir", mlw_posix_file_sys_rewinddir);
@@ -1711,21 +1683,6 @@ extern void unix_init(void)
   declare_global
     ("system os unix exception Would Block", &unix_exn_ref_would_block,
      GLOBAL_DEFAULT, NULL, NULL, NULL);
-
-  unix_o_rdonly = MLINT(O_RDONLY);
-  env_value("system os unix o_rdonly", unix_o_rdonly);
-
-  unix_o_wronly = MLINT(O_WRONLY);
-  env_value("system os unix o_wronly", unix_o_wronly);
-
-  unix_o_append = MLINT(O_APPEND);
-  env_value("system os unix o_append", unix_o_append);
-
-  unix_o_creat = MLINT(O_CREAT);
-  env_value("system os unix o_creat", unix_o_creat);
-
-  unix_o_trunc = MLINT(O_TRUNC);
-  env_value("system os unix o_trunc", unix_o_trunc);
 
   /* PATH_MAX can be set at compile time or runtime or neither!  See
    * section 2.5.7, page 41 of Advanced Programming in the UNIX Environment
