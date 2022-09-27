@@ -163,9 +163,8 @@ structure MLWorks =
             val failure : status = 0w1
             val atExit : (unit -> unit) -> key = fn _ => 0
             val removeAtExit : key -> unit = fn k => ()
-            exception dummy
-            val exit : status -> 'a = fn _ => raise dummy
-            val terminate : status -> 'a = fn _ => raise dummy
+            val exit : status -> 'a = Value.cast
+            val terminate : status -> 'a = Value.cast
           end
       end
   end
