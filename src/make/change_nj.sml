@@ -374,9 +374,7 @@
 
 (* This require is just for the pervasive modules. *)
 
-fun require s =
-  (fn SOME #" " => use ("../pervasive/" ^ String.substring (s, 1, size s - 1) ^ ".sml")
-    | _ => use ("../pervasive/" ^ s ^ ".sml")) (Char.fromString s);
+fun require s = use ("pervasive/" ^ Substring.string (Substring.dropl Char.isSpace (Substring.full s)) ^ ".sml");
 
 nonfix quot rem;
 
