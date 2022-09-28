@@ -73,7 +73,8 @@ local
         
       fun print_time () =
         let
-	  val {usr, sys, gc} = Timer.checkCPUTimer cpu_timer
+	  val {usr, sys} = Timer.checkCPUTimer cpu_timer
+	  val gc = Timer.checkGCTime cpu_timer
 	  val real_elapsed = Timer.checkRealTimer real_timer
         in
           TextIO.output(stream,
