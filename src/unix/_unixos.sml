@@ -164,8 +164,8 @@ struct
   structure Error = struct
     type syserror = MLWorks.Internal.Error.syserror
     exception SysErr = MLWorks.Internal.Error.SysErr
-    val toWord = Word32.fromInt
-    val fromWord = Word32.toInt
+    val toWord = SysWord.fromInt
+    val fromWord = SysWord.toInt
     val errorMsg = MLWorks.Internal.Error.errorMsg
     val errorName = MLWorks.Internal.Error.errorName
     val syserror = MLWorks.Internal.Error.syserror

@@ -150,8 +150,8 @@ signature UNIXOS =
     structure Error : sig
       type syserror
       exception SysErr of (string * syserror option)
-      val toWord : syserror -> Word32.word
-      val fromWord : Word32.word -> syserror
+      val toWord : syserror -> SysWord.word
+      val fromWord : SysWord.word -> syserror
       val errorMsg : syserror -> string
       val errorName : syserror -> string
       val syserror : string -> syserror option
