@@ -114,10 +114,10 @@ structure ForeignAliens_ : FOREIGN_ALIENS =
       fun is_sp c = c = #" "
 
       fun prefix s =
-        Substring.string (Substring.takel (not o is_sp) (Substring.all s))
+        Substring.string (Substring.takel (not o is_sp) (Substring.full s))
 
       fun prefix_split s =
-        let val (x, y) = (Substring.splitl (not o is_sp) (Substring.all s))
+        let val (x, y) = (Substring.splitl (not o is_sp) (Substring.full s))
         in 
           (Substring.string x, Substring.string (Substring.dropl is_sp y))
         end

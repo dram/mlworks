@@ -778,7 +778,7 @@ struct
 
   fun split2 s = (* Split a string into two substrings at the first space *)
         let val (ss1,ss2) = 
-                Substring.splitl (not o Char.isSpace) (Substring.all s)
+                Substring.splitl (not o Char.isSpace) (Substring.full s)
             val (_, ss2) = Substring.splitl Char.isSpace ss2
          in (Substring.string ss1, Substring.string ss2) end
 

@@ -96,7 +96,7 @@ structure Substring : SUBSTRING =
     fun extract (s, i, NONE) = substring (s, i, size s - i)
       | extract (s, i, SOME n) = substring (s, i, n)
 
-    fun all (s:string) : substring = SS (s, 0, size s)
+    fun full (s:string) : substring = SS (s, 0, size s)
     fun isEmpty (SS (_,_,0)) : bool = true
       | isEmpty _ = false
     fun getc (SS (_, _, 0)) : (char * substring) option = NONE

@@ -67,7 +67,7 @@ structure Match : MATCH =
 
     fun isSuffix s ss =
       let
-	val suffix = Substring.all s
+	val suffix = Substring.full s
 	val diff = Substring.size ss - size s
       in
         if (diff > 0) then
@@ -123,7 +123,7 @@ structure Match : MATCH =
      match each one in turn. *)
 
     fun match (inputString, matchString) =
-      startMatch (Substring.all inputString,
+      startMatch (Substring.full inputString,
 		  Substring.String.fields wildcard matchString)
 
   end

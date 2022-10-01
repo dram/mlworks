@@ -86,7 +86,7 @@ Result: OK
 fun applyToOutDesc fileName action =
   let
     val file = TextIO.openOut fileName
-    val _ = TextIO.outputSubstr (file, Substring.all "abc");
+    val _ = TextIO.outputSubstr (file, Substring.full "abc");
     val stream = TextIO.getOutstream file;
     val (desc, close)
       = case TextIO.StreamIO.getWriter stream of

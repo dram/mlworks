@@ -71,7 +71,7 @@ fun reportOK true = "test succeeded."
 
 local
   val file = TextIO.openOut "foo";
-  val _ = TextIO.outputSubstr (file, Substring.all "abc");
+  val _ = TextIO.outputSubstr (file, Substring.full "abc");
   val stream = TextIO.getOutstream file;
   val (write, close) = case TextIO.StreamIO.getWriter stream of
     (TextPrimIO.WR {writeVec= SOME write, close, ...}, _) => (write, close)

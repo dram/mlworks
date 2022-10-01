@@ -133,7 +133,7 @@ struct
 
             and read_items 0 = []
               | read_items n = 
-                  let val line = Substring.all (get_line())
+                  let val line = Substring.full (get_line ())
                       val (_, line) = Substring.splitl Char.isSpace line
                       val (line, _) = Substring.splitr Char.isSpace line
                       val item = 

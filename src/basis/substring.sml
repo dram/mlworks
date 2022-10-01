@@ -65,7 +65,7 @@ signature SUBSTRING =
     val base : substring -> (string * int * int)
     val string : substring -> string
     val substring : (string * int * int) -> substring
-    val all : string -> substring
+    val full : string -> substring
     val isEmpty : substring -> bool
     val getc : substring -> (char * substring) option
     val first : substring -> char option

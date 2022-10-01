@@ -91,8 +91,8 @@ local
     
   val s1 = ""				(* String.size s1 =  0 *)
   and s2 = "ABCDE\tFGHI";		(* String.size s2 = 10 *)
-  val ss1 = Substring.all s1			(* size s1 =  0 *)
-  and ss2 = Substring.all s2;			(* size s2 = 10 *)
+  val ss1 = Substring.full s1		(* size s1 =  0 *)
+  and ss2 = Substring.full s2;		(* size s2 = 10 *)
     
   val sa = "AAAAaAbAABBBB";		(* String.size sa = 14 *)
   (*            45678      *)
@@ -127,8 +127,8 @@ local
     check' "test1h" (fn _ =>
 	   Substring.string ssa1 = ""
 	   andalso Substring.string ssa2 = "aAbAA"
-	   andalso s1 = Substring.string (Substring.all s1) 
-	   andalso s2 = Substring.string (Substring.all s2));
+	   andalso s1 = Substring.string (Substring.full s1)
+	   andalso s2 = Substring.string (Substring.full s2));
     
   val test2a = 
     check' "test2a" (fn _ => 
@@ -241,8 +241,8 @@ local
 	   andalso GREATER = Substring.compare(ssa2, Substring.triml 1 ssa2)
 	   andalso LESS = Substring.compare(Substring.trimr 1 ssa2, ssa2)
 	   andalso GREATER = Substring.compare(ssa2, Substring.trimr 1 ssa2)
-	   andalso LESS = Substring.compare(Substring.all "AB", ssa2)
-	   andalso GREATER = Substring.compare(ssa2,Substring.all "AB"));
+	   andalso LESS = Substring.compare (Substring.full "AB", ssa2)
+	   andalso GREATER = Substring.compare (ssa2, Substring.full "AB"));
     
   fun finda c = c <> #"A";
   fun findb c = c <> #"B";
@@ -335,8 +335,8 @@ val test21 =
   val test25 = 
     check' "test25" (fn _ => 
 	   List.null(Substring.tokens (fn _ => true) ss3)
-	   andalso List.null(Substring.tokens (fn _ => false) (Substring.all ""))
-	   andalso List.null(Substring.tokens (Char.contains " ()") (Substring.all "(()())(( ()"))
+	   andalso List.null (Substring.tokens (fn _ => false) (Substring.full ""))
+	   andalso List.null (Substring.tokens (Char.contains " ()") (Substring.full "(()())(( ()"))
 	   andalso ["this","is","a","clear","text"] = 
            map Substring.string (Substring.tokens (Char.contains " ()") ss3));
     
