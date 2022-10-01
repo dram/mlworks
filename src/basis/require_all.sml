@@ -434,16 +434,4 @@ functor StreamIO (
     structure Array = Array
     val someElem = someElem);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+type substring = Substring.substring;
