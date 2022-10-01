@@ -606,6 +606,13 @@ local
     val test42 = checkexn' "test42" Subscript
       (fn _ => (String.mapi addi (s, 2, SOME (~1))))
 
+    val test43a = check' "test43a"
+      (fn _ => (String.concatWith "," ["a", "b"]) = "a,b")
+    val test43b = check' "test43b"
+      (fn _ => (String.concatWith "," ["a"]) = "a")
+    val test43c = check' "test43c"
+      (fn _ => (String.concatWith "," []) = "")
+
 in
   val it = ()
 end

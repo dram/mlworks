@@ -136,6 +136,11 @@ structure String : STRING =
 
     (* basis concat is aka old style implode *)
 
+    (* based on code from SML/NJ *)
+    fun concatWith _ [] = ""
+      | concatWith _ [x] = x
+      | concatWith sep (h :: t) = concat (rev (foldl (fn (x, l) => x :: sep :: l) [h] t))
+
     fun compare (x:string,y) = 
       if x<y then LESS else if x>y then GREATER else EQUAL
 
