@@ -145,20 +145,17 @@ structure CharVector : MONO_VECTOR =
       end
     val concat = concat
 
-    fun appi f (vector, i, j) =
+    fun appi f vector =
       let
 	val l = length vector
-	val len = case j of
-	  SOME len => i+len
-	| NONE => l
 	fun iterate n =
-	  if n >= l then
+	  if n = l then
 	    ()
 	  else
 	    (ignore(f(n, sub(vector, n)));
 	     iterate(n+1))
       in
-	iterate i
+	iterate 0
       end
 
     fun app f vector =
@@ -198,14 +195,11 @@ structure CharVector : MONO_VECTOR =
 	reduce(l-1, b)
       end
 
-    fun foldli f b (vector, i, j) =
+    fun foldli f b vector =
       let
 	val l = length vector
-	val len = case j of
-	  SOME len => i+len
-	| NONE => l
 	fun reduce(n, x) =
-	  if n >= len then
+	  if n = l then
 	    x
 	  else
 	    reduce(n+1, f(n, sub(vector, n), x))
@@ -213,19 +207,16 @@ structure CharVector : MONO_VECTOR =
 	reduce(0, b)
       end
 
-    fun foldri f b (vector, i, j) =
+    fun foldri f b vector =
       let
 	val l = length vector
-	val len = case j of
-	  SOME len => i+len
-	| NONE => l
 	fun reduce(n, x) =
 	  if n < 0 then
 	    x
 	  else
 	    reduce(n-1, f(n, sub(vector, n), x))
       in
-	reduce(len-1, b)
+	reduce (l - 1, b)
       end
 
     val map = String.map and mapi = String.mapi

@@ -69,27 +69,7 @@ local
     val test32 = check' "test32"
       (fn _ => (CharVector.map add1 "")="")
     val test33 = check' "test33"
-      (fn _ => (CharVector.mapi addi (s, 0, NONE))="ACEGegik")
-    val test34 = check' "test34"
-      (fn _ => (CharVector.mapi addi (s, 1, NONE))="CEGegik")
-    val test35 = check' "test35"
-      (fn _ => (CharVector.mapi addi (s, 7, NONE))="k")
-    val test36 = checkexn' "test36" Subscript
-      (fn _ => (CharVector.mapi addi (s, ~1, NONE))) 
-    val test37a = check' "test37a"
-      (fn _ => (CharVector.mapi addi (s, 8, NONE)) = "")
-    val test37b = checkexn' "test37b" Subscript
-      (fn _ => (CharVector.mapi addi (s, 9, NONE)))
-    val test38 = check' "test38"
-      (fn _ => (CharVector.mapi addi (s, 0, SOME 2))="AC")
-    val test39 = check' "test39"
-      (fn _ => (CharVector.mapi addi (s, 6, SOME 2))="ik")
-    val test40 = checkexn' "test40" Subscript
-      (fn _ => (CharVector.mapi addi (s, 7, SOME 2)))
-    val test41 = check' "test41"
-      (fn _ => (CharVector.mapi addi (s, 2, SOME 0))="")
-    val test42 = checkexn' "test42" Subscript
-      (fn _ => (CharVector.mapi addi (s, 2, SOME (~1))))
+      (fn _ => (CharVector.mapi addi s)="ACEGegik")
 
 in
   val it = () ;

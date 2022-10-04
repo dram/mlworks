@@ -113,31 +113,18 @@ structure Vector : VECTOR =
           loop (0,veclist);
           vector
         end
-            
-    fun check_slice (v, i, SOME j) =
-      if i < 0 orelse j < 0 orelse i + j > length v
-        then raise Subscript
-      else j
-      | check_slice (v, i, NONE) =
-        let
-          val l = length v
-        in
-          if i < 0 orelse i > l
-            then raise Subscript
-          else l - i
-        end
 
-    fun appi f (vector, i, j) =
+    fun appi f vector =
       let
-	val len = check_slice(vector, i, j)
+	val l = length vector
 	fun iterate n =
-	  if n >= i+len then
+	  if n = l then
 	    ()
 	  else
 	    (ignore(f(n, sub(vector, n)));
 	     iterate(n+1))
       in
-	iterate i
+	iterate 0
       end
 
     fun app f vector =
@@ -177,11 +164,11 @@ structure Vector : VECTOR =
 	reduce(l-1, b)
       end
 
-    fun foldli f b (vector, i, j) =
+    fun foldli f b vector =
       let
-	val len = check_slice(vector, i, j)
+	val l = length vector
 	fun reduce(n, x) =
-	  if n >= len then
+	  if n = l then
 	    x
 	  else
 	    reduce(n+1, f(n, sub(vector, n), x))
@@ -189,16 +176,16 @@ structure Vector : VECTOR =
 	reduce(0, b)
       end
 
-    fun foldri f b (vector, i, j) =
+    fun foldri f b vector =
       let
-	val len = check_slice (vector, i, j)
+	val l = length vector
 	fun reduce(n, x) =
 	  if n < 0 then
 	    x
 	  else
 	    reduce(n-1, f(n, sub(vector, n), x))
       in
-	reduce(len-1, b)
+	reduce (l - 1, b)
       end
 
     fun map f v =
@@ -209,12 +196,12 @@ structure Vector : VECTOR =
         tabulate (l, f')
       end
 
-   fun mapi f (v, s, l) =
+   fun mapi f v =
      let 
-       val l' = check_slice (v, s, l)
-       fun f' i = f (i+s, sub(v, i+s))
+       val l = length v
+       fun f' i = f (i, sub (v, i))
      in
-       tabulate (l', f')
+       tabulate (l, f')
      end
 
   end (* of structure Vector *)

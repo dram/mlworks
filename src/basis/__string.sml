@@ -256,36 +256,18 @@ structure String : STRING =
         newS
       end
 
-    fun check_slice (s, i, SOME j) =
-      if i < 0 orelse j < 0 orelse i + j > size s
-        then raise Subscript
-      else j
-      | check_slice (s, i, NONE) =
-        let
-          val l = size s
-        in
-          if i < 0 orelse i > l
-            then raise Subscript
-          else l - i
-        end
-
-    fun mapi f (st, s, l) =
+    fun mapi f s =
       let
-         val l' = check_slice (st, s, l)
-         val newS = MLWorks.Internal.Value.alloc_string (l' + 1)
+         val l = size s
+         val newS = MLWorks.Internal.Value.alloc_string (l + 1)
          val i = ref 0
          val _ =
-           while (!i<l') do (
+           while (!i < l) do (
              MLWorks.Internal.Value.unsafe_string_update
                (newS, !i,
-                ord (f (!i + s, 
-                        chr(MLWorks.Internal.Value.unsafe_string_sub(st, !i+s )
-                           )
-                       )
-                    )
-               ) ; 
+                ord (f (!i, chr (MLWorks.Internal.Value.unsafe_string_sub (s, !i)))));
              i := !i + 1)
-         val _ = MLWorks.Internal.Value.unsafe_string_update (newS, l', 0)
+         val _ = MLWorks.Internal.Value.unsafe_string_update (newS, l, 0)
       in
          newS
       end

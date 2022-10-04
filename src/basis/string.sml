@@ -95,7 +95,7 @@ signature STRING =
     val collate : (char * char -> order) -> (string * string) -> order
 
     val map  : ( char -> char) -> string -> string
-    val mapi : (int * char -> char) -> string * int * int option -> string
+    val mapi : (int * char -> char) -> string -> string
 
     val fromString : string -> string option
     val toString : string -> string

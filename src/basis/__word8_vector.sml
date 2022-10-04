@@ -161,20 +161,17 @@ structure Word8Vector :> MONO_VECTOR
 
     val concat = concat (* toplevel string concat *)
 
-    fun appi f (vector, i, j) =
+    fun appi f vector =
       let
 	val l = length vector
-	val len = case j of
-	  SOME len => i+len
-	| NONE => l
 	fun iterate n =
-	  if n >= l then
+	  if n = l then
 	    ()
 	  else
 	    (ignore(f(n, sub(vector, n)));
 	     iterate(n+1))
       in
-	iterate i
+	iterate 0
       end
 
     fun app f vector =
@@ -214,14 +211,11 @@ structure Word8Vector :> MONO_VECTOR
 	reduce(l-1, b)
       end
 
-    fun foldli f b (vector, i, j) =
+    fun foldli f b vector =
       let
 	val l = length vector
-	val len = case j of
-	  SOME len => i+len
-	| NONE => l
 	fun reduce(n, x) =
-	  if n >= len then
+	  if n = l then
 	    x
 	  else
 	    reduce(n+1, f(n, sub(vector, n), x))
@@ -229,19 +223,16 @@ structure Word8Vector :> MONO_VECTOR
 	reduce(0, b)
       end
 
-    fun foldri f b (vector, i, j) =
+    fun foldri f b vector =
       let
 	val l = length vector
-	val len = case j of
-	  SOME len => i+len
-	| NONE => l
 	fun reduce(n, x) =
 	  if n < 0 then
 	    x
 	  else
 	    reduce(n-1, f(n, sub(vector, n), x))
       in
-	reduce(len-1, b)
+	reduce (l - 1, b)
       end
 
     fun map f v =
@@ -264,23 +255,23 @@ structure Word8Vector :> MONO_VECTOR
         newS
       end
 
-    fun mapi f (v, s, l) =
+    fun mapi f v =
       let
-         val l' = check_slice (v, s, l)
-         val newS = MLWorks.Internal.Value.alloc_string (l'+1)
+         val l = size v
+         val newS = MLWorks.Internal.Value.alloc_string (l + 1)
          val i = ref 0
          val _ =
-           while (!i<l') do (
+           while (!i < l) do (
              MLWorks.Internal.Value.unsafe_string_update
                (newS, !i,
                 Word8.toInt (
                   f(
-                    !i + s, 
+                    !i,
                     Word8.fromInt(
-                      MLWorks.Internal.Value.unsafe_string_sub(v, !i+s )))));
+                      MLWorks.Internal.Value.unsafe_string_sub (v, !i)))));
              i := !i + 1)
          val _ = 
-          MLWorks.Internal.Value.unsafe_string_update(newS, l', 0)
+          MLWorks.Internal.Value.unsafe_string_update (newS, l, 0)
       in
          newS
       end
