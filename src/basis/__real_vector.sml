@@ -240,4 +240,20 @@ structure RealVector :> MONO_VECTOR where type elem = PreReal.real =
         iterate 0
       end
 
+    fun exists pred vec =
+      let
+        val l = length vec
+        fun iterate n = if n = l then false else if pred (sub (vec, n)) then true else iterate (n + 1)
+      in
+        iterate 0
+      end
+
+    fun all pred vec =
+      let
+        val l = length vec
+        fun iterate n = if n = l then true else if pred (sub (vec, n)) then iterate (n + 1) else false
+      in
+        iterate 0
+      end
+
   end

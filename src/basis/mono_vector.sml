@@ -95,4 +95,7 @@ signature MONO_VECTOR =
 
     val findi : (int * elem -> bool) -> vector -> (int * elem) option
     val find : (elem -> bool) -> vector -> elem option
+
+    val exists : (elem -> bool) -> vector -> bool
+    val all : (elem -> bool) -> vector -> bool
   end

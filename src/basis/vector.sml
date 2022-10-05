@@ -86,4 +86,7 @@ signature VECTOR =
 
     val findi : (int * 'a -> bool) -> 'a vector -> (int * 'a) option
     val find : ('a -> bool) -> 'a vector -> 'a option
+
+    val exists : ('a -> bool) -> 'a vector -> bool
+    val all : ('a -> bool) -> 'a vector -> bool
   end
