@@ -74,6 +74,10 @@ signature UNIX =
      *)
     val execute : (string * string list) -> proc
 
+    val textInstreamOf : proc -> TextIO.instream
+
+    val textOutstreamOf : proc -> TextIO.outstream
+
     val streamsOf : proc -> (TextIO.instream * TextIO.outstream)
 
     (* reap process 

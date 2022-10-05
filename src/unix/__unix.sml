@@ -195,6 +195,10 @@ struct
       execute_with_env (s, sl, SOME environ)
   end (* local *)
 
+  fun textInstreamOf (PROC {pipeIn, ...}) = pipeIn
+
+  fun textOutstreamOf (PROC {pipeOut, ...}) = pipeOut
+
   fun streamsOf (PROC {id, pipeIn, pipeOut}) = (pipeIn, pipeOut)
 
   val wait : int -> OS.Process.status = 
