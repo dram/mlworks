@@ -159,6 +159,7 @@ require "^.basis.__word8_vector";
 require "^.basis.__char";
 require "^.basis.__char_array";
 require "^.basis.__char_vector";
+require "^.basis.__string";
 require "^.basis.os_prim_io";
 require "^.basis.__text_prim_io";
 require "^.basis.__bin_prim_io";
@@ -687,7 +688,7 @@ struct
             fun wVconv NONE=NONE
               | wVconv (SOME f) =
                 SOME(fn {buf=v,i=p,sz=(s:int option)} =>
-                     let val (CRs,v')=addCRtoVec (CharVector.extract(v,p,s))
+                     let val (CRs, v') = addCRtoVec (String.extract (v, p, s))
                          val real_out = f{buf=v',i=0, sz=NONE}
                        in real_out-(CRs_actually_outputV(CRs, v', real_out))
                      end)
@@ -696,7 +697,7 @@ struct
             fun wVNBconv NONE=NONE
               | wVNBconv (SOME f) =
                 SOME(fn {buf=v,i=p,sz=(s:int option)}=>
-                     let val (CRs,v') = addCRtoVec (CharVector.extract(v,p,s))
+                     let val (CRs, v') = addCRtoVec (String.extract (v, p, s))
                      in
                        case f{buf=v',i=0,sz=NONE}
                               of NONE=> NONE
@@ -758,10 +759,8 @@ struct
       val len = size s
         
       fun stringReadVec i = 
-        if !pos>=len then "" else
-        (CharVector.extract(s,!pos,if !pos+i>=len
-                                    then (pos:=len;NONE)
-                                  else (pos:=(!pos+i);SOME i)))
+        if !pos >= len then ""
+        else String.extract (s, !pos, if !pos + i >= len then (pos := len; NONE) else (pos := !pos + i; SOME i))
 
       fun stringReadArr {buf,i,sz} =
         if !pos>=len then 0 else

@@ -162,7 +162,7 @@
 
 require "^.basis.__word8_vector";
 require "^.basis.__char_array";
-require "^.basis.__char_vector";
+require "^.basis.__string";
 require "^.basis.os_prim_io";
 require "^.basis.__bin_prim_io";
 require "^.basis.__text_prim_io";
@@ -359,10 +359,8 @@ struct
       val len = size s
         
       fun stringReadVec i = 
-        if !pos>=len then "" else
-        (CharVector.extract(s,!pos,if !pos+i>=len
-                                    then (pos:=len;NONE)
-                                  else (pos:=(!pos+i);SOME i)))
+        if !pos >= len then ""
+        else String.extract (s, !pos, if !pos + i >= len then (pos := len; NONE) else (pos := !pos + i; SOME i))
 
       fun stringReadArr {buf,i,sz} =
         if !pos>=len then 0 else
