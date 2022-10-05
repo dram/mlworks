@@ -182,7 +182,9 @@ require "__word8";
 require "mono_array";
 require "mono_array2";
 require "mono_vector";
+require "mono_vector_slice";
 require "__word8_vector";
+require "__word8_vector_slice";
 require "__word8_array";
 require "__word8_array2";
 require "__real_vector";
@@ -288,6 +290,7 @@ signature WORD=WORD
 signature MONO_ARRAY=MONO_ARRAY
 signature MONO_ARRAY2=MONO_ARRAY2
 signature MONO_VECTOR=MONO_VECTOR
+signature MONO_VECTOR_SLICE=MONO_VECTOR_SLICE
 signature BYTE=BYTE
 signature TIME=TIME
 signature DATE=DATE
@@ -368,6 +371,7 @@ structure Word32=Word32
 structure Word8Array=Word8Array
 structure Word8Array2=Word8Array2
 structure Word8Vector=Word8Vector
+structure Word8VectorSlice=Word8VectorSlice
 structure Word16Array=Word16Array
 structure Word16Array2=Word16Array2
 structure Word16Vector=Word16Vector

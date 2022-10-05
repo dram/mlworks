@@ -684,11 +684,13 @@ BASIS1 =	basis/__pre_basis \
 		basis/array \
 		basis/vector \
 		basis/mono_vector \
+		basis/mono_vector_slice \
 		basis/mono_array \
 		basis/string \
 		basis/__string \
 		basis/__char_vector \
 		basis/__word8_vector \
+		basis/__word8_vector_slice \
 		basis/__word8_array \
 		basis/__char_array \
 		basis/__array \
