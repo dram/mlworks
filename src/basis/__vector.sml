@@ -204,4 +204,28 @@ structure Vector : VECTOR =
        tabulate (l, f')
      end
 
+    fun findi pred vec =
+      let
+        val l = length vec
+        fun iterate n =
+          if n = l then
+            NONE
+          else
+            let val a = sub (vec, n) in if pred (n, a) then SOME (n, a) else iterate (n + 1) end
+      in
+        iterate 0
+      end
+
+    fun find pred vec =
+      let
+        val l = length vec
+        fun iterate n =
+          if n = l then
+            NONE
+          else
+            let val a = sub (vec, n) in if pred a then SOME a else iterate (n + 1) end
+      in
+        iterate 0
+      end
+
   end (* of structure Vector *)

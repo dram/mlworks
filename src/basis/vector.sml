@@ -84,4 +84,6 @@ signature VECTOR =
     val map  : ('a -> 'b) -> 'a vector -> 'b vector
     val mapi : (int * 'a -> 'b) -> 'a vector -> 'b vector
 
+    val findi : (int * 'a -> bool) -> 'a vector -> (int * 'a) option
+    val find : ('a -> bool) -> 'a vector -> 'a option
   end

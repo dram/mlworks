@@ -93,4 +93,6 @@ signature MONO_VECTOR =
     val map  : (elem -> elem) -> vector -> vector
     val mapi : (int * elem -> elem) -> vector -> vector
 
+    val findi : (int * elem -> bool) -> vector -> (int * elem) option
+    val find : (elem -> bool) -> vector -> elem option
   end
