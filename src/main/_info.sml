@@ -227,10 +227,10 @@ functor Info (structure Location : LOCATION) : INFO =
 
     val null_writer =
       let
-	fun null_fun_vec {buf, i, sz} = 
-          CharVector.length(CharVector.extract(buf,i,sz))
-	fun null_fun_arr {buf, i, sz} = 
-          CharVector.length(CharArray.extract(buf,i,sz))
+	fun null_fun_vec {buf, i, sz} =
+          case sz of NONE => CharVector.length buf - i | SOME n => n
+	fun null_fun_arr {buf, i, sz} =
+          case sz of NONE => CharArray.length buf - i | SOME n => n
 	val null_fun_option = fn _ => NONE
       in
 	TextPrimIO.WR
