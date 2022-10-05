@@ -18,6 +18,7 @@
 require "__host_db.sml";
 require "__word8_array";
 require "__word8_vector";
+require "__word8_vector_slice";
 require "__time";
 require "__os";
 
@@ -110,19 +111,19 @@ signature SOCKET =
     type 'a buf = {buf : 'a, i : int, sz : int option}
 
     (* Sock output operations *)
-    val sendVec  : (('a, active stream) sock * Word8Vector.vector buf)
+    val sendVec  : (('a, active stream) sock * Word8VectorSlice.slice)
                       -> int
     val sendArr  : (('a, active stream) sock * Word8Array.array buf)
                       -> int
-    val sendVec' : (('a, active stream) sock * Word8Vector.vector buf * out_flags)
+    val sendVec' : (('a, active stream) sock * Word8VectorSlice.slice * out_flags)
                       -> int
     val sendArr' : (('a, active stream) sock * Word8Array.array buf * out_flags)
                       -> int
-    val sendVecTo: (('a, dgram) sock * 'a sock_addr * Word8Vector.vector buf)
+    val sendVecTo: (('a, dgram) sock * 'a sock_addr * Word8VectorSlice.slice)
                         -> int
     val sendArrTo: (('a, dgram) sock * 'a sock_addr * Word8Array.array buf)
                         -> int
-    val sendVecTo': (('a, dgram) sock * 'a sock_addr * Word8Vector.vector buf * out_flags)
+    val sendVecTo': (('a, dgram) sock * 'a sock_addr * Word8VectorSlice.slice * out_flags)
                         -> int
     val sendArrTo': (('a, dgram) sock * 'a sock_addr * Word8Array.array buf * out_flags)
                         -> int

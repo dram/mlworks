@@ -24,6 +24,7 @@ require "__pre_sock.sml";
 require "__vector";
 require "__word8_array";
 require "__word8_vector";
+require "__word8_vector_slice";
 require "__time";
 require "__os";
 require "__int";
@@ -234,7 +235,6 @@ structure Socket : SOCKET =
             then raise Subscript
             else (buf, i, sz)
     in
-      fun vbuf {buf, i, sz} = chk (W8V.length buf, buf, i, sz)
       fun abuf {buf, i, sz} = chk (W8A.length buf, buf, i, sz)
     end (* local *)
 
@@ -251,7 +251,7 @@ structure Socket : SOCKET =
             = sockFn "system os sendBuf"
     in
       fun sendVec (SOCK fd, buffer) = 
-          let val (vec, i, len) = vbuf buffer
+          let val (vec, i, len) = Word8VectorSlice.base buffer
            in if (len > 0) then sendV (fd, vec, i, len, dfltDon'tRoute, dfltOOB) else 0
           end
       fun sendArr (SOCK fd, buffer) = 
@@ -259,7 +259,7 @@ structure Socket : SOCKET =
            in if (len > 0) then sendA (fd, arr, i, len, dfltDon'tRoute, dfltOOB) else 0
           end
       fun sendVec' (SOCK fd, buffer, {don't_route, oob}) = 
-          let val (vec, i, len) = vbuf buffer
+          let val (vec, i, len) = Word8VectorSlice.base buffer
            in if (len > 0) then sendV (fd, vec, i, len, don't_route, oob) else 0
           end
       fun sendArr' (SOCK fd, buffer, {don't_route, oob}) = 
@@ -276,7 +276,7 @@ structure Socket : SOCKET =
     in
       fun sendVecTo (SOCK fd, ADDR addr, buffer) = 
           let
-            val (vec, i, len) = vbuf buffer
+            val (vec, i, len) = Word8VectorSlice.base buffer
           in
             if (len > 0)
             then sendToV(fd, vec, i, len, dfltDon'tRoute, dfltOOB, addr)
@@ -292,7 +292,7 @@ structure Socket : SOCKET =
           end
       fun sendVecTo' (SOCK fd, ADDR addr, buffer, {don't_route, oob}) = 
           let
-            val (vec, i, len) = vbuf buffer
+            val (vec, i, len) = Word8VectorSlice.base buffer
           in
             if (len > 0)
             then sendToV(fd, vec, i, len, don't_route, oob, addr)
