@@ -20,8 +20,8 @@ require "host_db.sml";
 require "__pre_sock.sml";
 require "__string_cvt";
 require "__sys_word";
+require "__vector";
 require "__word8";
-require "__word8_vector";
 require "__list";
 
 structure NetHostDB : NET_HOST_DB =
@@ -72,7 +72,7 @@ structure NetHostDB : NET_HOST_DB =
         let
           fun w2b w = Word8.fromLargeWord(SysW.toLargeWord w)
           fun getB (w, shft) = SysW.andb(SysW.>>(w, shft), 0wxFF)
-          fun mkAddr (a, b, c, d) = PreSock.INADDR(Word8Vector.fromList[
+          fun mkAddr (a, b, c, d) = PreSock.INADDR (Vector.fromList [
                   w2b a, w2b b, w2b c, w2b d
                 ])
         in
@@ -91,7 +91,7 @@ structure NetHostDB : NET_HOST_DB =
     val fromString = StringCvt.scanString scan
 
     fun toString (PreSock.INADDR addr) = 
-        let fun get i = Word8Vector.sub(addr, i)
+        let fun get i = Vector.sub (addr, i)
          in PreSock.fromBytes(get 0, get 1, get 2, get 3)
         end
 

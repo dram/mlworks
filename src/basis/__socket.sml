@@ -21,6 +21,7 @@
 
 require "socket.sml";
 require "__pre_sock.sml";
+require "__vector";
 require "__word8_array";
 require "__word8_vector";
 require "__time";
@@ -340,7 +341,7 @@ structure Socket : SOCKET =
     local
       val recvFromV' : (int * int * bool * bool) -> (w8vector * addr)
             = sockFn "system os recvFrom"
-      fun recvFromV (_, 0, _, _) = (W8V.fromList[], (ADDR(W8V.fromList[])))
+      fun recvFromV (_, 0, _, _) = (W8V.fromList [], ADDR (Vector.fromList []))
         | recvFromV (SOCK fd, sz, peek, oob) = 
             if (sz < 0)
             then raise Size
@@ -361,7 +362,7 @@ structure Socket : SOCKET =
               let val (n, addr) = recvFromA(fd, buf, i, sz, dfltPeek, dfltOOB)
                in (n, ADDR addr)
               end
-            else (0, (ADDR(W8V.fromList[])))
+            else (0, ADDR (Vector.fromList []))
           end
       fun recvVecFrom' (sock, sz, {peek, oob}) = recvFromV (sock, sz, peek, oob)
       fun recvArrFrom' (SOCK fd, {buf, i}, {peek, oob}) = 
@@ -372,7 +373,7 @@ structure Socket : SOCKET =
             then let val (n, addr) = recvFromA(fd, buf, i, sz, peek, oob)
                   in (n, ADDR addr)
                  end
-            else (0, (ADDR(W8V.fromList[])))
+            else (0, ADDR (Vector.fromList []))
           end
     end (* local *)
 

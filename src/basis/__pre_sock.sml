@@ -26,7 +26,6 @@ require "__string_cvt";
 require "__sys_word";
 require "__word";
 require "__word8";
-require "__word8_vector";
 require "__list";
 require "__general";
 
@@ -51,7 +50,7 @@ structure PreSock =
         | NONE => raise(SysConstNotFound name)
 
     (* the raw representation address data *)
-    type addr = Word8Vector.vector
+    type addr = Word8.word vector
 
     (* the raw representation of an address family *)
     type af = system_const
