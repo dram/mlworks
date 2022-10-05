@@ -106,7 +106,7 @@ require "__pre_basis";
 require "__word8";
 require "__string";
 
-structure Word8Vector :> EQ_MONO_VECTOR 
+structure Word8Vector :> MONO_VECTOR
     where type elem = Word8.word =
   struct
       
