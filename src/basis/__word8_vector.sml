@@ -316,4 +316,23 @@ structure Word8Vector :> MONO_VECTOR
         iterate 0
       end
 
+    fun collate cmp (v1, v2) =
+      let
+        val l1 = length v1
+        val l2 = length v2
+        fun aux n =
+          if n = l1 andalso n = l2 then
+            EQUAL
+          else if n = l1 then
+            LESS
+          else if n = l2 then
+            GREATER
+          else
+            case cmp (sub (v1, n), sub (v2, n)) of
+              EQUAL => aux (n + 1)
+            | order => order
+      in
+        aux 0
+      end
+
   end

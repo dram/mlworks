@@ -89,4 +89,6 @@ signature VECTOR =
 
     val exists : ('a -> bool) -> 'a vector -> bool
     val all : ('a -> bool) -> 'a vector -> bool
+
+    val collate : ('a * 'a -> order) -> 'a vector * 'a vector -> order
   end

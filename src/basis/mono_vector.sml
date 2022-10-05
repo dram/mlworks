@@ -98,4 +98,6 @@ signature MONO_VECTOR =
 
     val exists : (elem -> bool) -> vector -> bool
     val all : (elem -> bool) -> vector -> bool
+
+    val collate : (elem * elem -> order) -> vector * vector -> order
   end
