@@ -125,26 +125,26 @@ local
     
   val vec = Word8Vector.tabulate(10, fn i => Word8.fromInt(i+65))
   val test11a = check "test11a" 
-    ("" = Byte.unpackStringVec(vec, 0, SOME 0))
+    ("" = Byte.unpackStringVec (Word8VectorSlice.slice (vec, 0, SOME 0)))
   val test11b = check "test11b" 
-    ("" = Byte.unpackStringVec(vec, 10, SOME 0) andalso
-     "" = Byte.unpackStringVec(vec, 10, NONE))
+    ("" = Byte.unpackStringVec (Word8VectorSlice.slice (vec, 10, SOME 0)) andalso
+     "" = Byte.unpackStringVec (Word8VectorSlice.slice (vec, 10, NONE)))
   val test11c = check "test11c" 
-    ("BCDE" = Byte.unpackStringVec(vec, 1, SOME 4))
+    ("BCDE" = Byte.unpackStringVec (Word8VectorSlice.slice (vec, 1, SOME 4)))
   val test11d = checkexn' "test11d"  Subscript
-    (fn _=>Byte.unpackStringVec(vec, ~1, SOME 0))
+    (fn _ => Byte.unpackStringVec (Word8VectorSlice.slice (vec, ~1, SOME 0)))
   val test11e = checkexn' "test11e" Subscript
-    (fn _=>Byte.unpackStringVec(vec, 11, SOME 0))
+    (fn _ => Byte.unpackStringVec (Word8VectorSlice.slice (vec, 11, SOME 0)))
   val test11f = checkexn' "test11f" Subscript
-    (fn _=>Byte.unpackStringVec(vec, 0, SOME ~1))
+    (fn _ => Byte.unpackStringVec (Word8VectorSlice.slice (vec, 0, SOME ~1)))
   val test11g = checkexn' "test11g" Subscript 
-    (fn _=>Byte.unpackStringVec(vec, 0, SOME 11))
+    (fn _ => Byte.unpackStringVec (Word8VectorSlice.slice (vec, 0, SOME 11)))
   val test11h = checkexn' "test11h" Subscript 
-    (fn _=>Byte.unpackStringVec(vec, 10, SOME 1))
+    (fn _ => Byte.unpackStringVec (Word8VectorSlice.slice (vec, 10, SOME 1)))
   val test11i = checkexn' "test11i" Subscript 
-    (fn _=>Byte.unpackStringVec(vec, ~1, NONE))
+    (fn _ => Byte.unpackStringVec (Word8VectorSlice.slice (vec, ~1, NONE)))
   val test11j = checkexn' "test11j" Subscript 
-    (fn _=>Byte.unpackStringVec(vec, 11, NONE))
+    (fn _ => Byte.unpackStringVec (Word8VectorSlice.slice (vec, 11, NONE)))
 in
   val it = ()
 end

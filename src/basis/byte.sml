@@ -63,6 +63,7 @@
 require "__word8";
 require "__word8_array";
 require "__word8_vector";
+require "__word8_vector_slice";
 require "__substring";
 signature BYTE =
   sig
@@ -70,7 +71,7 @@ signature BYTE =
     val charToByte : char -> Word8.word
     val bytesToString : Word8Vector.vector -> string
     val stringToBytes : string -> Word8Vector.vector
-    val unpackStringVec : (Word8Vector.vector * int * int option) -> string (* raises Subscript *)
+    val unpackStringVec : Word8VectorSlice.slice -> string
     val unpackString : (Word8Array.array * int * int option) -> string (* raises Subscript *)
     val packString : (Word8Array.array * int * Substring.substring) -> unit 
   end

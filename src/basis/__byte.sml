@@ -80,6 +80,7 @@
 require "byte";
 require "__word8";
 require "__word8_vector";
+require "__word8_vector_slice";
 require "__word8_array";
 require "__substring";
 
@@ -95,7 +96,7 @@ structure Byte : BYTE =
       MLWorks.Internal.Value.cast s
 
     val unpackStringVec =
-      bytesToString o Word8Vector.extract
+      bytesToString o Word8VectorSlice.vector
 	
     val unpackString =
       bytesToString o Word8Array.extract
