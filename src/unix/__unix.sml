@@ -146,39 +146,11 @@ struct
 
     fun execute_with_env (s, sl, env_opt) = 
       let 
-        val prevIn = TextIO.getInstream TextIO.stdIn
-        val prevOut = TextIO.getOutstream TextIO.stdOut
-
         val (p11, p12) = pipe()
         val (p21, p22) = pipe()
 
-        val childIn = openInFD ("in_child", p21)
-        val childOut = openOutFD ("out_child", p12)
         val pipeIn = openInFD ("pipe_in", p11)
         val pipeOut = openOutFD ("pipe_out", p22)
-
-        fun intToFD i = MLWorks.Internal.IO.FILE_DESC i
-        val fdIn = intToFD p21
-        val fdOut = intToFD p12
-
-        val newIn = {descriptor = SOME fdIn, 
-		     get_pos = NONE, set_pos = NONE,
-		     get = fn i => MLWorks.Internal.IO.read (fdIn, i),
-		     can_input = 		  
-		       SOME (fn _ => 
-	    		  case MLWorks.Internal.IO.can_input fdIn of 
-	      		    0 => false
-	    		  | _ => true),
-		     close = fn () => MLWorks.Internal.IO.close fdIn}
-
-        val newOut = {descriptor = SOME fdOut,
-		      can_output = NONE,
-		      close = fn () => MLWorks.Internal.IO.close fdOut,
-		      get_pos = NONE, set_pos = NONE,
-		      put = (fn {buf, i, sz} => 
-			  case sz of 
-			     NONE => MLWorks.Internal.IO.write (fdOut, buf, i, (size buf) - i)
-			   | SOME szi => MLWorks.Internal.IO.write (fdOut, buf, i, szi))}
 
 	(* !!! other execute functions in UnixOS should be changed to match 
          * these ones in terms of the arguments they take *)
@@ -186,6 +158,9 @@ struct
             case env_opt of
               NONE => UnixOS_.fork_execv (s, sl, p21, p12, 2)
             | SOME env => UnixOS_.fork_execve (s, sl, env, p21, p12, 2)
+
+        val _ = MLWorks.Internal.IO.close (MLWorks.Internal.IO.FILE_DESC p21)
+        val _ = MLWorks.Internal.IO.close (MLWorks.Internal.IO.FILE_DESC p12)
       in
         PROC {id = pid, pipeIn = pipeIn, pipeOut = pipeOut}
       end  (* fun execute *)
