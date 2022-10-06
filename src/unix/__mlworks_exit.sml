@@ -73,5 +73,5 @@ structure MLWorksExit :> MLWORKS_EXIT =
     val save = Unix.W_EXITSTATUS 0w5
     val badInput = Unix.W_EXITSTATUS 0w6
 
-    val exit = Unix.exit
+    fun exit st = Unix.exit (case st of Unix.W_EXITSTATUS s => s | _ => 0w0)
   end

@@ -62,7 +62,7 @@ signature UNIX =
     (* fromStatus sts *)
     val fromStatus : OS.Process.status -> exit_status
 
-    val exit : exit_status -> 'a
+    val exit : Word8.word -> 'a
 
     (* executeInEnv (cmd, args, env) 
      *   raises SysErr 

@@ -75,7 +75,7 @@ struct
 
   val fromStatus = OSExit.fromStatus
 
-  val exit = OSExit.os_exit
+  fun exit st = OSExit.os_exit (OSExit.W_EXITSTATUS st)
 
   local
     fun fdWriter (name, raw_fd) = 

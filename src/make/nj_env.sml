@@ -71,6 +71,7 @@ local
      add_env_function ("system os unix setwd",setwd);
      add_env_function ("system os unix getwd",getwd);
      add_env_function ("system os unix realpath",realpath);
+     add_env_function ("word32 extend int to word32", Word32.fromInt);
      add_env_function ("OS.FileSys.fullPath", OS.FileSys.fullPath);
      add_env_function ("POSIX.FileSys.O.append", SysWord.toInt (Posix.FileSys.O.toWord Posix.FileSys.O.append));
      add_env_function ("POSIX.FileSys.O.trunc", SysWord.toInt (Posix.FileSys.O.toWord Posix.FileSys.O.trunc));
