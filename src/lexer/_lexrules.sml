@@ -269,7 +269,7 @@ struct
     val intword = node "0w" & digits
     val hexintnum = hexdigits || (node "~" & hexdigits)
     val hexintword = node "0wx" & plus(hexDigit)
-    val exp = node "E" & intnum
+    val exp = (node "E" || node "e") & intnum
     val realnum = intnum & (frac || exp || (frac & exp))
 
     val implode_char = MLWorks.String.implode_char

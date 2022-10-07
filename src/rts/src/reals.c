@@ -546,7 +546,7 @@ static mlval from_string(mlval arg)
       buffer[i] = '-';
       break;
 
-      case 'e': case '+':
+      case '+':
       exn_raise(perv_exn_ref_string_to_real);
 
       default:
