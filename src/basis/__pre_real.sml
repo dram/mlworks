@@ -543,6 +543,13 @@ structure PreReal =
         whole
       end
 
+    fun realRound r =
+      let
+        val {whole, frac} = split r
+      in
+        if isNan frac orelse frac == 0.0 then whole else whole + real (round frac)
+      end
+
     val floor = fn x => if isNan x then raise Domain else floor x
 
     val ceil  = fn x => if isNan x then raise Domain else ceil x

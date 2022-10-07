@@ -161,6 +161,7 @@ signature REAL =
     val realFloor : real -> real
     val realCeil : real -> real
     val realTrunc : real -> real
+    val realRound : real -> real
     val floor : real -> PreInt.int
     val ceil : real -> PreInt.int (* round towards positive infinity *)
     val trunc : real -> PreInt.int (* round towards zero *)
