@@ -1269,28 +1269,10 @@ struct
              {project = project, module = module_id, parent = frame,
               title = title, filter = filter}
 
-          (* Function to check for substrings, used in the graph search *)
-          fun isSubstring (s1, s2) =
-            let
-              val l1 = explode s1   val l2 = explode s2
-              fun isSub l =
-                   let
-                     fun isPre ([], _) = true
-                       | isPre (l, []) = false
-                       | isPre ((h1::t1), (h2::t2)) =
-                           (h1=h2) andalso (isPre (t1, t2))
-                   in
-                     (isPre (l1, l)) orelse
-                     (case l of (h::t) => isSub t | _ => false)
-                   end
-            in
-              isSub l2
-            end
-
           (* Function to say if a module name contains a substring.  
              For searching the graph *)
           fun matchWeak key (NODE(m,_)) =
-              isSubstring (key, (ModuleId.string m))
+              String.isSubstring key (ModuleId.string m)
 
           (* Function to say if a module name is a string.
              For searching the graph.  *)

@@ -983,29 +983,9 @@ struct
 
         val search = 
           let
-            (* Function to check for substrings, used in the graph search *)
-            (* This function also appears in gui._comp_manager, it would
-               be nice to have in the utils directory.  *)
-            fun isSubstring (s1, s2) =
-              let
-                val l1 = explode s1   val l2 = explode s2
-                fun isSub l =
-                     let
-                       fun isPre ([], _) = true
-                         | isPre (l, []) = false
-                         | isPre ((h1::t1), (h2::t2)) =
-                             (h1=h2) andalso (isPre (t1, t2))
-                     in
-                       (isPre (l1, l)) orelse
-                       (case l of (h::t) => isSub t | _ => false)
-                     end
-              in
-                isSub l2
-              end
-
             fun getDefault () = (!shortSelectionStr)
             fun matchWeak string (ITEM(entry,_,_))  = 
-                  isSubstring(string, getShortName entry)
+                  String.isSubstring string (getShortName entry)
             fun matchStrong string (ITEM(entry,_,_))  = 
                   string = getShortName entry
           in
