@@ -1703,7 +1703,7 @@ structure FullPervasiveLibrary_  :
 		      | c =>
 			  let val n = ord c
 			  in
-			    if n < 32 orelse n >= 127 then
+			    if n < 32 then
 			      let
 				val n1 = n div 10
 			      in

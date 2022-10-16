@@ -456,7 +456,7 @@ Nick Haines 06-Oct-93
 		 (0,[])) (* string reading error case 4 *)
 	    end
       
-	fun printable c = c >= 32 andalso c <= 126	(* includes space *)
+	fun printable c = c >= 32 andalso c <= 126 orelse c >= 128	(* includes space *)
 
         val escapes = [(ord #"n",ord #"\n"),
                        (ord #"t",ord #"\t"),
