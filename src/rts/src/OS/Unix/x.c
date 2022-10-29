@@ -4257,7 +4257,7 @@ static void message_dlg_callback
 void display_simple_message_box(const char *message)
 {
   if (applicationShell == NULL) {
-    fprintf(stderr, message);
+    fprintf(stderr, "%s", message);
   } else {
     static Widget dialog;
     XmString text;
