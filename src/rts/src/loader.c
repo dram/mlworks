@@ -518,7 +518,8 @@ static word read_raw_word(FILE *stream)
 {
   word w;
 
-  fread(&w, sizeof(word), 1, stream);
+  if (fread(&w, sizeof(word), 1, stream) != 1)
+    error("Failed to read raw word from stream (%x)", stream);
   return(w);
 }
 
@@ -526,7 +527,8 @@ static word read_word(FILE *stream)
 {
   word w;
 
-  fread(&w, sizeof(word), 1, stream);
+  if (fread(&w, sizeof(word), 1, stream) != 1)
+    error("Failed to read word from stream (%x)", stream);
   change_endian(&w, 1);
   return(w);
 }

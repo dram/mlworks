@@ -720,7 +720,8 @@ static mlval unix_pipe (mlval arg)
   int filedes[2];
   mlval ml_result;
 
-  pipe(filedes);
+  if (pipe(filedes) == -1)
+    mlw_raise_syserr(errno);
 
   /*   printf("ML pipe called.  Returned values are %d and %d.\n", filedes[0], filedes[1]); */
 
