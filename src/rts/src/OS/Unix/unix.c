@@ -975,6 +975,10 @@ static mlval mlw_posix_file_sys_readdir(mlval arg)
     else
       return mlw_option_make_none();
   }
+
+  if (strcmp(d->d_name, ".") == 0 || strcmp(d->d_name, "..") == 0)
+    return mlw_posix_file_sys_readdir(arg);
+
   return mlw_option_make_some(ml_string(d->d_name));
 }
 
