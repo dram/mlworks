@@ -230,6 +230,23 @@ structure Substring : SUBSTRING =
 	  end
       end
 
+    fun isSuffix p (ss as SS (s, i, n)) =
+      let
+        val sz = size p
+      in
+        if sz > n then false
+        else
+          let
+            fun scan i =
+              if i < sz then
+                String.sub (p, sz - 1 - i) = sub (ss, n - 1 - i) andalso scan (i + 1)
+              else
+                true
+          in
+            scan 0
+          end
+      end
+
     fun fields p (ss as SS(s,ii,nn)) =
       let
         val sz = ii+nn
