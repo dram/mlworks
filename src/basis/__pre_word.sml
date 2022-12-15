@@ -159,7 +159,10 @@ structure PreWord =
           case getc src of
             SOME (#"0",src') =>
               (case getc src' of
-                 SOME (#"w",src'') => src''
+                 SOME (#"w", src'') =>
+                   (case getc src'' of
+                      SOME (#"x", src''') => src'''
+                    | _ => src'')
                | _ => src)
           | _ => src
 
