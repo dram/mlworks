@@ -90,6 +90,7 @@ signature STRING =
     val str : char -> string
     val isPrefix : string -> string -> bool
     val isSubstring : string -> string -> bool
+    val isSuffix : string -> string -> bool
     val substring : (string * int * int) -> string
     val fields : (char -> bool) -> string -> string list
     val tokens : (char -> bool) -> string -> string list

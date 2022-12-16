@@ -229,6 +229,24 @@ structure String : STRING =
         isSub l2
       end
 
+    fun isSuffix (s: string) (t: string) =
+      let
+        val size_s = size s
+        val size_t = size t
+      in
+        if size_s > size_t then false
+        else
+          let fun aux i =
+            if i < size_s then
+              char_sub (s, size_s - 1 - i) = char_sub (t, size_t - 1 - i) andalso
+              aux (i + 1)
+            else
+              true
+          in
+            aux 0
+          end
+      end
+
     (* The bounds checking here uses unsigned comparisons as an optimisation.
        E.g. if size_s' > i' then we know both that size_s > i and i > 0
        (this relies on the fact that size_s > 0, which it must be). *)
