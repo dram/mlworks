@@ -78,6 +78,7 @@ signature SUBSTRING =
     val concat : substring list -> string
     val explode : substring -> char list
     val isPrefix : string -> substring -> bool
+    val isSubstring : string -> substring -> bool
     val isSuffix : string -> substring -> bool
     val compare : (substring * substring) -> order
     val collate : ((char * char) -> order) -> (substring * substring) -> order

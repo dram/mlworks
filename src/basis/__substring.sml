@@ -230,6 +230,11 @@ structure Substring : SUBSTRING =
 	  end
       end
 
+    fun isSubstring p (ss as SS (s, i, n)) =
+      if size p > n then false
+      else if isPrefix p ss then true
+      else isSubstring p (slice (ss, 1, NONE))
+
     fun isSuffix p (ss as SS (s, i, n)) =
       let
         val sz = size p
