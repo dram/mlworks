@@ -72,7 +72,7 @@ functor RegExp (structure Lists : LISTS) : REGEXP =
       fun class(m, n) = CLASS(implode (upto(m, n)))
     in
       val printable = class(32, 126)
-      val letter = CLASS "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnbopqrstuvwxyz"
+      val letter = CLASS ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnbopqrstuvwxyz" ^ implode (upto(128, 255)))
       val digit = CLASS "0123456789"
       val hexDigit = CLASS "0123456789abcdefABCDEF"
       val any = class(0, 255)
