@@ -1211,3 +1211,5 @@ C_NAME(asm_trampoline):
 	.global C_NAME(raise_count)
 	.global C_NAME(stack_extension_count)
 #endif
+
+	.section .note.GNU-stack, "", %progbits

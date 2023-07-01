@@ -767,3 +767,5 @@ primary7:
 	pop	%esi
 	pop	%ebx
 	ret
+
+	.section .note.GNU-stack, "", %progbits
