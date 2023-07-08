@@ -31,10 +31,6 @@ signature STRING =
     exception Ord
     val maxLen : int
     val substring : string * int * int -> string
-    val <  : string * string -> bool
-    val >  : string * string -> bool
-    val <= : string * string -> bool
-    val >= : string * string -> bool
     val ordof : string * int -> int
 
     val ml_string : string * int -> string

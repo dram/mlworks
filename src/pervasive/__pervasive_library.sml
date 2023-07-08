@@ -958,10 +958,6 @@ signature STRING =
     exception Ord
     val maxLen : int
     val substring : string * int * int -> string
-    val <  : string * string -> bool
-    val >  : string * string -> bool
-    val <= : string * string -> bool
-    val >= : string * string -> bool
     val ordof : string * int -> int
 
     val ml_string : string * int -> string
@@ -1722,13 +1718,6 @@ structure FullPervasiveLibrary_  :
 	      in
                 aux (explode s,[]) ^ (if abbrev then string_abbrev else "")
 	      end
-
-            (* Finally define these *)
-            val op <  : string * string -> bool = string_less
-            val op >  : string * string -> bool = string_greater
-            val op <= : string * string -> bool = string_less_equal
-            val op >= : string * string -> bool = string_greater_equal
-
           end (* structure String *)
 
         structure Deliver =
