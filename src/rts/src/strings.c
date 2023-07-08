@@ -215,7 +215,7 @@ static mlval concatenate(mlval argument)
   return(result);
 }
 
-/*  == Implode a list of strings into a string ==
+/*  == Concat a list of strings into a string ==
  *
  *  This function scans the list twice: once to find the length, and
  *  again to build the result string.  This is undesirable, but
@@ -226,7 +226,7 @@ static mlval concatenate(mlval argument)
  *  Raises: Size
  */
 
-static mlval implode(mlval argument)
+static mlval concat(mlval argument)
 {
   word length = 0;
   mlval result, list;
@@ -358,7 +358,7 @@ void strings_init()
 #endif /* MACH_STRINGS */
 
   env_function("string concatenate", concatenate);
-  env_function("string implode", implode);
+  env_function("string concat", concat);
   env_function("string c implode char", implode_char);
   env_function("string implode char", string_implode);
   env_function("string unsafe substring", unsafe_substring);

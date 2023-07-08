@@ -3765,9 +3765,8 @@ structure FullPervasiveLibrary_  :
       else
 	unsafe_alloc_string n
 	
-    (*NB concat is old-style string implode*)
     fun concat [] = ""
-      | concat xs = call_c "string implode" xs
+      | concat xs = call_c "string concat" xs
 
     fun str (c:char) : string =
       let val alloc_s = unsafe_alloc_string (1+1)
