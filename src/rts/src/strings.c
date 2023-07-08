@@ -302,40 +302,6 @@ static mlval implode_char(mlval argument)
   return(result);
 }
 
-/* This is the single argument revised basis implode()
- * val implode : char list -> string
- * Raises: Size
- */
-static mlval string_implode (mlval argument)
-{
-  word length = 0;
-  mlval result, list;
-  char *res;
-  stringlist = list = argument;
-  
-  /* pass1: determine length of list */
-  while (!MLISNIL(list)){
-    length += 1;
-    list = MLTAIL (list);
-  }
-  if (length > ML_MAX_STRING){
-    exn_raise (perv_exn_ref_size);
-  }
-  /* pass2: copy characters to string */
-  result = allocate_string (length + 1);
-  res = CSTRING(result);
-  CSTRING(result)[length] = '\0';
-  
-  list = stringlist;
-  length = 0;
-  while (!MLISNIL(list)){
-    res[length++] = (char) (CINT (MLHEAD(list)) & 0xff);
-    list = MLTAIL(list);
-  }
-  stringlist = MLUNIT;
-  return (result);
-}
-
 /*  === INITIALISE ===  */
 
 void strings_init()
@@ -360,6 +326,5 @@ void strings_init()
   env_function("string concatenate", concatenate);
   env_function("string concat", concat);
   env_function("string c implode char", implode_char);
-  env_function("string implode char", string_implode);
   env_function("string unsafe substring", unsafe_substring);
 }
