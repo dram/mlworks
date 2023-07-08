@@ -965,9 +965,6 @@ signature STRING =
     val ordof : string * int -> int
 
     val ml_string : string * int -> string
-
-    val implode_char : int list -> string
-
   end;
 
 signature BITS =
@@ -1685,33 +1682,6 @@ structure FullPervasiveLibrary_  :
                   string_unsafe_update (new_s, n, 0);
                   copy n
                 end;
-
-            val c_implode_char : int list * int -> string =
-              call_c "string c implode char"
-
-            (* For more than ~30 characters this is slower than the
-               C function.*)
-            (* We could do something similar with implode too *)
-            fun implode_char cl : string =
-              let
-                fun copyall ([],start,to) = to
-                  | copyall (c::cl,start,to) =
-                  (string_unsafe_update (to,start,c);
-                   copyall (cl,start+1,to))
-                fun get_size (a::rest,sz) = get_size (rest,1 + sz)
-                  | get_size ([],sz) =
-                  if sz > 30 then c_implode_char (cl,sz)
-                  else
-                    let
-                      val result = alloc_string (sz+1)
-                      (* set the null terminator *)
-                      val _ = string_unsafe_update (result,sz,0)
-                    in
-                      copyall (cl,0,result)
-                    end
-              in
-                get_size (cl,0)
-              end
 
 	    fun ml_string (s,max_size) =
 	      let

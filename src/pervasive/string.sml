@@ -38,7 +38,4 @@ signature STRING =
     val ordof : string * int -> int
 
     val ml_string : string * int -> string
-
-    val implode_char : int list -> string
-
   end;

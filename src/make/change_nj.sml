@@ -419,8 +419,6 @@ structure MLWorks : MLWORKS =
           else
             String.substring (String.toString s, 0, Int.min (String.size s, max_size))
 
-        fun implode_char l = String.implode (List.map Char.chr l)
-
         open String
       end
 

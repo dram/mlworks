@@ -272,7 +272,7 @@ struct
     val exp = (node "E" || node "e") & intnum
     val realnum = intnum & (frac || exp || (frac & exp))
 
-    val implode_char = MLWorks.String.implode_char
+    val implode_char = implode o map chr
 
     fun convert l = implode_char (rev l)
 

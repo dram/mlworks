@@ -68,18 +68,8 @@ structure PreBasis =
         unsafe_alloc_string n
     end
 
-    local
-      fun rev_map f =
-	let
-	  fun aux(acc, []) = acc
-	    | aux(acc, x :: xs) = aux(f x :: acc, xs)
-	in
-	  aux
-	end
-    in
-      fun revImplode ([]:char list) : string = ""
-	| revImplode cs = MLWorks.String.implode_char (rev_map ord ([], cs))
-    end
+    fun revImplode ([] : char list) : string = ""
+      | revImplode cs = implode (rev cs)
 
     fun isSpace c = c = #" " orelse
       c >= #"\009" andalso c <= #"\013"

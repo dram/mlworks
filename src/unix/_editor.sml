@@ -231,7 +231,7 @@ struct
      *
      * pre: i >= 0 /\ i <= 2^16
      *)
-    fun marshal_int i = MLWorks.String.implode_char [i div 256, i mod 256]
+    fun marshal_int i = implode [chr (i div 256), chr (i mod 256)]
 
 
 

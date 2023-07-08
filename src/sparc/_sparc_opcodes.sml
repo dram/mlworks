@@ -141,7 +141,7 @@ struct
   fun output_int(bytes, value) =
     make_list(bytes, value, [])
 
-  val implode_char = MLWorks.String.implode_char
+  val implode_char = implode o map chr
 
   fun output_opcode(FORMAT1 disp30) =
     let
