@@ -1631,7 +1631,7 @@ structure FullPervasiveLibrary_  :
            copyall (cl, start + 1, to))
         fun get_size (a :: rest, sz) = get_size (rest, 1 + sz)
           | get_size ([], sz) =
-          if sz > 30 then call_c "string c implode char" (cl, sz)
+          if sz > 30 then call_c "string implode char" (cl, sz)
           else
             let
               val result = unsafe_alloc_string (sz + 1)

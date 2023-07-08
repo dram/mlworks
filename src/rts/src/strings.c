@@ -325,6 +325,6 @@ void strings_init()
 
   env_function("string concatenate", concatenate);
   env_function("string concat", concat);
-  env_function("string c implode char", implode_char);
+  env_function("string implode char", implode_char);
   env_function("string unsafe substring", unsafe_substring);
 }
