@@ -28,11 +28,8 @@
 signature STRING = 
   sig 
     exception Substring
-    exception Chr
     exception Ord
     val maxLen : int
-    val chr : int -> string
-    val ord : string -> int
     val substring : string * int * int -> string
     val <  : string * string -> bool
     val >  : string * string -> bool

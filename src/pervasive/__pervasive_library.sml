@@ -955,7 +955,6 @@ signature FLOATARRAY =
 signature STRING = 
   sig 
     exception Substring
-    exception Chr
     exception Ord
     val maxLen : int
     val explode : string -> string list

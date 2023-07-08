@@ -71,8 +71,8 @@ fun timed_use x = (print ("Using " ^ x ^ "\n");
 *)
 
 
-val ord = MLWorks.String.ord;
-val chr = MLWorks.String.chr;
+val ord = SML90.ord;
+val chr = SML90.chr;
 val explode = SML90.explode;
 val implode = SML90.implode;
 structure Array = MLWorks.Internal.Array;

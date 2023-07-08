@@ -407,12 +407,9 @@ structure MLWorks : MLWORKS =
     structure String =
       struct
         exception Substring = General.Subscript
-        exception Chr = General.Chr
         exception Ord
 
         val maxLen = String.maxSize
-        val chr = SML90.chr
-        val ord = SML90.ord
 
         fun ordof (s, i) = Char.ord (String.sub (s, i))
 

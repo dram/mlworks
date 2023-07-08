@@ -50,6 +50,7 @@
  *)
 
 require "sml90";
+require "__char";
 require "__text_io";
 require "__string";
 require "__io";
@@ -150,8 +151,8 @@ struct
   val exp: real -> real = env "real exp"
   val ln: real -> real = env "real ln"
 
-  val chr = MLWorks.String.chr
-  val ord = MLWorks.String.ord
+  val chr = str o Char.chr
+  val ord = fn s => Char.ord (String.sub (s, 0))
   val explode = map str o String.explode
   val implode = concat
 

@@ -130,19 +130,12 @@ local
 
   val test1g = check' "test1g" 
     (fn _=>
-     MLWorks.String.ord "2" = two andalso 
      Char.ord #"2" = two andalso
-     MLWorks.String.ord "a" = letter_a andalso
      Char.ord #"a" = letter_a andalso
-     MLWorks.String.ord "0" = zero andalso
      Char.ord #"0" = zero andalso
-     MLWorks.String.ord "a" = letter_a andalso
      Char.ord #"a" = letter_a andalso
-     MLWorks.String.ord "A" = letter_A andalso
      Char.ord #"A" = letter_A andalso
-     MLWorks.String.ord "z" = letter_z andalso
      Char.ord #"z" = letter_z andalso
-     MLWorks.String.ord "Z" = letter_Z andalso
      Char.ord #"Z" = letter_Z andalso
      c_0 = Char.chr zero andalso
      c_9 = Char.chr nine andalso

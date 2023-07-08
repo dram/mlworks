@@ -1037,7 +1037,7 @@ struct
 		     Int.toString l)
   | binary_list_to_string(done, x :: xs, digit, power) =
     let
-      val x = MLWorks.String.ord x - ord #"0"
+      val x = ord x - ord #"0"
     in
       if power = 1 then
 	binary_list_to_string(String.str(chr(digit + x)) :: done, xs, 0, 128)
