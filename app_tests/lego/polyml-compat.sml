@@ -73,8 +73,8 @@ fun timed_use x = (print ("Using " ^ x ^ "\n");
 
 val ord = MLWorks.String.ord;
 val chr = MLWorks.String.chr;
-val explode = MLWorks.String.explode;
-val implode = MLWorks.String.implode;
+val explode = SML90.explode;
+val implode = SML90.implode;
 structure Array = MLWorks.Internal.Array;
 structure Vector = MLWorks.Internal.Vector;
 structure Bits = MLWorks.Internal.Bits;

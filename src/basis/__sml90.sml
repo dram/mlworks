@@ -152,7 +152,7 @@ struct
 
   val chr = MLWorks.String.chr
   val ord = MLWorks.String.ord
-  val explode = MLWorks.String.explode
-  val implode = MLWorks.String.implode
+  val explode = map str o String.explode
+  val implode = concat
 
 end

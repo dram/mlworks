@@ -31,8 +31,6 @@ signature STRING =
     exception Chr
     exception Ord
     val maxLen : int
-    val explode : string -> string list
-    val implode : string list -> string
     val chr : int -> string
     val ord : string -> int
     val substring : string * int * int -> string

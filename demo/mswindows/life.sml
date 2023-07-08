@@ -259,13 +259,13 @@ local
 
   fun munge_string s =
     let
-      fun munge ([],acc) = MLWorks.String.implode (rev acc)
-        | munge ("\013" :: "\010" :: rest,acc) =
-          munge (rest, "\010" :: "\013" :: acc)
-        | munge ("\n"::rest,acc) = munge (rest,"\013\010" :: acc)
-        | munge (c::rest,acc) = munge (rest,c::acc)
+      fun munge ([], acc) = implode (rev acc)
+        | munge (#"\013" :: #"\010" :: rest, acc) =
+          munge (rest, #"\010" :: #"\013" :: acc)
+        | munge (#"\n" :: rest, acc) = munge (rest, #"\010" :: #"\013" :: acc)
+        | munge (c :: rest, acc) = munge (rest, c :: acc)
     in
-      munge (MLWorks.String.explode s,[])
+      munge (explode s, [])
     end
 
   fun make_life_widget (name,class,parent,height,width,attributes) = 

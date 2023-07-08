@@ -425,9 +425,6 @@ structure MLWorks : MLWORKS =
         fun implode_char l = String.implode (List.map Char.chr l)
 
         open String
-
-        val explode = SML90.explode
-        val implode = SML90.implode
       end
 
     structure Threads =

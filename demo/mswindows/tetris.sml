@@ -279,16 +279,16 @@ local
   val toplevel_width = default_width + 10
   val graphics_height = ysize * block_size
   val toplevel_height = graphics_height + 34
-  
+
   fun munge_string s =
     let
-      fun munge ([],acc) = MLWorks.String.implode (rev acc)
-        | munge ("\013" :: "\010" :: rest,acc) =
-          munge (rest, "\010" :: "\013" :: acc)
-        | munge ("\n"::rest,acc) = munge (rest,"\013\010" :: acc)
-        | munge (c::rest,acc) = munge (rest,c::acc)
+      fun munge ([], acc) = implode (rev acc)
+        | munge (#"\013" :: #"\010" :: rest, acc) =
+          munge (rest, #"\010" :: #"\013" :: acc)
+        | munge (#"\n" :: rest, acc) = munge (rest, #"\010" :: #"\013" :: acc)
+        | munge (c :: rest, acc) = munge (rest, c :: acc)
     in
-      munge (MLWorks.String.explode s,[])
+      munge (explode s, [])
     end
 
   fun convert_class class =
