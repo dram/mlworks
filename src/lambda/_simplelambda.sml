@@ -1341,14 +1341,7 @@ fun do_builtinapp ((Pervasives.CAST,[e],ty),env) = SOME e
       | foldable _ = SimpleUtils.safe_cse (APP (BUILTIN b,(el,[]),ty))
         
     (* try_fold eliminates applications of builtins to constants *)
-    fun try_fold (Pervasives.ORD,[SCON (Ident.STRING s, l)]) =
-        (SOME (make_int_scon (ord(String.sub(s, 0)),Location.UNKNOWN)) 
-         handle MLWorks.String.Ord => NONE)
-      | try_fold (Pervasives.CHR,[SCON (n, _)]) =
-        (SOME (make_string_scon (str (Char.chr (scon_to_int n))))
-         handle Chr => NONE
-              | Bignum.Unrepresentable => NONE)
-      | try_fold (Pervasives.HAT,[SCON (Ident.STRING s1, _),SCON (Ident.STRING s2, _)]) =
+    fun try_fold (Pervasives.HAT,[SCON (Ident.STRING s1, _),SCON (Ident.STRING s2, _)]) =
         SOME (make_string_scon (s1 ^ s2))
       | try_fold (Pervasives.SIZE,[SCON (Ident.STRING s, l)]) =
         SOME (make_int_scon (size s,Location.UNKNOWN))

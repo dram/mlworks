@@ -215,63 +215,6 @@ static mlval concatenate(mlval argument)
   return(result);
 }
 
-static mlval explode(mlval argument)
-{
-  mlval result;
-  size_t length = CSTRINGLENGTH(argument);
-
-  string1 = argument;
-  stringlist = MLNIL;
-
-  while(length > 0)
-  {
-    mlval *start;
-    size_t chunk = allocate_multiple(4, length, &start);
-
-    if(chunk > 0)
-    {
-      char *string = CSTRING(string1);
-      mlval *cell, list = stringlist;
-      size_t i;
-
-      for(i=0, cell=start; i<chunk; ++i, --length, cell+=4)
-      {
-	cell[0] = MLPTR(POINTER, &cell[2]);
-	cell[1] = list;
-	cell[2] = MAKEHEAD(STRING, 2);
-	((char *)&cell[3])[0] = string[length-1];
-	((char *)&cell[3])[1] = '\0';
-	list = MLPTR(PAIRPTR, &cell[0]);
-      }
-
-      stringlist = list;
-    }
-    else
-    {
-      char *string;
-      mlval tmp;
-
-      string2 = allocate_string(2);
-
-      string = CSTRING(string2);
-      string[0] = CSTRING(string1)[length-1];
-      string[1] = '\0';
-
-      tmp = allocate_record(2);
-      FIELD(tmp, 0) = string2;
-      FIELD(tmp, 1) = stringlist;
-      stringlist = tmp;
-      --length;
-    }
-  }
-
-  result = stringlist;
-  string1 = string2 = stringlist = MLUNIT;
-
-  return(result);
-}
-
-
 /*  == Implode a list of strings into a string ==
  *
  *  This function scans the list twice: once to find the length, and
@@ -415,7 +358,6 @@ void strings_init()
 #endif /* MACH_STRINGS */
 
   env_function("string concatenate", concatenate);
-  env_function("string explode", explode);
   env_function("string implode", implode);
   env_function("string c implode char", implode_char);
   env_function("string implode char", string_implode);

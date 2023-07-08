@@ -4128,69 +4128,6 @@ struct
 	  | _ => Crash.impossible"do_char_chr"
 	end
 
-      fun do_chr (regs,the_code,exn_code) =
-	let
-	  val result = MirTypes.GC.new()
-	  val res1 = MirTypes.GP_GC_REG result
-	  val res2 = MirTypes.GC_REG result
-	  val (exn_blocks, exn_tag_list) = exn_code
-	  val exn_tag =
-	    case exn_tag_list
-	    of [tag] => tag
-	    |  _ => Crash.impossible "no exn_tag for chr"
-	in
-	  case regs of
-	    Mir_Utils.ONE(Mir_Utils.INT reg) =>
-	    let
-	      val (new_reg, code) = Mir_Utils.send_to_reg(regs)
-	      val byte_reg = MirTypes.GC.new()
-	    in
-	      (Mir_Utils.ONE(Mir_Utils.INT res1), Mir_Utils.combine(the_code,
-		((Sexpr.ATOM(code @
-		  [MirTypes.TEST(MirTypes.BLT, exn_tag, new_reg,
-				 MirTypes.GP_IMM_INT 0),
-                   MirTypes.TEST(MirTypes.BGT, exn_tag, new_reg,
-				MirTypes.GP_IMM_INT 255),
-		  MirTypes.COMMENT"Fail if out of range 0 <= x <= 255",
-		  MirTypes.ALLOCATE(MirTypes.ALLOC_STRING, res2, MirTypes.GP_IMM_INT 2),
-		  (* Allow space for null termination of string *)
-                  MirTypes.UNARY(MirTypes.MOVE,MirTypes.GC_REG byte_reg,MirTypes.GP_IMM_ANY 0),
-                  MirTypes.STOREOP(MirTypes.ST, MirTypes.GC_REG byte_reg, res2,
-                                   MirTypes.GP_IMM_ANY ~1),
-		  MirTypes.BINARY(MirTypes.LSR,MirTypes.GC_REG byte_reg,
-                                  new_reg,MirTypes.GP_IMM_ANY 2),
-                  MirTypes.STOREOP(MirTypes.STB, MirTypes.GC_REG byte_reg, res2,
-                                   MirTypes.GP_IMM_ANY ~1),
-		  MirTypes.NULLARY(MirTypes.CLEAN, MirTypes.GC_REG byte_reg)
-		  ]), exn_blocks,
-		NONE, Sexpr.NIL), [], [])))
-	    end
-	  | _ => Crash.impossible"do_chr"
-	end
-
-      fun do_ord  (regs,the_code,exn_code) =
-	let
-	  val (the_ptr, the_size, code) = make_size_code regs
-	  val result = MirTypes.GC.new()
-	  val res1 = MirTypes.GC_REG result
-	  val res2 = MirTypes.GP_GC_REG result
-	  val (exn_blocks, exn_tag_list) = exn_code
-	  val exn_tag =
-	    case exn_tag_list
-	    of [tag] => tag
-	    |  _ => Crash.impossible "no exn_tag for ord"
-	in
-	  (Mir_Utils.ONE(Mir_Utils.INT res2),
-	   Mir_Utils.combine(the_code,
-		   ((Sexpr.ATOM(code @
-		     [MirTypes.TEST(MirTypes.BLE, exn_tag, the_size,
-				    MirTypes.GP_IMM_INT 0),
-		      MirTypes.STOREOP(MirTypes.LDB, res1, the_ptr,
-				       MirTypes.GP_IMM_ANY ~1),
-                      MirTypes.BINARY(MirTypes.ASL, res1,res2, MirTypes.GP_IMM_ANY 2)]),
-		     exn_blocks, NONE, Sexpr.NIL), [], [])))
-	end
-
       fun do_ordof (safe,regs,the_code,exn_code) =
 	let
 	  val (string, offset, new_code) = get_int_pair regs
@@ -5088,13 +5025,9 @@ struct
       | Pervasives.EXP => tagged_unary_fcalc(MirTypes.FETOXV,regs,the_code,exn_code_for_prim prim)
       | Pervasives.LN => tagged_unary_fcalc(MirTypes.FLOGEV,regs,the_code,exn_code_for_prim prim)
       | Pervasives.SIZE => do_size (regs,the_code)
-      | Pervasives.CHR => do_chr (regs,the_code,exn_code_for_prim prim)
-      | Pervasives.ORD => do_ord (regs,the_code,exn_code_for_prim prim)
       | Pervasives.CHARCHR => do_char_chr (regs,the_code,exn_code_for_prim prim)
       | Pervasives.CHARORD => (regs, the_code) (* Ord on char is nop *)
       | Pervasives.ORDOF => do_ordof (true,regs,the_code,exn_code_for_prim prim)
-      | Pervasives.EXPLODE => do_external_prim prim
-      | Pervasives.IMPLODE => do_external_prim prim
       | Pervasives.FDIV => tagged_binary_fcalc(MirTypes.FDIVV,regs,the_code,exn_code_for_prim prim)
       | Pervasives.DIV => Crash.impossible"Unresolved overloaded primitive"
       | Pervasives.MOD => Crash.impossible"Unresolved overloaded primitive"

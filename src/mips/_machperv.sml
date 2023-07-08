@@ -127,13 +127,9 @@ struct
     | Pervasives.EXP => false
     | Pervasives.LN => false
     | Pervasives.SIZE => true
-    | Pervasives.CHR => true
-    | Pervasives.ORD => true
     | Pervasives.CHARCHR => true
     | Pervasives.CHARORD => true
     | Pervasives.ORDOF => true
-    | Pervasives.EXPLODE => false
-    | Pervasives.IMPLODE => false
     | Pervasives.DEREF => true
     | Pervasives.FDIV => true
     | Pervasives.DIV => false
@@ -335,9 +331,7 @@ struct
     | implicit_references Pervasives.SQRT             = [Pervasives.EXSQRT]
     | implicit_references Pervasives.EXP              = [Pervasives.EXEXP]
     | implicit_references Pervasives.LN               = [Pervasives.EXLN]
-    | implicit_references Pervasives.ORD              = [Pervasives.EXORD]
     | implicit_references Pervasives.ORDOF            = [Pervasives.EXORD]
-    | implicit_references Pervasives.CHR              = [Pervasives.EXCHR]
     | implicit_references Pervasives.CHARCHR          = [Pervasives.EXCHR]
     | implicit_references Pervasives.ARRAY_FN         = [Pervasives.EXSIZE]
     | implicit_references Pervasives.SUB              = [Pervasives.EXSUBSCRIPT]
@@ -384,8 +378,6 @@ struct
     | is_fun Pervasives.CHARCHR = true
     | is_fun Pervasives.CHARORD = true
     | is_fun Pervasives.ORDOF = true
-    | is_fun Pervasives.EXPLODE = true
-    | is_fun Pervasives.IMPLODE = true
     | is_fun Pervasives.DEREF = true
     | is_fun Pervasives.FDIV = true
     | is_fun Pervasives.DIV = true

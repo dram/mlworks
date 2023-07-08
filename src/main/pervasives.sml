@@ -191,13 +191,9 @@ sig
     EXP |
     LN |
     SIZE |
-    CHR |
-    ORD |
     CHARCHR |
     CHARORD |
     ORDOF |
-    EXPLODE |
-    IMPLODE |
     DEREF |
     FDIV |
     DIV |

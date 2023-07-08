@@ -957,10 +957,6 @@ signature STRING =
     exception Substring
     exception Ord
     val maxLen : int
-    val explode : string -> string list
-    val implode : string list -> string
-    val chr : int -> string
-    val ord : string -> int
     val substring : string * int * int -> string
     val <  : string * string -> bool
     val >  : string * string -> bool
@@ -1615,6 +1611,45 @@ structure FullPervasiveLibrary_  :
 
     fun ignore x = ()
 
+    fun unsafe_alloc_string (n : int) : string =
+      let val alloc_s = alloc_string n
+      in
+        string_unsafe_update (alloc_s, n - 1, 0);
+        alloc_s
+      end
+
+    fun explode (s : string) : char list =
+      let fun aux (i, acc) =
+          if i >= 0 then
+            aux (i - 1, (cast (string_unsafe_sub (s, i)) : char) :: acc)
+          else
+            acc
+      in
+        aux (size s - 1, [])
+      end
+
+    fun implode (cl : char list) : string =
+      let
+        val cl : int list = cast cl
+        fun copyall ([], start, to) = to
+          | copyall (c :: cl, start, to) =
+          (string_unsafe_update (to, start, c);
+           copyall (cl, start + 1, to))
+        fun get_size (a :: rest, sz) = get_size (rest, 1 + sz)
+          | get_size ([], sz) =
+          if sz > 30 then call_c "string c implode char" (cl, sz)
+          else
+            let
+              val result = unsafe_alloc_string (sz + 1)
+              (* set the null terminator *)
+              val _ = string_unsafe_update (result, sz, 0)
+            in
+              copyall (cl, 0, result)
+            end
+      in
+        get_size (cl, 0)
+      end
+
     structure MLWorks : MLWORKS =
       struct
 
@@ -1690,15 +1725,15 @@ structure FullPervasiveLibrary_  :
                   else if max_size < size string_abbrev
                     then ("",true)
                   else (substring (s,0,max_size - size string_abbrev),true)
-		fun to_digit n = chr (n +ord "0")
+		fun to_digit n = chr (n + ord #"0")
 		fun aux ([],result) = implode (rev result)
 		  | aux (char::rest,result) =
 		    let val newres =
 		      case char of
-			"\n" => "\\n"::result
-		      | "\t" => "\\t"::result
-		      | "\"" => "\\\""::result
-		      | "\\" => "\\\\"::result
+			#"\n" => #"n" :: #"\\" :: result
+		      | #"\t" => #"t" :: #"\\" :: result
+		      | #"\"" => #"\"" :: #"\\" :: result
+		      | #"\\" => #"\\" :: #"\\" :: result
 		      | c =>
 			  let val n = ord c
 			  in
@@ -1709,7 +1744,7 @@ structure FullPervasiveLibrary_  :
 				(to_digit (n mod 10))::
 				(to_digit (n1 mod 10))::
 				(to_digit (n1 div 10))::
-				"\\" :: result
+				#"\\" :: result
 			      end
 			    else
 			      c::result
@@ -3724,40 +3759,12 @@ structure FullPervasiveLibrary_  :
 
     val maxSize = MLWorks.String.maxLen
 
-    fun unsafe_alloc_string (n:int) : string =
-      let val alloc_s = alloc_string n
-      in
-	string_unsafe_update (alloc_s, n-1, 0);
-	alloc_s
-      end
     fun alloc_string (n:int) : string =
       if n > maxSize then
 	raise Size
       else
 	unsafe_alloc_string n
 	
-    fun implode (cl : char list) : string =
-      let
-	val cl : int list = cast cl
-	fun copyall ([],start,to) = to
-	  | copyall (c::cl,start,to) =
-	  (string_unsafe_update (to,start, c);
-	   copyall (cl,start+1,to))
-	fun get_size (a::rest,sz) = get_size (rest,1 + sz)
-	  | get_size ([],sz) =
-	  if sz > 30 then call_c "string c implode char" (cl,sz)
-	  else
-	    let
-	      val result = unsafe_alloc_string (sz+1)
-	      (* set the null terminator *)
-	      val _ = string_unsafe_update (result,sz,0)
-	    in
-	      copyall (cl,0,result)
-	    end
-      in
-	get_size (cl,0)
-      end
-
     (*NB concat is old-style string implode*)
     fun concat [] = ""
       | concat xs = call_c "string implode" xs
@@ -3768,17 +3775,6 @@ structure FullPervasiveLibrary_  :
 	string_unsafe_update(alloc_s, 0, (cast c):int);
 	alloc_s
       end
-
-    fun explode (s:string) : char list =
-      let fun aux (i, acc) =
-	  if i >= 0 then
-	    aux (i-1, (cast (string_unsafe_sub(s, i)):char)::acc)
-	  else
-	    acc
-      in
-	aux (size s -1, [])
-      end
-
 
     fun substring (s, i, n) =
       if i < 0 orelse n < 0 orelse (size s - i) < n then raise Subscript
@@ -3824,7 +3820,7 @@ structure FullPervasiveLibrary_  :
         fun exnName e =
           let val full_name = MLWorks.Internal.Value.exn_name e
               fun split [] = []
-                | split ("[" :: _) = []
+                | split (#"[" :: _) = []
                 | split (h :: t) = h :: (split t)
            in implode(split(explode full_name)) end;
 

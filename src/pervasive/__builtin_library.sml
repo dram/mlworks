@@ -269,7 +269,6 @@ structure BuiltinLibrary_ :
     val call_c			: string -> 'a
     val call_ml_value		: ml_value -> ml_value list
     val cast                    : 'a -> 'b
-    val chr			: int -> string
     val char_chr		: int -> char
     val char_equal		: char * char -> bool
     val char_not_equal		: char * char -> bool
@@ -279,11 +278,9 @@ structure BuiltinLibrary_ :
     val char_greater_equal	: char * char -> bool
     val cos			: real -> real
     val exp			: real -> real
-    val explode			: string -> string list
     val external_equality	: ''a * ''a -> bool
     val get_implicit		: int -> ml_value
     val floor			: real -> int
-    val implode			: string list -> string
     val inline_equality		: ''a * ''a -> bool
     val int_abs			: int -> int
     val int_div			: int * int -> int
@@ -329,7 +326,6 @@ structure BuiltinLibrary_ :
     val notb			: int -> int
     val o			: ('b -> 'c) * ('a -> 'b) -> ('a -> 'c)
     val orb			: int * int -> int
-    val ord			: string -> int
     val char_ord		: char -> int
     val ordof			: string * int -> int
     val real			: int -> real
@@ -517,51 +513,6 @@ structure BuiltinLibrary_ :
             | @ ([a,b,c,d,e,f,g,h],l) = a::b::c::d::e::f::g::h::l
             | @ (a::b::c::d::e::f::g::h::r,l) = a::b::c::d::e::f::g::h:: aux1(r,l,r)
         end 
-
-        (* Redefine the explode function!! *)
-        local
-          fun make_chars (0,acc) = acc
-            | make_chars (n,acc) =
-              let
-                val s = alloc_string 2
-              in
-                string_unsafe_update (s,0,n-1);
-                string_unsafe_update (s,1,0);
-                make_chars (n-1,s::acc)
-              end
-          val char_list = make_chars (256,[])
-          val chars = alloc_vector 256
-          fun update ([],n) = ()
-            | update (c::rest,n) =
-              (vector_unsafe_update (chars,n,c);
-               update (rest,n+1))
-          val _ = update (char_list,0)
-        in
-          fun explode s : string list =
-            let
-              (* loop unrolled once *)
-              (* chars passed as function argument (so goes in register) *)
-              fun aux (n,acc,chars) =
-                if n <= 1
-                  then
-                    if int_equal (n,1)
-                      then vector_unsafe_sub (chars,string_unsafe_sub (s,0)) :: acc
-                    else acc
-                else
-                  let
-                    val n' = n-1
-                    val n'' = n-2
-                  in
-                    aux (n'',
-                         vector_unsafe_sub (chars,string_unsafe_sub (s,n'')) ::
-                         vector_unsafe_sub (chars,string_unsafe_sub (s,n')) :: 
-                         acc,
-                         chars)
-                  end
-            in
-              aux (size s, [], chars)
-            end
-        end
       end
 
 
@@ -644,7 +595,6 @@ structure BuiltinLibrary_ :
       val call_c : string -> 'a =		fn x => no  "call_c" x
       val call_ml_value : ml_value -> ml_value list =	obsolete "system call"
       val cast : 'a -> 'b =			fn x => no  "cast" x
-      val chr : int -> string =			no  "string chr"
       val char_chr : int -> char =		no  "char chr"
       val char_equal : char * char -> bool =	no  "char equal"
       val char_not_equal : char * char -> bool =no  "char not equal"
@@ -657,7 +607,6 @@ structure BuiltinLibrary_ :
       val external_equality : ''a * ''a -> bool =	fn x => yes "polymorphic equality" x
       val get_implicit : int -> ml_value =		no  "get implicit"
       val floor : real -> int =	no  "real floor" 
-      val implode : string list -> string =		yes "string implode"
       val inline_equality : ''a * ''a -> bool =fn x => no  "inline equality" x
       val int_abs : int -> int =		no  "integer abs" 
       val int_div : int * int -> int =			yes "integer divide"
@@ -701,7 +650,6 @@ structure BuiltinLibrary_ :
       val ml_value_from_offset : ml_value * int -> ml_value =no  "system ml value from offset"
       val notb : int -> int =			no  "integer bit not"
       val orb : int * int -> int =		no  "integer bit or"
-      val ord : string -> int =		no  "string ord"
       val char_ord : char -> int =	no  "string ord"
       val ordof : string * int -> int =	 	no  "string ordof"
       val real : int -> real =			no  "real"
