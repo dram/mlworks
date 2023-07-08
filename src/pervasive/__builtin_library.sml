@@ -269,7 +269,7 @@ structure BuiltinLibrary_ :
     val call_c			: string -> 'a
     val call_ml_value		: ml_value -> ml_value list
     val cast                    : 'a -> 'b
-    val char_chr		: int -> char
+    val chr			: int -> char
     val char_equal		: char * char -> bool
     val char_not_equal		: char * char -> bool
     val char_less		: char * char -> bool
@@ -326,7 +326,7 @@ structure BuiltinLibrary_ :
     val notb			: int -> int
     val o			: ('b -> 'c) * ('a -> 'b) -> ('a -> 'c)
     val orb			: int * int -> int
-    val char_ord		: char -> int
+    val ord			: char -> int
     val ordof			: string * int -> int
     val real			: int -> real
     val real_abs		: real -> real
@@ -595,7 +595,7 @@ structure BuiltinLibrary_ :
       val call_c : string -> 'a =		fn x => no  "call_c" x
       val call_ml_value : ml_value -> ml_value list =	obsolete "system call"
       val cast : 'a -> 'b =			fn x => no  "cast" x
-      val char_chr : int -> char =		no  "char chr"
+      val chr : int -> char =			no  "char chr"
       val char_equal : char * char -> bool =	no  "char equal"
       val char_not_equal : char * char -> bool =no  "char not equal"
       val char_less : char * char -> bool =		no  "char less"
@@ -650,7 +650,7 @@ structure BuiltinLibrary_ :
       val ml_value_from_offset : ml_value * int -> ml_value =no  "system ml value from offset"
       val notb : int -> int =			no  "integer bit not"
       val orb : int * int -> int =		no  "integer bit or"
-      val char_ord : char -> int =	no  "string ord"
+      val ord : char -> int =		no  "string ord"
       val ordof : string * int -> int =	 	no  "string ordof"
       val real : int -> real =			no  "real"
       val real_abs : real -> real =			no  "real absolute"

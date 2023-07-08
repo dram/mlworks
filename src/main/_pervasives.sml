@@ -284,8 +284,8 @@ struct
     EXP |
     LN |
     SIZE |
-    CHARCHR |
-    CHARORD |
+    CHR |
+    ORD |
     ORDOF |
     DEREF |
     FDIV |
@@ -474,8 +474,8 @@ struct
     | print_pervasive EXP = "exp"
     | print_pervasive LN = "ln"
     | print_pervasive SIZE = "size"
-    | print_pervasive CHARCHR = "char_chr"
-    | print_pervasive CHARORD = "char_ord"
+    | print_pervasive CHR = "chr"
+    | print_pervasive ORD = "ord"
     | print_pervasive ORDOF = "ordof"
     | print_pervasive DEREF = "!"
     | print_pervasive FDIV = "/"
@@ -663,7 +663,7 @@ struct
      (LOAD_STRING,"load_string"),
      (AT, "@"),
      (ARCTAN, "arctan"),
-     (CHARCHR, "char_chr"),
+     (CHR, "chr"),
      (HAT, "^"),
      (COS, "cos"),
      (EXP, "exp"),
@@ -689,7 +689,7 @@ struct
      (UMAP, "umap"),
      (O, "o"),
      (NOT, "not"),
-     (CHARORD, "char_ord"),
+     (ORD, "ord"),
      (ORDOF, "ordof"),
      (REALABS, "real_abs"),
      (REALEQ, "real_equal"),

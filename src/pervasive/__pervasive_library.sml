@@ -1603,9 +1603,6 @@ structure FullPervasiveLibrary_  :
 
     open BuiltinLibrary_
 
-    val chr = char_chr
-    val ord = char_ord
-
     exception Unimplemented of string
     exception Substring
 

@@ -4097,7 +4097,7 @@ struct
 			     ((Sexpr.ATOM code, [], NONE,
 			       Sexpr.NIL), [], [])))
 	end
-      fun do_char_chr(regs, the_code, exn_code) =
+      fun do_chr (regs, the_code, exn_code) =
 	let
 	  val result = MirTypes.GC.new()
 	  val res1 = MirTypes.GP_GC_REG result
@@ -4125,7 +4125,7 @@ struct
 		  MirTypes.UNARY(MirTypes.MOVE, res2, new_reg)]), exn_blocks,
 		NONE, Sexpr.NIL), [], [])))
 	    end
-	  | _ => Crash.impossible"do_char_chr"
+	  | _ => Crash.impossible "do_chr"
 	end
 
       fun do_ordof (safe,regs,the_code,exn_code) =
@@ -5025,8 +5025,8 @@ struct
       | Pervasives.EXP => tagged_unary_fcalc(MirTypes.FETOXV,regs,the_code,exn_code_for_prim prim)
       | Pervasives.LN => tagged_unary_fcalc(MirTypes.FLOGEV,regs,the_code,exn_code_for_prim prim)
       | Pervasives.SIZE => do_size (regs,the_code)
-      | Pervasives.CHARCHR => do_char_chr (regs,the_code,exn_code_for_prim prim)
-      | Pervasives.CHARORD => (regs, the_code) (* Ord on char is nop *)
+      | Pervasives.CHR => do_chr (regs,the_code,exn_code_for_prim prim)
+      | Pervasives.ORD => (regs, the_code) (* Ord on char is nop *)
       | Pervasives.ORDOF => do_ordof (true,regs,the_code,exn_code_for_prim prim)
       | Pervasives.FDIV => tagged_binary_fcalc(MirTypes.FDIVV,regs,the_code,exn_code_for_prim prim)
       | Pervasives.DIV => Crash.impossible"Unresolved overloaded primitive"

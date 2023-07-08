@@ -191,8 +191,8 @@ sig
     EXP |
     LN |
     SIZE |
-    CHARCHR |
-    CHARORD |
+    CHR |
+    ORD |
     ORDOF |
     DEREF |
     FDIV |
